@@ -235,6 +235,7 @@ int main(void)
 
 				/* Then Raise an Event -> evTECXOprimodo => OK,
 				 * and Value of pressed button -> viTecla */
+				//En el momento que hay que hacer una transsición de estado se hace un raise
 				buttonsIface_raise_evTECXOprimido(&statechart, BUTTON_Status);
 			else
 				/* Then else Raise an Event -> evTECXNoOprimido => OK */

@@ -65,6 +65,7 @@ volatile bool SysTick_Time_Flag = false;
 static IdleBlink statechart;
 
 /*! This is a timed state machine that requires timer services */
+//NOF_Timer es el numero de timers en mi maquina de estado.
 #define NOF_TIMERS (sizeof(IdleBlinkTimeEvents)/sizeof(sc_boolean))
 
 TimerTicks ticks[NOF_TIMERS];
