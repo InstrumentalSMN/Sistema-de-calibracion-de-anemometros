@@ -74,12 +74,28 @@ void myTickHook( void *ptr ){
 	SysTick_Time_Flag = true;
 }
 
+/*! This function scan all EDU-CIAA-NXP buttons (TEC1, TEC2, TEC3 and TEC4),
+ *  and return ID of pressed button (TEC1 or TEC2 or TEC3 or TEC4)
+ *  or false if no button was pressed.
+ */
+uint32_t Buttons_GetStatus_(void) {
+	uint8_t ret = false;
+	uint32_t idx;
+
+	for (idx = 0; idx < 4; ++idx) {
+		if (gpioRead( TEC1 + idx ) == 0)
+			ret |= 1 << idx;
+	}
+	return ret;
+}
 
 // No necesito mas funciones
 
 int main(void) {
 
 	uint32_t i;
+
+	uint32_t BUTTON_Status;
 
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
@@ -132,6 +148,16 @@ int main(void) {
 					MarkAsAttEvent( ticks, NOF_TIMERS, ticks[i].evid );
 				}
 			}
+			/* Then Get status of buttons */
+			BUTTON_Status = Buttons_GetStatus_();
+			/* Then if there are a pressed button */
+			if (BUTTON_Status != 0)
+				/* Then Raise an Event -> evTECXOprimodo => OK,
+				 * and Value of pressed button -> viTecla */
+				datalogger_SAIface_raise_evTECXOprimido(&statechart, BUTTON_Status);
+			else
+				/* Then else Raise an Event -> evTECXNoOprimido => OK */
+				datalogger_SAIface_raise_evTECXNoOprimido(&statechart);
 
 			/* Then Run an Cycle of Statechart */
 			datalogger_SA_runCycle(&statechart);		// Run Cycle of Statechart
