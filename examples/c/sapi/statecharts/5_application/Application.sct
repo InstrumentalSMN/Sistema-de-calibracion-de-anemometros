@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_IPEiAI_CEeaE_NItBGtDFQ" specification="/* Application EDU-CIAA-NXP */&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;/* Using Time Events (Timer Ticks) */&#xD;&#xA;&#xD;&#xA;/* For each button pressed raise a internal event (siTECXOK), and its  ID (valueof) is stored in an internal variable (viTecla). Includes software debounce */&#xD;&#xA;&#xD;&#xA;/* For each particular siTECXOK and viTecla an operation  is done (opLED(LEDX, LED_ON) or opLED(LEDX, LED_OFF)), or rise  internal events (siTitilarLED or SiNoTitilarLED) */&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;interface:&#xD;&#xA;&#xD;&#xA;in event evTECXNoOprimido&#xD;&#xA;in event evTECXOprimido: integer&#xD;&#xA;&#xD;&#xA;operation opLED(LEDNumber:integer,&#xD;&#xA;&#x9;State:boolean): void&#xD;&#xA;&#xD;&#xA;//const LEDR: integer = 0&#xD;&#xA;//const LEDG: integer = 1&#xD;&#xA;//const LEDB: integer = 2&#xD;&#xA;const LED1: integer = 3&#xD;&#xA;const LED2: integer = 4&#xD;&#xA;const LED3: integer = 5&#xD;&#xA;&#xD;&#xA;const LED_ON: boolean = true&#xD;&#xA;const LED_OFF: boolean = false&#xD;&#xA;&#xD;&#xA;const TEC1: integer = 1 &lt;&lt; 0&#xD;&#xA;const TEC2: integer = 1 &lt;&lt; 1&#xD;&#xA;const TEC3: integer = 1 &lt;&lt; 2&#xD;&#xA;const TEC4: integer = 1 &lt;&lt; 3&#xD;&#xA;&#xD;&#xA;internal:&#xD;&#xA;//En forma interna tengo señales para vincular las maquinas de estado&#xD;&#xA;&#xD;&#xA;//el evento siTitilarLED le manda una señal a la maquina que sigue&#xD;&#xA;event siTitilarLED&#xD;&#xA;event siNoTitilarLED&#xD;&#xA;event siTECXOK&#xD;&#xA;&#xD;&#xA;//Variable interna Tecla&#xD;&#xA;&#xD;&#xA;var viTecla: integer&#xD;&#xA;" name="application" documentation="TECX detecta que las tacla haya sido oprimida.">
+  <sgraph:Statechart xmi:id="_IPEiAI_CEeaE_NItBGtDFQ" specification="/* Application EDU-CIAA-NXP */&#xD;&#xA;&#xD;&#xA;interface:&#xD;&#xA;&#xD;&#xA;in event evTECXNoOprimido&#xD;&#xA;in event evTECXOprimido: integer&#xD;&#xA;&#xD;&#xA;operation opLED(LEDNumber:integer,&#xD;&#xA;&#x9;State:boolean): void&#xD;&#xA;&#xD;&#xA;//const LEDR: integer = 0&#xD;&#xA;//const LEDG: integer = 1&#xD;&#xA;//const LEDB: integer = 2&#xD;&#xA;const LED1: integer = 3&#xD;&#xA;const LED2: integer = 4&#xD;&#xA;const LED3: integer = 5&#xD;&#xA;&#xD;&#xA;const LED_ON: boolean = true&#xD;&#xA;const LED_OFF: boolean = false&#xD;&#xA;&#xD;&#xA;const TEC1: integer = 1 &lt;&lt; 0&#xD;&#xA;const TEC2: integer = 1 &lt;&lt; 1&#xD;&#xA;const TEC3: integer = 1 &lt;&lt; 2&#xD;&#xA;const TEC4: integer = 1 &lt;&lt; 3&#xD;&#xA;&#xD;&#xA;internal:&#xD;&#xA;//En forma interna tengo señales para vincular las maquinas de estado&#xD;&#xA;&#xD;&#xA;//el evento siTitilarLED le manda una señal a la maquina que sigue&#xD;&#xA;event siTitilarLED&#xD;&#xA;event siNoTitilarLED&#xD;&#xA;event siTECXOK&#xD;&#xA;&#xD;&#xA;//Variable interna Tecla&#xD;&#xA;&#xD;&#xA;var viTecla: integer&#xD;&#xA;" name="application" documentation="TECX detecta que las tacla haya sido oprimida.">
     <regions xmi:id="_3DHfo0opEee0ZsqKOimupA" name="TECX">
       <vertices xsi:type="sgraph:State" xmi:id="_3DHfpEopEee0ZsqKOimupA" specification="" name="DEBOUNCE" incomingTransitions="_3DHfrUopEee0ZsqKOimupA">
         <outgoingTransitions xmi:id="_3DHfpkopEee0ZsqKOimupA" specification="after 100 ms" target="_3DNmE0opEee0ZsqKOimupA"/>
@@ -102,7 +102,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xLHAxJF6EeaIxNsxuRXV9Q"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_xLA6IpF6EeaIxNsxuRXV9Q" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xLA6I5F6EeaIxNsxuRXV9Q" x="430" y="265" width="431" height="272"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xLA6I5F6EeaIxNsxuRXV9Q" x="340" y="220" width="431" height="272"/>
     </children>
     <children xmi:id="_3DHfYUopEee0ZsqKOimupA" type="Region" element="_3DHfo0opEee0ZsqKOimupA">
       <children xsi:type="notation:DecorationNode" xmi:id="_3DHfYkopEee0ZsqKOimupA" type="RegionName">
@@ -190,7 +190,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_3DHfoEopEee0ZsqKOimupA"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_3DHfoUopEee0ZsqKOimupA" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_3DHfokopEee0ZsqKOimupA" x="415" y="35" width="431" height="211"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_3DHfokopEee0ZsqKOimupA" x="340" y="10" width="431" height="211"/>
     </children>
     <children xmi:id="_a65bAUoqEee0ZsqKOimupA" type="Region" element="_a65bU0oqEee0ZsqKOimupA">
       <children xsi:type="notation:DecorationNode" xmi:id="_a65bAkoqEee0ZsqKOimupA" type="RegionName">
@@ -301,7 +301,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_a65bUEoqEee0ZsqKOimupA"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_a65bUUoqEee0ZsqKOimupA" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_a65bUkoqEee0ZsqKOimupA" x="975" y="10" width="347" height="389"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_a65bUkoqEee0ZsqKOimupA" x="775" y="10" width="347" height="389"/>
     </children>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_IPEiAo_CEeaE_NItBGtDFQ"/>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_8YgOINkcEey8ruWV1sOfNw" name="inlineDefinitionSection" booleanValue="true"/>

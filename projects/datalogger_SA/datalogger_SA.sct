@@ -25,7 +25,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_2oAyMNlIEeyXMpXzqthDKQ" name="ESPERA" incomingTransitions="_9jy4kNlIEeyXMpXzqthDKQ _B9fcsNlJEeyXMpXzqthDKQ _IvbDgNlJEeyXMpXzqthDKQ _UO-3ENlJEeyXMpXzqthDKQ _a2qVsNlJEeyXMpXzqthDKQ">
         <outgoingTransitions xmi:id="_UO-3ENlJEeyXMpXzqthDKQ" specification="siTECXOK [viTeclaOprim == Tec4]/&#xD;&#xA;raise siTitilarLED" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
-        <outgoingTransitions xmi:id="_IvbDgNlJEeyXMpXzqthDKQ" specification="siTECXOK [viTeclaOprim == Tec3]/&#xD;&#xA;opLED(LED2, LED_ON)" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
+        <outgoingTransitions xmi:id="_IvbDgNlJEeyXMpXzqthDKQ" specification="siTECXOK [viTeclaOprim == Tec3]/&#xD;&#xA;opLED(LED2, LED_ON);&#xD;&#xA;raise siNoTitilarLED&#xD;&#xA;&#xD;&#xA;" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
         <outgoingTransitions xmi:id="_B9fcsNlJEeyXMpXzqthDKQ" specification="siTECXOK [viTeclaOprim == Tec2]/&#xD;&#xA;opLED(LED1, LED_ON)" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
         <outgoingTransitions xmi:id="_9jy4kNlIEeyXMpXzqthDKQ" specification="siTECXOK [viTeclaOprim == Tec1]/&#xD;&#xA;opLED(LED1, LED_OFF);&#xD;&#xA;opLED(LED2, LED_OFF);&#xD;&#xA;opLED(LED3, LED_OFF);&#xD;&#xA;raise siNoTitilarLED" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
       </vertices>
@@ -464,7 +464,7 @@
     <edges xmi:id="_IvcRoNlJEeyXMpXzqthDKQ" type="Transition" element="_IvbDgNlJEeyXMpXzqthDKQ" source="_2oCAUNlIEeyXMpXzqthDKQ" target="_2oCAUNlIEeyXMpXzqthDKQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_IvcRpNlJEeyXMpXzqthDKQ" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_IvcRpdlJEeyXMpXzqthDKQ"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_IvcRptlJEeyXMpXzqthDKQ" x="-8" y="-122"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_IvcRptlJEeyXMpXzqthDKQ" x="2" y="-127"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_IvcRodlJEeyXMpXzqthDKQ" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_IvcRo9lJEeyXMpXzqthDKQ" fontName="Verdana"/>
