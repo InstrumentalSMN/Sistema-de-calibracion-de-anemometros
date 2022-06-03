@@ -10,7 +10,7 @@
         <outgoingTransitions xmi:id="_4xdZgNuOEeybjIzNL-ku7g" specification="eLecturaDV" target="_Ex1GDduNEeybjIzNL-ku7g"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_Ex1GDduNEeybjIzNL-ku7g" specification="//Como lo simulo con un boton pongo un antirebote" name="DEBOUNCE" incomingTransitions="_HANCENuNEeybjIzNL-ku7g _4xdZgNuOEeybjIzNL-ku7g">
-        <outgoingTransitions xmi:id="_IDfEANuNEeybjIzNL-ku7g" specification="after 100 ms" target="_Ft8I_duNEeybjIzNL-ku7g"/>
+        <outgoingTransitions xmi:id="_IDfEANuNEeybjIzNL-ku7g" specification="after 10000 ms" target="_Ft8I_duNEeybjIzNL-ku7g"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_Ft8I_duNEeybjIzNL-ku7g" name="VALIDACION" incomingTransitions="_IDfEANuNEeybjIzNL-ku7g">
         <outgoingTransitions xmi:id="_Qi7VgNuNEeybjIzNL-ku7g" target="_JGpxPduNEeybjIzNL-ku7g"/>
@@ -116,7 +116,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_W39HRNt0EeyHZqpmACSfBQ"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_W39HQtt0EeyHZqpmACSfBQ" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_W39HQdt0EeyHZqpmACSfBQ" x="510" y="15" width="522" height="400"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_W39HQdt0EeyHZqpmACSfBQ" x="370" y="30" width="522" height="400"/>
     </children>
     <children xsi:type="notation:Shape" xmi:id="_2s-C-dtyEeyHZqpmACSfBQ" type="StatechartText" fontName="Verdana" lineColor="4210752">
       <children xsi:type="notation:DecorationNode" xmi:id="_2s-qANtyEeyHZqpmACSfBQ" type="StatechartName">
@@ -126,7 +126,7 @@
       <children xsi:type="notation:Shape" xmi:id="_2s-qA9tyEeyHZqpmACSfBQ" type="StatechartTextExpression" fontName="Verdana" lineColor="4210752">
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBNtyEeyHZqpmACSfBQ"/>
       </children>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBdtyEeyHZqpmACSfBQ" x="10" y="10" width="396" height="656"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBdtyEeyHZqpmACSfBQ" x="10" y="10" width="316" height="656"/>
     </children>
     <children xmi:id="_c25QQNuHEeybjIzNL-ku7g" type="Region" element="_c2zJoNuHEeybjIzNL-ku7g">
       <children xsi:type="notation:DecorationNode" xmi:id="_c253UNuHEeybjIzNL-ku7g" type="RegionName">
@@ -206,7 +206,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dG1Jt9uHEeybjIzNL-ku7g"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_dG1JsduHEeybjIzNL-ku7g" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dG1JstuHEeybjIzNL-ku7g" x="915" y="-5" width="311" height="201"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dG1JstuHEeybjIzNL-ku7g" x="410" y="450" width="311" height="201"/>
     </children>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_2s7mt9tyEeyHZqpmACSfBQ" name="inlineDefinitionSection" booleanValue="true"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_2s7muNtyEeyHZqpmACSfBQ"/>

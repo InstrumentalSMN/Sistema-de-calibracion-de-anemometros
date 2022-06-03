@@ -6,7 +6,7 @@
 
 // Inlcusiones
 
-#include "tp2.h"         // <= Su propia cabecera
+#include "../inc/tp2.h"         // <= Su propia cabecera
 #include "sapi.h"        // <= Biblioteca sAPI
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
@@ -15,7 +15,9 @@ int main( void )
    // ---------- CONFIGURACIONES ------------------------------
 
    // Inicializar y configurar la plataforma
-   boardConfig();
+   boardConfig(); //Configura todo como GPIO
+   //Despues piso los puertos en funcion de mi necesidad.
+   //gpioInit();
 
    // Crear varias variables del tipo booleano
    bool_t buttonValue = OFF;
@@ -39,7 +41,7 @@ int main( void )
          
          while( TRUE ) {
             
-            /* Si se presiona CIAA_BOARD_BUTTON, enciende el CIAA_BOARD_LED */
+            /* Si se presiona CIAA_BOARD_BUTTON que esta cargado con TEC1 en sapi_peripheral_map.h, enciende el CIAA_BOARD_LED que esta cargado con LEDB en sapi_peripheral_map.h  */
 
             // Leer pin conectado al boton.
             buttonValue = gpioRead( CIAA_BOARD_BUTTON );
