@@ -62,6 +62,7 @@
 volatile bool SysTick_Time_Flag = false;
 
 /*! This is a state machine */
+/*El tipo de dato Blink esta definido en Blink.h*/
 static Blink statechart;
 
 /*! This is a timed state machine that requires timer services */
@@ -110,6 +111,7 @@ TimerTicks ticks[NOF_TIMERS];
  */
 void blinkIface_opLED( Blink* handle, sc_integer LEDNumber, sc_boolean State )
 {
+	//**Esta función se utiliza dentro de Blink.c, pero donde esta el prototipo y por que no se incluye un main.h en el blink.h
 	gpioWrite( (LEDR + LEDNumber), State );
 }
 
@@ -129,6 +131,7 @@ void blinkIface_opLED( Blink* handle, sc_integer LEDNumber, sc_boolean State )
  */
 void blink_setTimer( Blink* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic )
 {
+	//**Esta función se utiliza dentro de Blink.c
 	SetNewTimerTick(ticks, NOF_TIMERS, evid, time_ms, periodic);
 }
 
@@ -141,6 +144,7 @@ void blink_setTimer( Blink* handle, const sc_eventid evid, const sc_integer time
  */
 void blink_unsetTimer( Blink* handle, const sc_eventid evid )
 {
+	//**Esta función se utiliza dentro de Blink.c
 	UnsetTimerTick( ticks, NOF_TIMERS, evid );
 }
 
@@ -150,7 +154,7 @@ void blink_unsetTimer( Blink* handle, const sc_eventid evid )
  * @return	Nothing
  */
 void myTickHook( void *ptr ){
-
+	//Funcion gancho para manejar las interrupciones del sysTicktimer
 	/* The sysTick Interrupt Handler only set a Flag */
 	SysTick_Time_Flag = true;
 }
@@ -177,6 +181,7 @@ int main(void)
 	InitTimerTicks( ticks, NOF_TIMERS );
 
 	/* Statechart Initialization */
+	//Estas dos las genera Yakimdu, yo solamente las declare
 	blink_init( &statechart );
 	blink_enter( &statechart );
 
@@ -196,15 +201,20 @@ int main(void)
 			UpdateTimers( ticks, NOF_TIMERS );
 
 			/* Then Scan all Timer Ticks */
+			//Escanea todos los temporizadores, en el caso de Blink hay dos afte -->250ms y 500ms. por cada After genera un contador de tiempo para esa sentencia. Lo define Yakindu cuantos contadores necesita
 			for (i = 0; i < NOF_TIMERS; i++) {
 
 				/* Then if there are pending events */
+				// consulto si hay un evento pendiente en la estructura ticks en el campo evid(identificador del evento)
 				if (IsPendEvent( ticks, NOF_TIMERS, ticks[i].evid ) == true) {
 
 					/* Then Raise an Event -> Ticks.evid => OK */
+					//Esta funcion esta declarada en blink.c En el momento que hay que hacer una transsición de estado se hace un raise
 					blink_raiseTimeEvent( &statechart, ticks[i].evid );
 
+
 					/* Then Mark as Attached -> Ticks.evid => OK */
+					//Esta funcion esta definida en TimerTicks.h
 					MarkAsAttEvent( ticks, NOF_TIMERS, ticks[i].evid );
 				}
 			}
