@@ -347,6 +347,7 @@ bool_t gpioWrite( gpioMap_t pin, bool_t value )
    gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func,
                       &gpioPort, &gpioPin );
 
+   //La siguiente funcion me la da el fabricante NPX
    Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, value);
 
    return ret_val;
@@ -386,4 +387,25 @@ bool_t gpioRead( gpioMap_t pin )
    return ret_val;
 }
 
+/*Realizo mi propia _gpioRead*/
+bool_t _gpioRead( gpioMap_t pin )
+{
+   if( pin == VCC ){
+      return TRUE;
+   }
+   if( pin == GND ){
+      return FALSE;
+   }
+
+   bool_t ret_val     = OFF;
+
+   conf_t configPort;
+
+   gpioObtainPinInit( pin, &(configPort.scuPinNamePort), &(configPort.scuPinNamePin), &(configPort.func),
+                      &(configPort.gpioPort), &(configPort.gpioPin));
+
+   ret_val = (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, configPort.gpioPort, configPort.gpioPin );
+
+   return ret_val;
+}
 /*==================[end of file]============================================*/

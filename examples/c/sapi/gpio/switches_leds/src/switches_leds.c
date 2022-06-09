@@ -60,7 +60,7 @@ int main(void){
 
    /* Inicializar la placa */
    boardConfig();
-
+   //Estos GPIO0 y GPIO1 son de la serigrafia de la placa, osea que si le conecto una tecla a uno y a otro un LED puedo switchear
    gpioConfig( GPIO0, GPIO_INPUT );
 
    gpioConfig( GPIO1, GPIO_OUTPUT );
@@ -71,7 +71,7 @@ int main(void){
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 
-      valor = !gpioRead( TEC1 );
+      valor = !gpioRead( TEC1 ); //La tecla sin oprimir esta en 1, la oprimo y la pongo en cero
       gpioWrite( LEDB, valor );
 
       valor = !gpioRead( TEC2 );
