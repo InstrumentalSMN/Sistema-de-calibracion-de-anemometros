@@ -185,7 +185,7 @@ void tickWrite( tick_t ticks )
 }
 
 // Tick interrupt callback
-bool_t tickCallbackSet( callBackFuncPtr_t tickCallback, void* tickCallbackParams )
+bool_t tickCallbackSet( callBackFuncPtr_t tickCallback/*puntero a funcion*/, void* tickCallbackParams )
 {
    #ifdef USE_FREERTOS
       uartWriteString( UART_USB, "Use of tickCallbackSet() in a program with freeRTOS has no effect\r\n" );
@@ -193,7 +193,7 @@ bool_t tickCallbackSet( callBackFuncPtr_t tickCallback, void* tickCallbackParams
    #else
       bool_t retVal = TRUE;
       if( tickCallback != NULL ) {
-         tickHookFunction = tickCallback;
+         tickHookFunction = tickCallback; // son del mismo tipo la pimera declara aca y la otra en sapi_datatype.h
       } else {
          retVal = FALSE;
       }
