@@ -39,6 +39,7 @@
 
 #include "sapi.h"        // <= sAPI header
 
+
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
@@ -114,7 +115,8 @@ int main(void){
    static char uartBuff[10];
 
    /* Variable para almacenar el valor leido del ADC CH1 */
-   uint16_t muestra = 0;
+   float muestra = 0;
+   float muestraVolt = 0;
 
    /* Variables de delays no bloqueantes */
    delay_t delay1;
@@ -132,19 +134,22 @@ int main(void){
 
          /* Leo la Entrada Analogica AI0 - ADC0 CH1 */
          muestra = adcRead( CH1 );
+         muestraVolt = muestra*(3.3/1024);
 
          /* Envío la primer parte del mnesaje a la Uart */
          uartWriteString( UART_USB, "ADC CH1 value: " );
 
          /* Conversión de muestra entera a ascii con base decimal */
-         itoa( muestra, uartBuff, 10 ); /* 10 significa decimal */
+         itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
+         floatToString(muestraVolt,uartBuff,3);
+
 
          /* Enviar muestra y Enter */
          uartWriteString( UART_USB, uartBuff );
          uartWriteString( UART_USB, ";\r\n" );
 
          /* Escribo la muestra en la Salida AnalogicaAO - DAC */
-         dacWrite( DAC, muestra );
+         dacWrite( DAC, muestraVolt );
       }
 
       /* delayRead retorna TRUE cuando se cumple el tiempo de retardo */
