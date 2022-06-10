@@ -109,7 +109,13 @@ bool_t gpioInit( gpioMap_t pin, gpioInit_t config );
 bool_t gpioRead( gpioMap_t pin );
 bool_t gpioWrite( gpioMap_t pin, bool_t value );
 bool_t gpioToggle( gpioMap_t pin );
+
+/*Mis funciones*/
+bool_t _gpioInit( gpioMap_t pin, gpioInit_t config );
 bool_t _gpioRead( gpioMap_t pin );
+bool_t _gpioWrite( gpioMap_t pin, bool_t value );
+bool_t _gpioToggle( gpioMap_t pin );
+
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus

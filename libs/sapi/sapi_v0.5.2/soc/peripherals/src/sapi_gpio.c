@@ -325,6 +325,7 @@ bool_t gpioInit( gpioMap_t pin, gpioInit_t config )
 }
 
 
+
 bool_t gpioWrite( gpioMap_t pin, bool_t value )
 {
    if( pin == VCC ){
@@ -383,6 +384,120 @@ bool_t gpioRead( gpioMap_t pin )
                       &gpioPort, &gpioPin );
 
    ret_val = (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );
+
+   return ret_val;
+}
+
+
+/*Declaro mis funciones*/
+
+/*Realizo mi propia _gpioToggle*/
+
+bool_t _gpioToggle( gpioMap_t pin )
+{
+   return _gpioWrite( pin, !_gpioRead(pin) );
+}
+
+
+/*Realizo mi propia _gpioInit*/
+
+bool_t _gpioInit( gpioMap_t pin, gpioInit_t config )
+{
+   if( pin == VCC ){
+	  return FALSE;
+   }
+   if( pin == GND ){
+	  return FALSE;
+   }
+
+   bool_t ret_val     = 1;
+
+   conf_t configPort;
+   gpioObtainPinInit( pin, &(configPort.scuPinNamePort), &(configPort.scuPinNamePin), &(configPort.func),
+                         &(configPort.gpioPort), &(configPort.gpioPin));
+   switch(config) {
+
+   case GPIO_ENABLE:
+      /* Initializes GPIO */
+      Chip_GPIO_Init(LPC_GPIO_PORT);
+      break;
+
+   case GPIO_INPUT:
+      Chip_SCU_PinMux(
+    	 configPort.scuPinNamePort,
+         configPort.scuPinNamePin,
+         SCU_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
+		 configPort.func
+      );
+      Chip_GPIO_SetDir( LPC_GPIO_PORT, configPort.gpioPort, ( 1 << configPort.gpioPin ), GPIO_INPUT );
+      break;
+
+   case GPIO_INPUT_PULLUP:
+      Chip_SCU_PinMux(
+         configPort.scuPinNamePort,
+         configPort.scuPinNamePin,
+         SCU_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
+         configPort.func
+      );
+      Chip_GPIO_SetDir( LPC_GPIO_PORT, configPort.gpioPort, ( 1 << configPort.gpioPin ), GPIO_INPUT );
+      break;
+
+   case GPIO_INPUT_PULLDOWN:
+      Chip_SCU_PinMux(
+         configPort.scuPinNamePort,
+         configPort.scuPinNamePin,
+         SCU_MODE_PULLDOWN | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
+         configPort.func
+      );
+      Chip_GPIO_SetDir( LPC_GPIO_PORT, configPort.gpioPort, ( 1 << configPort.gpioPin ), GPIO_INPUT );
+      break;
+   case GPIO_INPUT_PULLUP_PULLDOWN:
+      Chip_SCU_PinMux(
+         configPort.scuPinNamePort,
+         configPort.scuPinNamePin,
+         SCU_MODE_REPEATER | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
+         configPort.func
+      );
+      Chip_GPIO_SetDir( LPC_GPIO_PORT, configPort.gpioPort, ( 1 << configPort.gpioPin ), GPIO_INPUT );
+      break;
+
+   case GPIO_OUTPUT:
+      Chip_SCU_PinMux(
+         configPort.scuPinNamePort,
+         configPort.scuPinNamePin,
+         SCU_MODE_INACT | SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN,
+         configPort.func
+      );
+      Chip_GPIO_SetDir( LPC_GPIO_PORT, configPort.gpioPort, ( 1 << configPort.gpioPin ), GPIO_OUTPUT );
+      Chip_GPIO_SetPinState( LPC_GPIO_PORT, configPort.gpioPort, configPort.gpioPin, 0);
+      break;
+
+   default:
+      ret_val = 0;
+      break;
+   }
+
+   return ret_val;
+
+}
+
+/*Realizo mi propia _gpioWrite*/
+bool_t _gpioWrite( gpioMap_t pin, bool_t value )
+{
+   if( pin == VCC ){
+	  return FALSE;
+   }
+   if( pin == GND ){
+	  return FALSE;
+   }
+
+   bool_t ret_val     = 1;
+
+   conf_t configPort;
+   gpioObtainPinInit( pin, &(configPort.scuPinNamePort), &(configPort.scuPinNamePin), &(configPort.func),
+                         &(configPort.gpioPort), &(configPort.gpioPin));
+   //La siguiente funcion me la da el fabricante NPX
+   Chip_GPIO_SetPinState( LPC_GPIO_PORT, configPort.gpioPort, configPort.gpioPin, value);
 
    return ret_val;
 }
