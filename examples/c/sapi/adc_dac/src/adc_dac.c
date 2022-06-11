@@ -102,7 +102,7 @@ int main(void){
     *    ADC_ENABLE,  ADC_DISABLE,
     *    ADC_ENABLE,  ADC_DISABLE,
     */
-   adcConfig( ADC_ENABLE ); /* ADC */
+   adcConfig( ADC_ENABLE ); /* ADC */ /*Solo preparo los ADC disponibles en la EDU CIAA*/
    dacConfig( DAC_ENABLE ); /* DAC */
 
    /* Configuración de estado inicial del Led */
@@ -123,7 +123,7 @@ int main(void){
    delay_t delay2;
 
    /* Inicializar Retardo no bloqueante con tiempo en ms */
-   delayConfig( &delay1, 500 );
+   delayConfig( &delay1, 2000 );
    delayConfig( &delay2, 200 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
@@ -141,11 +141,11 @@ int main(void){
 
          /* Conversión de muestra entera a ascii con base decimal */
          itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
-         floatToString(muestraVolt,uartBuff,3);
+         floatToString(muestraVolt,uartBuff,3); /*La saque sa sapi_convert.c*/
 
 
          /* Enviar muestra y Enter */
-         uartWriteString( UART_USB, uartBuff );
+         uartWriteString( UART_USB, uartBuff ); /*Son Bloqueantes sin Interrup*/
          uartWriteString( UART_USB, ";\r\n" );
 
          /* Escribo la muestra en la Salida AnalogicaAO - DAC */

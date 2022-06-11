@@ -151,8 +151,9 @@ static void	  InitRgbFirstTime     ()
    static bool_t rgbInitialized;
    uint8_t auxVariable;
    if (!rgbInitialized) {
-      Timer_Init(TIMER3, Timer_microsecondsToTicks(TICS_1_MS), UpdateLedsStates);
-//		SetTimerInterrupt();
+	   //Timer_Init(TIMER1, Timer_microsecondsToTicks(TICS_1_MS), UpdateLedsStates);
+       Timer_Init(TIMER3, Timer_microsecondsToTicks(TICS_1_MS), UpdateLedsStates);
+	   //SetTimerInterrupt();
       // Inicializa todos los leds RGB.
       for (auxVariable = 0; auxVariable < MAX_AMOUNT_OF_RGB_LEDS; auxVariable++) {
          RgbLeds[auxVariable].pinRed         = 0;
