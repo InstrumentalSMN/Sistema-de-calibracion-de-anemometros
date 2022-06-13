@@ -6,7 +6,7 @@
 
 // Inlcusiones
 
-#include "tp2.h"         // <= Su propia cabecera
+#include "app.h"         // <= Su propia cabecera
 #include "sapi.h"        // <= Biblioteca sAPI
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
