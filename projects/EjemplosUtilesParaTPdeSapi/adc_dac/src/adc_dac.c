@@ -102,7 +102,7 @@ int main(void){
     *    ADC_ENABLE,  ADC_DISABLE,
     *    ADC_ENABLE,  ADC_DISABLE,
     */
-   adcConfig( ADC_ENABLE ); /* ADC */ /*Solo preparo los ADC disponibles en la EDU CIAA*/
+   adcConfig( ADC_ENABLE ); /* ADC */
    dacConfig( DAC_ENABLE ); /* DAC */
 
    /* Configuración de estado inicial del Led */
@@ -114,6 +114,10 @@ int main(void){
    /* Buffer */
    static char uartBuff[10];
 
+   /*Tensi�n Maxima de la Bateria*/
+   const real32_t MaxVoltajeBatery = 12.23;
+   const real32_t MaxADCValue = 997;
+
    /* Variable para almacenar el valor leido del ADC CH1 */
    float muestra = 0;
    float muestraVolt = 0;
@@ -123,7 +127,7 @@ int main(void){
    delay_t delay2;
 
    /* Inicializar Retardo no bloqueante con tiempo en ms */
-   delayConfig( &delay1, 2000 );
+   delayConfig( &delay1, 500 );
    delayConfig( &delay2, 200 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
@@ -134,22 +138,23 @@ int main(void){
 
          /* Leo la Entrada Analogica AI0 - ADC0 CH1 */
          muestra = adcRead( CH1 );
-         muestraVolt = muestra*(3.3/1024);
+         muestraVolt = muestra*(MaxVoltajeBatery/MaxADCValue);
 
          /* Envío la primer parte del mnesaje a la Uart */
          uartWriteString( UART_USB, "ADC CH1 value: " );
 
          /* Conversión de muestra entera a ascii con base decimal */
-         itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
-         floatToString(muestraVolt,uartBuff,3); /*La saque sa sapi_convert.c*/
-
+         //itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
+         floatToString(muestraVolt,uartBuff,2);
+         //floatToString(muestra,uartBuff,3);
 
          /* Enviar muestra y Enter */
-         uartWriteString( UART_USB, uartBuff ); /*Son Bloqueantes sin Interrup*/
+         uartWriteString( UART_USB, uartBuff );
          uartWriteString( UART_USB, ";\r\n" );
 
          /* Escribo la muestra en la Salida AnalogicaAO - DAC */
-         dacWrite( DAC, muestraVolt );
+         //dacWrite( DAC, muestraVolt );
+         dacWrite( DAC, muestra );
       }
 
       /* delayRead retorna TRUE cuando se cumple el tiempo de retardo */

@@ -68,13 +68,13 @@ void adcInit( adcInit_t config )
    ADC_CH3 ---- 139 ADC0_3/ADC1_3
    DAC     ---- 6   ADC0_0/ADC1_0/DAC
 
-   T_FIL1  ---- 3   ADC0_1 (ANALOG_SEL)
-   T_COL2  ---- 133 ADC0_3 (ANALOG_SEL)
+   T_FIL1  ---- 3   ADC0_1 (ANALOG_SEL) pines controlados por el registro  ENAIO0
+   T_COL2  ---- 133 ADC0_3 (ANALOG_SEL) pines controlados por el registro  ENAIO0
 
    LCD1    ---- 9   DAC (ANALOG_SEL)
 
-   T_FIL3  ---- 7   ADC0_0 (ANALOG_SEL)
-   T_COL1  ---- 132 ADC0_4 (ANALOG_SEL)
+   T_FIL3  ---- 7   ADC0_0 (ANALOG_SEL) pines controlados por el registro  ENAIO0
+   T_COL1  ---- 132 ADC0_4 (ANALOG_SEL) pines controlados por el registro  ENAIO0
    ENET_MDC --- 140 ADC1_6 (ANALOG_SEL)
    */
    

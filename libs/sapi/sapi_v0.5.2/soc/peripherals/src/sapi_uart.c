@@ -406,7 +406,7 @@ void uartInterrupt( uartMap_t uart, bool_t enable )
    }
 }
 
-// UART Interrupt event Enable and set a callback
+// UART Interrupt event Enable and set a callback /*hago algo por la uart cuando se habilita la interrupcion*/
 void uartCallbackSet( uartMap_t uart, uartEvents_t event, 
                       callBackFuncPtr_t callbackFunc, void* callbackParam )
 {   

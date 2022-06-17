@@ -19,7 +19,7 @@ int main(void)
    uartInterrupt(UART_USB, true);
    
    while(TRUE) {
-      // Una tarea muy bloqueante para demostrar que la interrupcion funciona
+      // Una tarea muy bloqueante para demostrar que la interrupcion funcina
       gpioToggle(LEDB);
       delay(1000);
    }

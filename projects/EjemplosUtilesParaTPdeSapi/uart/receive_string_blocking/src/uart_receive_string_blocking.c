@@ -1,3 +1,4 @@
+
 /* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
@@ -32,13 +33,13 @@
  */
 
 /*
- * Date: 2016-04-26
+ * Date: 2016-12-11
  */
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi.h"        // <= sAPI header
-
+#include "sapi.h"     // <= sAPI header
+#include <string.h>
 
 /*==================[macros and definitions]=================================*/
 
@@ -97,70 +98,33 @@ int main(void){
    /* Inicializar UART_USB a 115200 baudios */
    uartConfig( UART_USB, 115200 );
 
-   /* Inicializar AnalogIO */
-   /* Posibles configuraciones:
-    *    ADC_ENABLE,  ADC_DISABLE,
-    *    ADC_ENABLE,  ADC_DISABLE,
-    */
-   adcConfig( ADC_ENABLE ); /* ADC */ /*Solo preparo los ADC disponibles en la EDU CIAA*/
-   dacConfig( DAC_ENABLE ); /* DAC */
+   char miTexto[] = "hola como le va";
 
-   /* Configuración de estado inicial del Led */
-   bool_t ledState1 = OFF;
+   bool_t received = FALSE;
 
-   /* Contador */
-   uint32_t i = 0;
-
-   /* Buffer */
-   static char uartBuff[10];
-
-   /* Variable para almacenar el valor leido del ADC CH1 */
-   float muestra = 0;
-   float muestraVolt = 0;
-
-   /* Variables de delays no bloqueantes */
-   delay_t delay1;
-   delay_t delay2;
-
-   /* Inicializar Retardo no bloqueante con tiempo en ms */
-   delayConfig( &delay1, 2000 );
-   delayConfig( &delay2, 200 );
+   uartWriteString( UART_USB, "Se espera a que el usuario escriba \"hola como le va\",\r\n" );
+   uartWriteString( UART_USB, "o sale por timeout (10 segundos) y vuelve a esperar\r\n" );
+   uartWriteString( UART_USB, "a que se escriba el mensaje.\r\n" );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 
-      /* delayRead retorna TRUE cuando se cumple el tiempo de retardo */
-      if ( delayRead( &delay1 ) ){
+      received = waitForReceiveStringOrTimeoutBlocking(
+                    UART_USB,
+                    miTexto,
+                    strlen(miTexto),
+                    10000
+                 );
 
-         /* Leo la Entrada Analogica AI0 - ADC0 CH1 */
-         muestra = adcRead( CH1 );
-         muestraVolt = muestra*(3.3/1024);
-
-         /* Envío la primer parte del mnesaje a la Uart */
-         uartWriteString( UART_USB, "ADC CH1 value: " );
-
-         /* Conversión de muestra entera a ascii con base decimal */
-         itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
-         floatToString(muestraVolt,uartBuff,3); /*La saque sa sapi_convert.c*/
-
-
-         /* Enviar muestra y Enter */
-         uartWriteString( UART_USB, uartBuff ); /*Son Bloqueantes sin Interrup*/
-         uartWriteString( UART_USB, ";\r\n" );
-
-         /* Escribo la muestra en la Salida AnalogicaAO - DAC */
-         dacWrite( DAC, muestraVolt );
+      /* Si recibe el string almacenado en miTexto indica que llego el
+       * mensaje esperado. */
+      if( received ){
+         uartWriteString( UART_USB, "\r\nLlego el mensaje esperado\r\n" );
       }
-
-      /* delayRead retorna TRUE cuando se cumple el tiempo de retardo */
-      if ( delayRead( &delay2 ) ){
-         ledState1 = !ledState1;
-         gpioWrite( LED1, ledState1 );
-
-         /* Si pasaron 20 delays le aumento el tiempo */
-         i++;
-         if( i == 20 )
-            delayWrite( &delay2, 1000 );
+      /* Si no lo recibe indica que salio de la funcion
+       * waitForReceiveStringOrTimeoutBlocking  por timeout. */
+      else{
+         uartWriteString( UART_USB, "\r\nSalio por timeout\r\n" );
       }
 
    }

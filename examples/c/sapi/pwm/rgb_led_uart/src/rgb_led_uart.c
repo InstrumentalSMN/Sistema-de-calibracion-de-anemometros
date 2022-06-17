@@ -87,7 +87,10 @@ int main( void )
 
       // Si llega un dato por la UART correcto cambia de color el LED
       if (uartReadByte(UART_USB, &dataUart)) {
-         if 		(dataUart == 'R') rgbWriteColor(RGB_1, RED);
+         if 		(dataUart == 'R'){
+        	 rgbWriteColor(RGB_1, RED);
+        	 //uartWriteByte( UART_USB, dataUart );
+         }
          else if (dataUart == 'G') rgbWriteColor(RGB_1, GREEN);
          else if (dataUart == 'B') rgbWriteColor(RGB_1, BLUE);
          else if (dataUart == 'V') rgbWriteColor(RGB_1, VIOLET);
@@ -102,7 +105,7 @@ int main( void )
 
       if (gpioRead(TEC4)) {
          // Incrementar el duty cycle de cada LED mediante las teclas TEC1, TEC2 y TEC3.
-         if (!gpioRead(TEC1)) {
+         if (!gpioRead(TEC1)) {/*si apreto la TEC1*/
             rgbWriteRaw(RGB_1, rgbReadDutyRed(RGB_1) + 1, rgbReadDutyGreen(RGB_1), rgbReadDutyBlue(RGB_1));
             delay(250);
          }
