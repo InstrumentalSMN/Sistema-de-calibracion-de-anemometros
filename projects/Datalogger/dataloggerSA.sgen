@@ -1,6 +1,6 @@
 GeneratorModel for yakindu::c {
 
-	statechart dataloggerSA {
+	statechart dataloggerSA2{
 
 		feature Outlet {
 			targetProject = "firmware_v3_Datalogger"
