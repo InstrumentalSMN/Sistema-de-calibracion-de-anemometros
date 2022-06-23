@@ -19,7 +19,7 @@
         <outgoingTransitions xmi:id="_wA2NwNlEEey8ruWV1sOfNw" target="_BNJ_MNk5Eey8ruWV1sOfNw"/>
       </vertices>
     </regions>
-    <regions xmi:id="_ojHUENlIEeyXMpXzqthDKQ" name="regionpiola">
+    <regions xmi:id="_ojHUENlIEeyXMpXzqthDKQ" name="main  region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_1dopwNlIEeyXMpXzqthDKQ">
         <outgoingTransitions xmi:id="_a2qVsNlJEeyXMpXzqthDKQ" specification="" target="_2oAyMNlIEeyXMpXzqthDKQ"/>
       </vertices>
@@ -41,10 +41,10 @@
         <outgoingTransitions xmi:id="_eMkEQNInEeyU2dNDD7ttDw" specification="siNoTitilarLED" target="_hzVzINImEeyU2dNDD7ttDw"/>
         <regions xmi:id="_6LEzANImEeyU2dNDD7ttDw" name="r1">
           <vertices xsi:type="sgraph:State" xmi:id="_84dmUNImEeyU2dNDD7ttDw" specification="entry / opLED(LED2,LED_OFF)" name="APAGADO" incomingTransitions="_DV3SINIoEeyU2dNDD7ttDw _OTBjQNIoEeyU2dNDD7ttDw">
-            <outgoingTransitions xmi:id="_CH4cENIoEeyU2dNDD7ttDw" specification="after 750 ms" target="_-HT_ENImEeyU2dNDD7ttDw"/>
+            <outgoingTransitions xmi:id="_CH4cENIoEeyU2dNDD7ttDw" specification="every 750 ms" target="_-HT_ENImEeyU2dNDD7ttDw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_-HT_ENImEeyU2dNDD7ttDw" specification="entry / opLED(LED2, LED_ON)" name="ENCENDIDO" incomingTransitions="_CH4cENIoEeyU2dNDD7ttDw">
-            <outgoingTransitions xmi:id="_DV3SINIoEeyU2dNDD7ttDw" specification="after 500 ms" target="_84dmUNImEeyU2dNDD7ttDw"/>
+            <outgoingTransitions xmi:id="_DV3SINIoEeyU2dNDD7ttDw" specification="always" target="_84dmUNImEeyU2dNDD7ttDw"/>
           </vertices>
           <vertices xsi:type="sgraph:Entry" xmi:id="_XjmMMNInEeyU2dNDD7ttDw">
             <outgoingTransitions xmi:id="_OTBjQNIoEeyU2dNDD7ttDw" specification="" target="_84dmUNImEeyU2dNDD7ttDw"/>
@@ -263,7 +263,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_531-gtk4Eey8ruWV1sOfNw"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_530wYdk4Eey8ruWV1sOfNw" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_530wYtk4Eey8ruWV1sOfNw" x="300" y="55" width="535" height="265"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_530wYtk4Eey8ruWV1sOfNw" x="330" y="-10" width="535" height="265"/>
     </children>
     <children xmi:id="_ojJwUNlIEeyXMpXzqthDKQ" type="Region" element="_ojHUENlIEeyXMpXzqthDKQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_ojKXYNlIEeyXMpXzqthDKQ" type="RegionName">
@@ -303,9 +303,9 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ojK-cdlIEeyXMpXzqthDKQ"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_ojJwUdlIEeyXMpXzqthDKQ" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ojJwUtlIEeyXMpXzqthDKQ" x="305" y="340" width="536" height="381"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ojJwUtlIEeyXMpXzqthDKQ" x="330" y="260" width="536" height="381"/>
     </children>
-    <styles xsi:type="notation:BooleanValueStyle" xmi:id="_WGCT99IlEeyU2dNDD7ttDw" name="inlineDefinitionSection" booleanValue="true"/>
+    <styles xsi:type="notation:BooleanValueStyle" xmi:id="_WGCT99IlEeyU2dNDD7ttDw" name="inlineDefinitionSection"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_WGCT-NIlEeyU2dNDD7ttDw"/>
     <edges xmi:id="_bOwPUNInEeyU2dNDD7ttDw" type="Transition" element="_bOvBMNInEeyU2dNDD7ttDw" source="_hX6bYNImEeyU2dNDD7ttDw" target="_hzXBQNImEeyU2dNDD7ttDw">
       <children xsi:type="notation:DecorationNode" xmi:id="_bOw2YNInEeyU2dNDD7ttDw" type="TransitionExpression">
