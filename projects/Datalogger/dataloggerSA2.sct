@@ -3,7 +3,7 @@
   <sgraph:Statechart xmi:id="_2s6_oNtyEeyHZqpmACSfBQ" specification="/*Datalogger para Sistema anemométrico EDU-CIAA-NXP */&#xA;&#xA;&#xA;/* Using Time Events (Timer Ticks) */&#xA;&#xA;interface:&#xA;// No oprimido&#xA;in event sinDatos&#xA;&#xA;//Deberian ser timer que toman lecturas cada n segundos &#xA;//o minutos en lugar de eventos&#xA;&#xA;// Oprimido Tecla 1&#xA;in event eLecturaOk: integer&#xA;//Valido con este para que vayan sincronizados&#xA;&#xA;in event eLecturaDVoK: integer &#xA;// Oprimido Tecla 2&#xA;in event eLecturaDNBok: integer&#xA;in event ePreprocesoDVoK: integer&#xA;&#xA;in event eSeGuardoDVoK: integer&#xA;in event eProcesoOK: integer&#xA;in event eMemorizacionCompletada:integer&#xA;&#xA;in event eDatosListosParaFTP:integer&#xA;in event eReconfigurarGPRS:integer&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;operation //opLED(LEDNumber:integer, State:boolean): void&#xA;oPaLecturaDatos(LEDNumber:integer, State:boolean): void&#xA;&#xA;operation oPaGuardarDatos(LEDNumber:integer, State:boolean): void&#xA;&#xA;operation oPaPreProceso(LEDNumber:integer, State:boolean): void&#xA;&#xA;operation oPaProcesarDatos(LEDNumber:integer, State:boolean): void&#xA;&#xA;//Led RGB para la comunicacion&#xA;const LEDR: integer = 0&#xA;const LEDG: integer = 1&#xA;const LEDB: integer = 2&#xA;//Led para adquisición, Procesamiento y almacenamiento&#xA;const LED1: integer = 3 // adquisición&#xA;const LED2: integer = 4 // Procesamiento&#xA;const LED3: integer = 5 // almacenamiento&#xA;&#xA;const LED_ON: boolean = true&#xA;const LED_OFF: boolean = false&#xA;&#xA;const Tec1: integer = 1&lt;&lt;0&#xA;const Tec2: integer = 1&lt;&lt;1&#xA;const Tec3: integer = 1&lt;&lt;2&#xA;const Tec4: integer = 1&lt;&lt;3&#xA;&#xA;const StatusTrue: boolean = true&#xA;const StatusFalse: boolean = false&#xA;&#xA;&#xA;internal:&#xA;&#xA;//En forma interna tengo señales para vincular las maquinas de estado&#xA;&#xA;//el evento siTitilarLED le manda una señal a la maquina que sigue&#xA;&#xA;&#xA;event siDatosok&#xA;event siProcesamientoOk&#xA;event siDatosListosParaFTP&#xA;event siDatosRemanentesParaFTP&#xA;&#xA;&#xA;//Variable interna Tecla&#xA;&#xA;var viTeclaOprim: integer&#xA;var redGRPSConnect: boolean&#xA;var buffertempVacio: boolean&#xA;var ConfigFtpOK: boolean&#xA;var TransmisionExtisosa: boolean&#xA;&#xA;" name="dataloggerSA2">
     <regions xmi:id="_W39uUNt0EeyHZqpmACSfBQ" name="sampleoDatos">
       <vertices xsi:type="sgraph:State" xmi:id="_-j3a0PF4EeykSvcSIt4NWw" name="ADQUISICION" incomingTransitions="_PLO0sPGEEeykSvcSIt4NWw _2aJFIPI9EeyzR7iz7i6iZQ">
-        <outgoingTransitions xmi:id="_70hfoPI8EeyzR7iz7i6iZQ" specification="after 1000 ms" target="_tbGjAPI8EeyzR7iz7i6iZQ"/>
+        <outgoingTransitions xmi:id="_70hfoPI8EeyzR7iz7i6iZQ" specification="after 10000 ms" target="_tbGjAPI8EeyzR7iz7i6iZQ"/>
         <regions xmi:id="_QLUjQPGFEeykSvcSIt4NWw" name="bateria">
           <vertices xsi:type="sgraph:State" xmi:id="_TqCs4PGFEeykSvcSIt4NWw" name="ADQ_BAT" incomingTransitions="_TqMd4_GFEeykSvcSIt4NWw">
             <outgoingTransitions xmi:id="_cE5FYPGdEeykSvcSIt4NWw" specification="eLecturaOk" target="_aPPyYPGdEeykSvcSIt4NWw"/>
@@ -435,7 +435,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_1y5N8_L4EeyzR7iz7i6iZQ"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_1y5N8fL4EeyzR7iz7i6iZQ" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_1y5N8PL4EeyzR7iz7i6iZQ" x="634" y="1085" width="1350" height="1281"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_1y5N8PL4EeyzR7iz7i6iZQ" x="187" y="970" width="1350" height="1281"/>
     </children>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_2s7mt9tyEeyHZqpmACSfBQ" name="inlineDefinitionSection"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_2s7muNtyEeyHZqpmACSfBQ"/>
@@ -629,7 +629,7 @@
     <edges xmi:id="_1zCX8fL4EeyzR7iz7i6iZQ" type="Transition" element="_1zBw2PL4EeyzR7iz7i6iZQ" source="_1y7qMPL4EeyzR7iz7i6iZQ" target="_1zCX5fL4EeyzR7iz7i6iZQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_1zCX8vL4EeyzR7iz7i6iZQ" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_1zCX8_L4EeyzR7iz7i6iZQ"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_1zCX9PL4EeyzR7iz7i6iZQ" x="-10" y="177"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_1zCX9PL4EeyzR7iz7i6iZQ" x="-15" y="184"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_1zCX9fL4EeyzR7iz7i6iZQ" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_1zCX9vL4EeyzR7iz7i6iZQ" fontName="Verdana"/>

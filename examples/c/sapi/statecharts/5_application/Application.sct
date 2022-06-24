@@ -304,7 +304,7 @@
       <layoutConstraint xsi:type="notation:Bounds" xmi:id="_a65bUkoqEee0ZsqKOimupA" x="775" y="10" width="347" height="389"/>
     </children>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_IPEiAo_CEeaE_NItBGtDFQ"/>
-    <styles xsi:type="notation:BooleanValueStyle" xmi:id="_8YgOINkcEey8ruWV1sOfNw" name="inlineDefinitionSection" booleanValue="true"/>
+    <styles xsi:type="notation:BooleanValueStyle" xmi:id="_8YgOINkcEey8ruWV1sOfNw" name="inlineDefinitionSection"/>
     <edges xmi:id="_I0makJF7EeaIxNsxuRXV9Q" type="Transition" element="_I0gT8JF7EeaIxNsxuRXV9Q" source="_F3ZCkJF7EeaIxNsxuRXV9Q" target="_93GLMpF6EeaIxNsxuRXV9Q">
       <children xsi:type="notation:DecorationNode" xmi:id="_I0malJF7EeaIxNsxuRXV9Q" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_I0malZF7EeaIxNsxuRXV9Q"/>
