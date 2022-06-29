@@ -7,7 +7,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+typedef float loca;
 #define BOARD_CIAA_EDU_NXP_4337
 
 #ifdef USE_RMII

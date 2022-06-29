@@ -112,7 +112,7 @@ int main(void){
       waitTextState = UART_RECEIVE_STRING_CONFIG;
 
       waitText.state = UART_RECEIVE_STRING_CONFIG;
-      waitText.string =  miTexto;
+      waitText.string =  miTexto;/*puedo cargar con string de DeltaOhmGenericoASCII*/
       waitText.stringSize = sizeof(miTexto);
       waitText.timeout = 10000;
 

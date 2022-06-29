@@ -115,8 +115,8 @@ int main(void){
    static char uartBuff[10];
 
    /*Tensión Maxima de la Bateria*/
-   const real32_t MaxVoltajeBatery = 12.23;
-   const real32_t MaxADCValue = 997;
+   const real32_t MaxVoltajeBatery = 3.3;
+   const real32_t MaxADCValue = 1024;
 
    /* Variable para almacenar el valor leido del ADC CH1 */
    float muestra = 0;

@@ -115,7 +115,7 @@ int main(void){
    static char uartBuff[10];
 
    /* Variable para almacenar el valor leido del ADC CH1 */
-   float muestra = 0;
+   uint16_t muestra = 0;
    float muestraVolt = 0;
 
    /* Variables de delays no bloqueantes */
