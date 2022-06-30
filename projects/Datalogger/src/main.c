@@ -131,7 +131,9 @@ int main(void) {
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
 	boardConfig();
-	uartConfig( UART_USB, 115200 );
+	//uartConfig( UART_485, 9600 );
+	uartConfig( UART_USB, 9600 );
+	uartConfig( UART_485, 9600 );
 	/* Init Ticks counter => TICKRATE_MS */
 	tickConfig( TICKRATE_MS );
 

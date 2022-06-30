@@ -1,5 +1,5 @@
-#ifndef _DA_SA_AUX_H_
-#define _DA_SA_AUX_H_
+#ifndef _DA_ADQUISICION_H_
+#define _DA_ADQUISICION_H_
 
 /*==================[inclusions]=============================================*/
 
@@ -40,7 +40,7 @@
 ////#endif
 
 #define NoDato  -99999 // No hay dato
-#define NAN "NAN"
+#define NAN "ND"
 
 /*==================[typedef]================================================*/
 
@@ -67,7 +67,7 @@ typedef uint64_t tick_t;
 
 /*Agrego un array para datos de viento*/
 
-static real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato};
+static real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
 
 /*Si hay mas anemometros ver la forma de hacer general esta estructura*/
 
@@ -85,7 +85,7 @@ extern void opBufferRS485Reset();
 extern void opAdquirirDV(real32_t* dataWind);
 extern void opPreprocesoDeltaOHM(char* uartBuffer, real32_t* dataWind);
 extern void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind);
-
+extern void opMuestraDataWind(real32_t* dataWind);
 /*
  * Function Pointer definition
  * --------------------------------------

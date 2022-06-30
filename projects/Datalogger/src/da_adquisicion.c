@@ -1,4 +1,4 @@
-#include "da_sa_aux.h"
+#include "../inc/da_adquisicion.h"
 //#include "string.h"
 
 #define MaxVoltajeBatery	3.3//12.23
@@ -24,7 +24,9 @@ void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n){
 }
 
 void opBufferRS485Reset(){
-	uartConfig( UART_USB, 115200 );
+	/*cuando la llamo reinicia la FIFO*/
+	//uartConfig( UART_USB, 115200 ); De Prueba
+	//uartConfig( UART_485, 9600 );
 
 }
 
@@ -44,18 +46,33 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 void opAdquirirDV(real32_t* dataWind){
 
 	//bool_t sensorPresent = TRUE;
+
+	//delay(1000);
 	uint8_t receiveByte='*';  //Inicializo sin dato *
-	static char uartBuffer[20];
+	static char uartBuffer[100];
 	char * ptr;
 	ptr = uartBuffer;
+
 	//while (receiveByte !='g' || sensorPresent == TRUE)
-	while (receiveByte !='g' && uartReadByte(UART_USB, &receiveByte) == TRUE){
-		//Verficar si el protocolo que tiene mi DeltaOhm termina con /n
-		//Si hay datos sin leer en la FIFO, los leo
+	if(uartReadByte(UART_485, &receiveByte)==TRUE){
 		*ptr = receiveByte;
 		ptr++;
+		while (receiveByte !='\r'){
+			uartReadByte(UART_485, &receiveByte);
+			if(receiveByte =='\r'){
+				gpioWrite( LEDR, ON );
+			}
+			//uartReadByte(UART_485, &receiveByte);
+			uartWriteByte( UART_USB, receiveByte);
+			//Verficar si el protocolo que tiene mi DeltaOhm termina con /n
+			//Si hay datos sin leer en la FIFO, los leo
+			*ptr = receiveByte;
+			ptr++;
+		}
 	}
-	if(receiveByte == 'g'){
+	//uartWriteString( UART_USB, uartBuffer );
+	if(receiveByte == '\r' ){
+		//uartWriteString( UART_USB, uartBuffer );
 		// En esta funcion tengo que validad que sea un string con Datos,
 		// si no hay datos entonce pongo un valor numerico por defecto que en el FTP
 		// se reemplace con un * o un NAN (Un valor numerico que no puede aparecer en el rango de los datos)
@@ -74,7 +91,9 @@ void opPreprocesoDeltaOHM( char* uartBuffer, real32_t* dataWind){
 	char* token;
 	char* rest = uartBuffer;
     uint16_t i = 0;
-    while ((token = (char*) strtok_r(rest, delimitador, &rest)) !=NULL){
+    //Obtengo el largo del vector donde se guardan mis datos de interes en este caso 3. Intensidad, Direccion y Presion
+    //uint32_t lenghtDeltaOhm = sizeof(dataWind)/sizeof(dataWind[0]);
+    while ((token =  (char *)strtok_r(rest, delimitador, &rest)) !=NULL ){
     	//token es un string asi que puedo comparar contra NAN y no covertir
     	if((memcmp(NAN,token,strlen(NAN))) == 0){
     		dataWind[i] = NoDato;
@@ -91,14 +110,19 @@ void opPreprocesoDeltaOHM( char* uartBuffer, real32_t* dataWind){
 
 }
 
+void opMuestraDataWind(real32_t* dataWind){
+
+
+}
 
 void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind){
 
-	static char miBuffer[20];
+	static char miBuffer[100];
 	int i;
 	int n=3;
+	gpioWrite( LEDB, ON );
 	//size_t n = sizeof(dataWind) / sizeof(real32_t);
-	for(i = 0; i < n; i++){
+	for(i = 0; i < 7; i++){
 		floatToString(dataWind[i],miBuffer,4);
 		uartWriteString( UART_USB, miBuffer );
 		uartWriteString( UART_USB, "\r\n" );
