@@ -42,7 +42,7 @@
 //a TimerTicks.c le tengo que agregar el .h de mi maquina de estado en este caso Datalogger_SA.h
 // y el propio "TimerTicks.h"
 
-#include "DataloggerSA4.h"
+#include "..\gen\DataloggerSA5.h"
 #include "TimerTicks.h"
 
 void InitTimerTicks(TimerTicks *list, uint32_t len)

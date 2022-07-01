@@ -14,7 +14,7 @@
  */
 //Incluyo el .h de la maquina de estado aca y en TimerTicks.c y el TimerTicks.h en el main y en "TimerTicks.c"
 
-#include "DataloggerSA4.h"
+#include "..\gen\DataloggerSA5.h"
 #include "TimerTicks.h"
 
 /*==================Yo defino[macros and definitions]=================================*/
@@ -28,63 +28,63 @@ volatile bool SysTick_Time_Flag = false;
 
 /*! This is a state machine */
 //Declaro la maquina de estado
-static DataloggerSA4 statechart;
+static DataloggerSA5 statechart;
 
 /*! This is a timed state machine that requires timer services */
 //Defino la cantidad de servicios de timer
-#define NOF_TIMERS (sizeof(DataloggerSA4TimeEvents)/sizeof(sc_boolean))
+#define NOF_TIMERS (sizeof(DataloggerSA5TimeEvents)/sizeof(sc_boolean))
 
 //Creo un vector
 TimerTicks ticks[NOF_TIMERS];
 
 // Debo Implementar la acciones que se utilizan en Datalogger_SA.c,
 
-//void dataloggerSA4Iface_opLED(const Datalogger_SA* handle, const sc_integer LEDNumber, const sc_boolean State){
+//void DataloggerSA5Iface_opLED(const Datalogger_SA* handle, const sc_integer LEDNumber, const sc_boolean State){
 //
 //	//Esta función es de la biblioteca sapi.h, ver como esta implementada
 //	gpioWrite( (LEDR + LEDNumber), State );
 //
 //}
 
-void dataloggerSA4Iface_opAcumular(const DataloggerSA4* handle){
+void dataloggerSA5Iface_opAcumular(const DataloggerSA5* handle){
 
 }
-void dataloggerSA4Iface_opEnvioMuestras(const DataloggerSA4* handle){
+void dataloggerSA5Iface_opEnvioMuestras(const DataloggerSA5* handle){
 
 }
-void dataloggerSA4Iface_opProceso(const DataloggerSA4* handle){
+void dataloggerSA5Iface_opProceso(const DataloggerSA5* handle){
 
 }
-void dataloggerSA4Iface_opGuardoEnMemoria(const DataloggerSA4* handle){
+void dataloggerSA5Iface_opGuardoEnMemoria(const DataloggerSA5* handle){
 
 }
-sc_boolean dataloggerSA4Iface_opConfigGPRS(const DataloggerSA4* handle){
+sc_boolean dataloggerSA5Iface_opConfigGPRS(const DataloggerSA5* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
-sc_boolean dataloggerSA4Iface_opConfigFTP(const DataloggerSA4* handle){
+sc_boolean dataloggerSA5Iface_opConfigFTP(const DataloggerSA5* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
-void dataloggerSA4Iface_opTransmitirToFTP(const DataloggerSA4* handle){
+void dataloggerSA5Iface_opTransmitirToFTP(const DataloggerSA5* handle){
 
 }
-sc_boolean dataloggerSA4Iface_opGetstatusFTP(const DataloggerSA4* handle){
+sc_boolean dataloggerSA5Iface_opGetstatusFTP(const DataloggerSA5* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
 
-void dataloggerSA4_setTimer(DataloggerSA4* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic){
+void dataloggerSA5_setTimer(DataloggerSA5* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic){
 
 	//Esta funcion esta implementada en TimerTicks.h, ver como esta implementada
 	SetNewTimerTick(ticks, NOF_TIMERS, evid, time_ms, periodic);
 
 }
 
-void dataloggerSA4_unsetTimer(DataloggerSA4* handle, const sc_eventid evid){
+void dataloggerSA5_unsetTimer(DataloggerSA5* handle, const sc_eventid evid){
 
 	//Esta funcion esta implementada en TimerTicks.h, ver como esta implementada
 	UnsetTimerTick( ticks, NOF_TIMERS, evid );
@@ -133,7 +133,7 @@ int main(void) {
 	boardConfig();
 	//uartConfig( UART_485, 9600 );
 	uartConfig( UART_USB, 9600 );
-	uartConfig( UART_485, 9600 );
+	//uartConfig( UART_485, 9600 );
 	/* Init Ticks counter => TICKRATE_MS */
 	tickConfig( TICKRATE_MS );
 
@@ -145,8 +145,8 @@ int main(void) {
 	InitTimerTicks( ticks, NOF_TIMERS );
 
 	/* Statechart Initialization */
-	dataloggerSA4_init(&statechart);
-	dataloggerSA4_enter( &statechart );
+	dataloggerSA5_init(&statechart);
+	dataloggerSA5_enter( &statechart );
 	/* LED state is toggled in the main program */
 	while (1) {
 		/* The uC sleeps waiting for an interruption */
@@ -174,7 +174,7 @@ int main(void) {
 
 					/* Then Raise an Event -> Ticks.evid => OK */
 					//Esta definida en Datalogger_SA.h e implementada en Datalogger_SA.c
-					dataloggerSA4_raiseTimeEvent( &statechart, ticks[i].evid );
+					dataloggerSA5_raiseTimeEvent( &statechart, ticks[i].evid );
 
 					/* Then Mark as Attached -> Ticks.evid => OK */
 					// Esta definida en TimerTicks.h
@@ -193,7 +193,7 @@ int main(void) {
 //				datalogger_SAIface_raise_evTECXNoOprimido(&statechart);
 //
 //			/* Then Run an Cycle of Statechart */
-			dataloggerSA4_runCycle(&statechart);		// Run Cycle of Statechart
+			dataloggerSA5_runCycle(&statechart);		// Run Cycle of Statechart
 		}
 	}
 }

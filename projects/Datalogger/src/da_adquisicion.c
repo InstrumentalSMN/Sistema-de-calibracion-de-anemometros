@@ -1,4 +1,5 @@
 #include "../inc/da_adquisicion.h"
+#include "sapi.h"
 //#include "string.h"
 
 #define MaxVoltajeBatery	3.3//12.23
@@ -26,7 +27,7 @@ void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n){
 void opBufferRS485Reset(){
 	/*cuando la llamo reinicia la FIFO*/
 	//uartConfig( UART_USB, 115200 ); De Prueba
-	//uartConfig( UART_485, 9600 );
+	uartConfig( UART_485, 9600 );
 
 }
 
@@ -41,6 +42,48 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 	*muestraVoltNB = muestra*(MaxVoltajeBatery/MaxADCValue);
 	adcConfig( ADC_DISABLE );
 }
+
+//void opAdquirirDv2(real32_t* dataWind){
+//
+//	/* Inicializar la UART_USB junto con las interrupciones de Tx y Rx */
+//	uartConfig(UART_USB, 9600);
+//	// Seteo un callback al evento de recepcion y habilito su interrupcion
+//	uartCallbackSet(UART_USB, UART_RECEIVE, opRX, NULL);
+//	// Habilito todas las interrupciones de UART_USB
+//	uartInterrupt(UART_USB, true);
+//
+//}
+//
+//void opRX( void *NoSeUsa ){
+////	char c = uartRxRead( UART_USB );
+////	printf( "Recibimos <<%c>> por UART\r\n", c );
+//	uint8_t receiveByte='*';  //Inicializo sin dato *
+//	static char uartBuffer[100];//deberia declaralo afuera
+//	char * ptr;
+//	ptr = uartBuffer;
+//	while (receiveByte !='\r'){
+//		receiveByte = uartRxRead(UART_485);
+//
+//		//uartReadByte(UART_485, &receiveByte);
+//		//uartWriteByte( UART_USB, receiveByte);
+//		//Verficar si el protocolo que tiene mi DeltaOhm termina con /n
+//		//Si hay datos sin leer en la FIFO, los leo
+//		*ptr = receiveByte;
+//		ptr++;
+//	}
+//	//uartWriteString( UART_USB, uartBuffer );
+//	if(receiveByte == '\r' ){
+//		//uartWriteString( UART_USB, uartBuffer );
+//		// En esta funcion tengo que validad que sea un string con Datos,
+//		// si no hay datos entonce pongo un valor numerico por defecto que en el FTP
+//		// se reemplace con un * o un NAN (Un valor numerico que no puede aparecer en el rango de los datos)
+//		// tipo -99999
+//		gpioWrite( LED1, ON );
+//		opPreprocesoDeltaOHM(uartBuffer,dataWind);/*acá parseo el String de datos*/
+//	}
+//}
+
+
 
 //Ver la forma de que esta sea generica
 void opAdquirirDV(real32_t* dataWind){
@@ -59,9 +102,7 @@ void opAdquirirDV(real32_t* dataWind){
 		ptr++;
 		while (receiveByte !='\r'){
 			uartReadByte(UART_485, &receiveByte);
-			if(receiveByte =='\r'){
-				gpioWrite( LEDR, ON );
-			}
+
 			//uartReadByte(UART_485, &receiveByte);
 			uartWriteByte( UART_USB, receiveByte);
 			//Verficar si el protocolo que tiene mi DeltaOhm termina con /n
@@ -77,6 +118,7 @@ void opAdquirirDV(real32_t* dataWind){
 		// si no hay datos entonce pongo un valor numerico por defecto que en el FTP
 		// se reemplace con un * o un NAN (Un valor numerico que no puede aparecer en el rango de los datos)
 		// tipo -99999
+		gpioWrite( LED1, ON );
 		opPreprocesoDeltaOHM(uartBuffer,dataWind);/*acá parseo el String de datos*/
 	}
 
@@ -119,15 +161,15 @@ void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind){
 
 	static char miBuffer[100];
 	int i;
-	int n=3;
+	int n=7;
 	gpioWrite( LEDB, ON );
-	//size_t n = sizeof(dataWind) / sizeof(real32_t);
-	for(i = 0; i < 7; i++){
-		floatToString(dataWind[i],miBuffer,4);
+//	int n = sizeof(dataWind) / sizeof(real32_t);
+	for(i = 0; i < n; i++){
+		floatToString(dataWind[i],miBuffer,2);
 		uartWriteString( UART_USB, miBuffer );
 		uartWriteString( UART_USB, "\r\n" );
 	}
-	floatToString(*muestraVoltNB,miBuffer,4);
+	floatToString(*muestraVoltNB,miBuffer,2);
 	uartWriteString( UART_USB, miBuffer );
 	uartWriteString( UART_USB, "\r\n" );
 

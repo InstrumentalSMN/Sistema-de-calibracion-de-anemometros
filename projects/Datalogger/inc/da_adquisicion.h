@@ -65,15 +65,12 @@ typedef float  real32_t;
 /* Define Tick Data Type */
 typedef uint64_t tick_t;
 
-/*Agrego un array para datos de viento*/
+/*Agrego un array para las muestras datos de viento*/
 
 static real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
 
+
 /*Si hay mas anemometros ver la forma de hacer general esta estructura*/
-
-/* type of Pointers */
-
-
 
 /*==================Prototipos para la maquina de Estados=========================*/
 
@@ -86,6 +83,10 @@ extern void opAdquirirDV(real32_t* dataWind);
 extern void opPreprocesoDeltaOHM(char* uartBuffer, real32_t* dataWind);
 extern void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind);
 extern void opMuestraDataWind(real32_t* dataWind);
+extern void opRX( void *noUsado );
+extern void opAdquirirDv2(real32_t* dataWind);
+
+
 /*
  * Function Pointer definition
  * --------------------------------------
