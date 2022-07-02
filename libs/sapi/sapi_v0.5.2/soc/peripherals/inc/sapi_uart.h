@@ -164,7 +164,7 @@ void uartWriteString( uartMap_t uart, const char* str );
 // Blocking, Send a Byte Array
 void uartWriteByteArray( uartMap_t uart, const uint8_t* byteArray, uint32_t byteArrayLen );
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 
 //-------------------------------------------------------------
 // Interrupts
@@ -194,7 +194,7 @@ void UART2_IRQHandler(void);
 /* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
 void UART3_IRQHandler(void);
 
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus

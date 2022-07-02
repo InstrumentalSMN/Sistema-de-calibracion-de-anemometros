@@ -1,5 +1,5 @@
-#ifndef _DA_TRANSMISION_H_
-#define _DA_TRANSMISION_H_
+#ifndef _DA_FUNC_PROCESS_H_
+#define _DA_FUNC_PROCESS_H_
 
 /*==================[inclusions]=============================================*/
 
@@ -11,13 +11,11 @@
 #include "board.h"
 #include "sapi_boards.h"
 #include "sapi.h"
-#include "sapi_datatypes.h"
 
-typedef uint32_t* ptrUint32_t;
 
-extern bool_t opConfigGPRS();
-extern bool_t opConfigFTP();
-
+extern real32_t maxValue(real32_t myArray[], size_t size);
+extern real32_t minValue(real32_t myArray[], size_t size);
+extern real32_t AverageValue(real32_t myArray[], size_t size);
 
 
 

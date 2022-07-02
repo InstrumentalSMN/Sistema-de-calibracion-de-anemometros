@@ -7,11 +7,12 @@ int main(void)
    boardConfig();
 
    /* Inicializar la UART_USB junto con las interrupciones de Tx y Rx */
-   uartConfig(UART_USB, 115200);     
+   uartConfig(UART_USB, 9600);
+   uartConfig(UART_485, 9600);
    // Seteo un callback al evento de recepcion y habilito su interrupcion
-   uartCallbackSet(UART_USB, UART_RECEIVE, onRx, NULL);
+   uartCallbackSet(UART_485, UART_RECEIVE, onRx, NULL);
    // Habilito todas las interrupciones de UART_USB
-   uartInterrupt(UART_USB, true);
+   uartInterrupt(UART_485, true);
    
    while(TRUE) {
       // Una tarea muy bloqueante para demostrar que la interrupcion funcina
