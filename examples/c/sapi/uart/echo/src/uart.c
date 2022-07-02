@@ -95,8 +95,8 @@ int main(void){
    boardConfig();
 
    // Inicializar UART_USB a 115200 baudios
-   uartConfig( UART_USB, 115200 );
-   uartConfig( UART_485, 9600 );
+   uartConfig( UART_USB, 9600 );
+   uartConfig( UART_232, 115200 );
 
    uint8_t dato  = 0;
 //   uint8_t dato1 = 1;
@@ -150,19 +150,37 @@ int main(void){
 //   uartWriteString( UART_USB, "\r\n" ); // Enviar un Enter
 
    // ------------- REPETIR POR SIEMPRE -------------
-   float vector[] = {1,2,3,4,5};
-   uint32_t n = sizeof(vector)/sizeof(vector[0]);
-   itoa(n,uartBuff,10);
-   uartWriteString( UART_USB, uartBuff);
+//   float vector[] = {1,2,3,4,5};
+//   uint32_t n = sizeof(vector)/sizeof(vector[0]);
+//   itoa(n,uartBuff,10);
+//   delay(1000);
+//
+	uartWriteString( UART_232, "AT\n");/*Los comandos AT van con \n */
+	delay(200);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
 
+  	if(dato != '0'){
+  		gpioWrite( LED3, ON );
+  		uartWriteByte( UART_USB, dato);
+		uartWriteByte( UART_USB, 's');
+		bool_t Status_t = ERROR;
+  	}
+  	//limpio el \r\n
+    uartConfig( UART_232, 115200 );
+
+
+  // uartWriteString( UART_232, "AT\n");/*Los comandos AT van con \n */
    while(1) {
-	   delay(1000);
+
       // Si recibe un byte de la UART_USB lo guardarlo en la variable dato.
-      if(  uartReadByte( UART_485, &dato ) ){
-    	  if(dato =='\r'){
+
+      if(  uartReadByte( UART_232, &dato ) ){
+    	  if(dato =='\n'){
     	  			gpioWrite( LEDR, ON );
     	  }
-    	  uartWriteByte( UART_USB, dato);
+    	  uartWriteByte( UART_USB, dato); /*El modulo me devuelve Num\r\n, yo tengo que validar contra el numero nomas, osea el byte*/
 
          // Se reenvia el dato a la UART_USB realizando un eco de lo que llega
 

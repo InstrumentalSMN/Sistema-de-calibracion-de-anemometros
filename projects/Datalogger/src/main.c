@@ -133,6 +133,7 @@ int main(void) {
 	boardConfig();
 	//uartConfig( UART_485, 9600 );
 	uartConfig( UART_USB, 9600 );
+	//uartWriteString( UART_USB, "Inicio");
 	//uartConfig( UART_485, 9600 );
 	/* Init Ticks counter => TICKRATE_MS */
 	tickConfig( TICKRATE_MS );

@@ -91,6 +91,7 @@ void opAdquirirDV(real32_t* dataWind){
 	//bool_t sensorPresent = TRUE;
 
 	//delay(1000);
+
 	uint8_t receiveByte='*';  //Inicializo sin dato *
 	static char uartBuffer[100];
 	char * ptr;
@@ -98,13 +99,14 @@ void opAdquirirDV(real32_t* dataWind){
 
 	//while (receiveByte !='g' || sensorPresent == TRUE)
 	if(uartReadByte(UART_485, &receiveByte)==TRUE){
+		gpioWrite( LED1, OFF );
 		*ptr = receiveByte;
 		ptr++;
 		while (receiveByte !='\r'){
 			uartReadByte(UART_485, &receiveByte);
 
 			//uartReadByte(UART_485, &receiveByte);
-			uartWriteByte( UART_USB, receiveByte);
+			uartWriteByte( UART_USB, receiveByte);//Si o si para que funcione
 			//Verficar si el protocolo que tiene mi DeltaOhm termina con /n
 			//Si hay datos sin leer en la FIFO, los leo
 			*ptr = receiveByte;
@@ -163,15 +165,15 @@ void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind){
 	int i;
 	int n=7;
 	gpioWrite( LEDB, ON );
-//	int n = sizeof(dataWind) / sizeof(real32_t);
-	for(i = 0; i < n; i++){
-		floatToString(dataWind[i],miBuffer,2);
-		uartWriteString( UART_USB, miBuffer );
-		uartWriteString( UART_USB, "\r\n" );
-	}
-	floatToString(*muestraVoltNB,miBuffer,2);
-	uartWriteString( UART_USB, miBuffer );
-	uartWriteString( UART_USB, "\r\n" );
+//int n = sizeof(dataWind) / sizeof(real32_t);
+//	for(i = 0; i < n; i++){
+//		floatToString(dataWind[i],miBuffer,2);
+//		uartWriteString( UART_USB, miBuffer );
+//		uartWriteString( UART_USB, "\r\n" );
+//	}
+//	floatToString(*muestraVoltNB,miBuffer,2);
+//	uartWriteString( UART_USB, miBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
 
 }
 

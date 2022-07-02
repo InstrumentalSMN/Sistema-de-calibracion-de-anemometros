@@ -51,7 +51,7 @@ void opProceso(char * TableToFTP, uint32_t * size,real32_t* AcumIntensidad, real
 
 	sprintf(TableToFTP, "%s;%s;%s;%s", miBuffer1,miBuffer2 , miBuffer3,miBuffer4);
 	//ver si va strlen
-	size = sizeof(TableToFTP);
+	*size = (uint32_t)sizeof(TableToFTP);
 	uartWriteString( UART_USB, TableToFTP );
 	uartWriteString( UART_USB, "\r \n" );
 //	size_t size = sizeof(Tabla)/sizeof(Tabla[0]);
