@@ -52,7 +52,8 @@ typedef float* ptrfFloat;
 typedef char* StringData;
 typedef uint16_t* ptrUnt16_t;
 typedef float* ptrReal32_t;
-typedef uint32_t* ptrUnt32_t;
+typedef uint32_t* ptrUint32_t;
+typedef int32_t* ptrInt32_t;
 
 /* Define a Char DataType*/
 typedef char CHAR;
@@ -89,7 +90,7 @@ static real32_t NvBateria[20];
 
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
-static char TableToFTP[30];
+static char TableToFTP[40];
 
 
 /*==================Prototipos para la maquina de Estados=========================*/
@@ -119,9 +120,15 @@ extern void opGuardarMuestras2(real32_t* muestraVoltNB);
 extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt);
 extern void opProceso( uint32_t * size);
 
+/*Region de config GPRS and FTP*/
+
+
+extern bool_t opConfigGPRS();
+extern bool_t opConfigFTP();
+extern void KeepAlive();
 
 /*Region de Transmision*/
-extern void TransmitirFTP(uint32_t * size);
+extern bool_t TransmitirFTP(uint32_t * size, int32_t * NumberMesuare);
 
 #endif
 

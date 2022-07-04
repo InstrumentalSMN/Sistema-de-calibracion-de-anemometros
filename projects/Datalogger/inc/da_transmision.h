@@ -13,10 +13,9 @@
 #include "sapi.h"
 #include "sapi_datatypes.h"
 
-typedef uint32_t* ptrUint32_t;
 
-extern bool_t opConfigGPRS();
-extern bool_t opConfigFTP();
+//extern bool_t opConfigGPRS();
+//extern bool_t opConfigFTP();
 
 
 

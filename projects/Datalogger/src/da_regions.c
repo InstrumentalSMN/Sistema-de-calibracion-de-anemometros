@@ -1,8 +1,8 @@
 #include "../inc/da_regions.h"
 #include "../inc/da_func_process.h"//Funciones estadisticas
 
-#define MaxVoltajeBatery	3.3//12.23
-#define MaxADCValue			1024//997
+#define MaxVoltajeBatery	12.43//12.23
+#define MaxADCValue			540//997
 
 
 // Todas las variables o punteros que se declaran en la maquina de estados se usaran en estas funciones
@@ -55,13 +55,13 @@ void opAdquirirDV2( void *noUsado ) //Esta se llama  en el callbackSet
 	//uartWriteString( UART_USB, "Entre  \r\n" );
 	*ptr = receiveByte;
 	ptr++;
-	gpioWrite( LED1, OFF );
+	gpioWrite( LED3, OFF );
 	if(receiveByte =='\r'){
 		//uartWriteString( UART_USB, uartBuffer);
 
 		opPreprocesoDeltaOHM2();/*acá parseo el String de datos*/
 		ptr=uartBuffer; //Reseteo el puntero para el siguiente string
-		gpioWrite( LED1, ON );
+	gpioWrite( LED3, ON );
 	}
 
 }
@@ -96,6 +96,8 @@ void opGuardarMuestras2(real32_t* muestraVoltNB){
 	static char auxiliarBuffer[100];
 	int i;
 	int n=7;
+	//gpioToggle( LED1 );
+
 	//gpioWrite( LEDB, ON );
 //int n = sizeof(dataWind) / sizeof(real32_t);
 //	for(i = 0; i < n; i++){
@@ -209,14 +211,337 @@ void opProceso( uint32_t * size){
 }
 
 
+/* Region Config GPRS and FTP*/
 
-
-void TransmitirFTP( uint32_t * size){
-	char mystr[10];
-	sprintf(mystr, "%d", *size);
-	uartWriteString( UART_USB, mystr );
+bool_t opConfigGPRS(){
+	gpioWrite( LED1, OFF );
+	uartWriteString( UART_USB, "ConfiguroGPRS\r\n");
+//	uartConfig( UART_232, 115200 );
+//	uartWriteString( UART_232, "AT+FTPPUT=2,0");
+	uartConfig( UART_232, 115200 );
+	uint8_t dato = 1;
+	uartWriteString( UART_232, "AT");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
-	uartWriteString( UART_USB, TableToFTP );
-	uartWriteString( UART_USB, "\r \n" );
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+
+	uartWriteString( UART_232, "AT+SAPBR=3,1,\"Contype\",\"GPRS\"");/*Los comandos AT van con \n */
+	uartWriteString( UART_232, "\r\n");
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+
+	uartWriteString( UART_232, "AT+SAPBR=3,1,\"APN\",\"igprs.claro.com.ar\"");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+	uartWriteString( UART_232, "AT+SAPBR=1,1");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		uartWriteString( UART_232, "AT+SAPBR=0,1");
+		uartWriteString( UART_232, "\r\n");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+	uartWriteString( UART_232, "AT+SAPBR=2,1");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+	gpioWrite( LED1, ON );/*GPRS Config OK*/
+	return OK;
+}
+bool_t opConfigFTP(){
+	gpioWrite( LED2, OFF );
+	uartWriteString( UART_USB, "ConfiguroFTP\r\n");
+	uartConfig( UART_232, 115200 );
+	uint8_t dato = 1;
+	uartWriteString( UART_232, "AT");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+		delay(300);
+		uartReadByte( UART_232, &dato );
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+
+		if(dato != '0'){
+			//gpioWrite( LED3, ON );
+			uartWriteString( UART_USB, "Respuesta de AT\r\n");
+			uartWriteByte( UART_USB, dato);
+			uartWriteString( UART_USB, "\r\n");
+			//uartWriteString( UART_232, "AT+SAPBR=0,1");
+			return ERROR;
+		}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+	uartWriteString( UART_232, "AT+FTPCID=1");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	uartWriteString( UART_232, "AT+FTPSERV=\"ftp.smn.gov.ar\"");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	uartWriteString( UART_232, "AT+FTPUN=\"estaut\"");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	uartWriteString( UART_232, "AT+FTPPW=\"estacionesautomaticas17\"");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	uartWriteString( UART_232,"AT+FTPPUTPATH=\"/EMA_LABO_CLI/SIM800L/AnemometroAeroparque/\"");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+
+	gpioWrite( LED2, ON );/*FTP Config ok*/
+	return OK;
+}
+
+
+bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
+
+	char mystr[20];
+	char aux[200];
+//
+
+	uartConfig( UART_232, 115200 );
+	uint8_t dato = 1;
+
+	uartWriteString( UART_232, "AT");
+	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");
+
+	}
+	sprintf(mystr, "%d", *NumberMesuare);
+	sprintf(aux,"%s%s-%s","AT+FTPPUTNAME=\"", mystr,"DeltaOHM_022274.txt\"");
+	uartWriteString( UART_USB, aux );
+	uartWriteString( UART_USB, "\r\n");
+	uartWriteString( UART_USB, "TransmitoMediciones\r\n");
+
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	//Configuramos el nombre del archivos
+	uartWriteString( UART_232, aux);/*Nombre del archivo */
+	uartWriteString( UART_232, "\r\n");
+	delay(300);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	//Configuramos el nombre del archivos
+	uartWriteString( UART_232, "AT+FTPPUT =1");/*Abro Sesion */
+	uartWriteString( UART_232, "\r\n");
+	delay(10000);//Importante esperara acá
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+	if(dato == '4'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	sprintf(mystr, "%d", *size);
+	sprintf(aux,"%s%s","AT+FTPPUT=2,",mystr);
+	//uartWriteString( UART_USB, aux ); /*Pido enviar *size elementos*/
+	uartWriteString( UART_USB, "AT+FTPPUT=2,4" );
+	uartWriteString( UART_USB, "\r\n");
+
+
+
+
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+
+	uartWriteString( UART_232, aux );/*Pido enviar *size elementos*/
+	uartWriteString( UART_232, "\n");
+	delay(10000);//Importante esperara acá
+	if(dato == '4'){
+		//gpioWrite( LED2, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_232, "AT+FTPPUT=2,0");
+		uartWriteString( UART_232, "\n");
+		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
+	char ParaEnviar[*size];
+	sprintf(ParaEnviar, "%s", TableToFTP);
+	uartWriteString( UART_USB, ParaEnviar);
+	uartWriteString( UART_USB, "\r\n");
+	uartWriteString( UART_232, ParaEnviar );
+	/*envio*/
+//	uartWriteString( UART_232, "12345");
+//	uartWriteString( UART_232, "\n");
+	uartWriteString( UART_232, ParaEnviar);
+	uartWriteString( UART_232, "\n");
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+
+
+	uartConfig( UART_232, 115200 );
+	uartWriteString( UART_USB, "AT+FTPPUT=2,0" );
+	uartWriteString( UART_USB, "\r\n");
+	uartWriteString( UART_232, "AT+FTPPUT=2,0");
+	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
+	delay(2000);
+	uartReadByte( UART_232, &dato );
+	uartWriteByte( UART_USB, dato);
+	uartWriteString( UART_USB, "\r\n");
+
+//	if(dato != '0'){
+//		//gpioWrite( LED3, ON );
+//		//uartWriteByte( UART_USB, dato);
+//		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+//		uartWriteString( UART_USB, "No pude cerrarRespuesta de AT\r\n");
+//		uartWriteByte( UART_USB, dato);
+//		uartWriteString( UART_USB, "\r\n");
+//		return ERROR;
+//	}
+	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
+	gpioWrite( LEDB, ON );
+	delay(1000);
+	gpioWrite( LEDB, OFF );
+
+	return OK;
 
 }

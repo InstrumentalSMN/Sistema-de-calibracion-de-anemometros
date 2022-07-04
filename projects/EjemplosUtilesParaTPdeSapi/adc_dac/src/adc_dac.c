@@ -95,7 +95,7 @@ int main(void){
    boardConfig();
 
    /* Inicializar UART_USB a 115200 baudios */
-   uartConfig( UART_USB, 115200 );
+   uartConfig( UART_USB, 9600 );
 
    /* Inicializar AnalogIO */
    /* Posibles configuraciones:
@@ -146,7 +146,13 @@ int main(void){
          /* Conversión de muestra entera a ascii con base decimal */
          //itoa( muestraVolt, uartBuff, 10 ); /* 10 significa decimal */
          floatToString(muestraVolt,uartBuff,2);
-         //floatToString(muestra,uartBuff,3);
+         /* Enviar muestra y Enter */
+		  uartWriteString( UART_USB, uartBuff );
+		  uartWriteString( UART_USB, ";\r\n" );
+         floatToString(muestra,uartBuff,3);
+         /* Enviar muestra y Enter */
+		  uartWriteString( UART_USB, uartBuff );
+		  uartWriteString( UART_USB, ";\r\n" );
 
          /* Enviar muestra y Enter */
          uartWriteString( UART_USB, uartBuff );
