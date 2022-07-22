@@ -151,6 +151,10 @@ void uartInit2( uartMap_t uart, uint32_t baudRate,
 
 // Read 1 byte from RX FIFO, check first if exist aviable data
 bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte );
+
+// Read string to \n or \r
+void uartReadString( uartMap_t uart, const char* str );
+
 // Blocking, Write 1 byte to TX FIFO
 void uartWriteByte( uartMap_t uart, const uint8_t value );
 
@@ -160,7 +164,7 @@ void uartWriteString( uartMap_t uart, const char* str );
 // Blocking, Send a Byte Array
 void uartWriteByteArray( uartMap_t uart, const uint8_t* byteArray, uint32_t byteArrayLen );
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 
 //-------------------------------------------------------------
 // Interrupts
@@ -170,8 +174,7 @@ void uartWriteByteArray( uartMap_t uart, const uint8_t* byteArray, uint32_t byte
 void uartInterrupt( uartMap_t uart, bool_t enable );
 
 // UART Interrupt event Enable and set a callback
-void uartCallbackSet( uartMap_t uart, uartEvents_t event, 
-                      callBackFuncPtr_t callbackFunc, void* callbackParam );
+void uartCallbackSet( uartMap_t uart, uartEvents_t event, callBackFuncPtr_t callbackFunc, void* callbackParam );
                  
 // UART Interrupt event Disable
 void uartCallbackClr( uartMap_t uart, uartEvents_t event );
@@ -191,11 +194,19 @@ void UART2_IRQHandler(void);
 /* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
 void UART3_IRQHandler(void);
 
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus
 }
+
+/*==================[external data declaration]==============================*/
+/*==================[external functions declaration]=========================*/
+
+// Check for Receive a given pattern
+waitForReceiveStringOrTimeoutState_t waitForReceiveStringOrTimeout(
+	uartMap_t uart, waitForReceiveStringOrTimeout_t* instance);
+
 #endif
 
 /*==================[end of file]============================================*/

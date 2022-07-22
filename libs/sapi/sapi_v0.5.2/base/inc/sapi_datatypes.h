@@ -57,6 +57,14 @@ extern "C" {
 #define OFF    0
 #endif
 
+/* Status GRPS AND FTP */
+#ifndef OK
+#define OK     1
+#endif
+#ifndef ERROR
+#define ERROR    0
+#endif
+
 /* Electrical states */
 #ifndef HIGH
 #define HIGH   1

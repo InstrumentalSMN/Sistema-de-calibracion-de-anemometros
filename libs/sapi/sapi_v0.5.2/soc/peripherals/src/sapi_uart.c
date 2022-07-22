@@ -55,7 +55,7 @@ typedef struct {
 
 /*==================[internal data declaration]==============================*/
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 static callBackFuncPtr_t rxIsrCallbackUART0 = 0;
 static void* rxIsrCallbackUART0Params = NULL;
 static callBackFuncPtr_t rxIsrCallbackUART2 = 0;
@@ -69,7 +69,7 @@ static callBackFuncPtr_t txIsrCallbackUART2 = 0;
 static void* txIsrCallbackUART2Params = NULL;
 static callBackFuncPtr_t txIsrCallbackUART3 = 0;
 static void* txIsrCallbackUART3Params = NULL;
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 static const uartLpcInit_t lpcUarts[] = {
 // { uartAddr, { txPort, txpin, txfunc }, { rxPort, rxpin, rxfunc }, uartIrqAddr  },
@@ -100,7 +100,7 @@ static const lpc4337ScuPin_t lpcUart485DirPin = {
 
 /*==================[internal functions declaration]=========================*/
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 static void uartProcessIRQ( uartMap_t uart );
 
 /*==================[internal functions definition]==========================*/
@@ -137,7 +137,7 @@ static void uartProcessIRQ( uartMap_t uart )
          (*txIsrCallbackUART3)(0);
    }
 }
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 /*==================[external data declaration]==============================*/
 
@@ -390,7 +390,7 @@ bool_t receiveBytesUntilReceiveStringOrTimeoutBlocking(
 // #define UART2_IER_BITMASK    (0x38F)	/*!< UART2 interrupt enable register bit mask - valid for 17xx/40xx UART1, 18xx/43xx UART1 only */
 
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 
 // UART Global Interrupt Enable/Disable
 void uartInterrupt( uartMap_t uart, bool_t enable )
@@ -406,7 +406,7 @@ void uartInterrupt( uartMap_t uart, bool_t enable )
    }
 }
 
-// UART Interrupt event Enable and set a callback
+// UART Interrupt event Enable and set a callback /*hago algo por la uart cuando se habilita la interrupcion*/
 void uartCallbackSet( uartMap_t uart, uartEvents_t event, 
                       callBackFuncPtr_t callbackFunc, void* callbackParam )
 {   
@@ -513,7 +513,7 @@ void uartClearPendingInterrupt(uartMap_t uart) {
 } 
 
 
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 // disable tx and rx interrupt
 //Chip_UART_IntDisable( LPC_USART2,
@@ -718,7 +718,7 @@ void uartWriteByteArray( uartMap_t uart,
 
 /*==================[ISR external functions definition]======================*/
 
-#ifdef SAPI_USE_INTERRUPTS
+//#ifdef SAPI_USE_INTERRUPTS
 
 __attribute__ ((section(".after_vectors")))
 
@@ -742,6 +742,6 @@ void UART3_IRQHandler(void)
 {
    uartProcessIRQ( UART_232 );
 }
-#endif /* SAPI_USE_INTERRUPTS */
+//#endif /* SAPI_USE_INTERRUPTS */
 
 /*==================[end of file]============================================*/

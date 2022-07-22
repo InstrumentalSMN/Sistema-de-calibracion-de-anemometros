@@ -60,10 +60,10 @@ extern "C" {
 /*
  *  INPUT  =  0    (No PULLUP or PULLDOWN)
  *  OUTPUT =  1
- *  INPUT_PULLUP
- *  INPUT_PULLDOWN
- *  INPUT_REPEATER (PULLUP and PULLDOWN)
- *  INITIALIZE
+ *  INPUT_PULLUP = 2
+ *  INPUT_PULLDOWN = 3
+ *  INPUT_REPEATER = 4 (PULLUP and PULLDOWN)
+ *  INITIALIZE = 5
  */
 typedef enum {
    GPIO_INPUT, GPIO_OUTPUT,
@@ -71,6 +71,19 @@ typedef enum {
    GPIO_INPUT_PULLUP_PULLDOWN,
    GPIO_ENABLE
 } gpioInit_t;
+
+
+
+/*Creo una estructura de configuracion para los GPIO....*/
+typedef struct{
+	int8_t scuPinNamePort;
+	int8_t scuPinNamePin;
+	int8_t func;
+	int8_t gpioPort;
+	int8_t gpioPin;
+}conf_t;
+
+
 
 
 /* ----- Begin Pin Init Structs NXP LPC4337 ----- */
@@ -96,6 +109,13 @@ bool_t gpioInit( gpioMap_t pin, gpioInit_t config );
 bool_t gpioRead( gpioMap_t pin );
 bool_t gpioWrite( gpioMap_t pin, bool_t value );
 bool_t gpioToggle( gpioMap_t pin );
+
+/*Mis funciones*/
+bool_t _gpioInit( gpioMap_t pin, gpioInit_t config );
+bool_t _gpioRead( gpioMap_t pin );
+bool_t _gpioWrite( gpioMap_t pin, bool_t value );
+bool_t _gpioToggle( gpioMap_t pin );
+
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus

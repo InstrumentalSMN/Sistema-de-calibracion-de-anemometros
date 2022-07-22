@@ -29,7 +29,11 @@
       <children xsi:type="notation:Shape" xmi:id="_IPOTA4_CEeaE_NItBGtDFQ" type="StatechartTextExpression" fontName="Verdana" lineColor="4210752">
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_IPOTBI_CEeaE_NItBGtDFQ"/>
       </children>
+<<<<<<< HEAD
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_IPOTBY_CEeaE_NItBGtDFQ" x="5" y="-128" width="261" height="584"/>
+=======
       <layoutConstraint xsi:type="notation:Bounds" xmi:id="_IPOTBY_CEeaE_NItBGtDFQ" x="10" y="-128" width="261" height="584"/>
+>>>>>>> origin
     </children>
     <children xmi:id="_ECq5gUfOEeeJU45vckolSA" type="Region" element="_ECq5w0fOEeeJU45vckolSA">
       <children xsi:type="notation:DecorationNode" xmi:id="_ECq5gkfOEeeJU45vckolSA" type="RegionName">
@@ -117,7 +121,11 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ECq5wEfOEeeJU45vckolSA"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_ECq5wUfOEeeJU45vckolSA" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
+<<<<<<< HEAD
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ECq5wkfOEeeJU45vckolSA" x="265" y="-128" width="521" height="224"/>
+=======
       <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ECq5wkfOEeeJU45vckolSA" x="300" y="-128" width="566" height="314"/>
+>>>>>>> origin
     </children>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_IPEiAo_CEeaE_NItBGtDFQ"/>
     <edges xmi:id="_EC9NYEfOEeeJU45vckolSA" type="Transition" element="_ECxAOEfOEeeJU45vckolSA" source="_ECq5qkfOEeeJU45vckolSA" target="_ECq5kkfOEeeJU45vckolSA">

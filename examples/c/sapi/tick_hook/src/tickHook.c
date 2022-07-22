@@ -54,13 +54,14 @@
 /*==================[external functions definition]==========================*/
 
 /* FUNCION que se ejecuta cada vez que ocurre un Tick. */
-void myTickHook( void *ptr )
+void myTickHook( void *ptr )  /*Esta funcion tiene el prototipo puntero a void que recibe void en sapi_datatype linea 124 */
 {
+	//Funcion enganchada a la interrupcion del systick
    static bool_t ledState = OFF;
 
-   gpioMap_t led = (gpioMap_t)ptr;
+   gpioMap_t led = (gpioMap_t)ptr; //casteo la variable para que funcione como un puntero a gpioMap_t
 
-   if( ledState ) {
+   if( ledState ) {// Pregunto si ledState !=0(es distinto de cero) osea pregunto si esta encendido
       ledState = OFF;
    } else {
       ledState = ON;
@@ -80,7 +81,7 @@ int main(void)
    /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta
       periodicamente una interrupcion cada 50ms que incrementa un contador de
       Ticks obteniendose una base de tiempos). */
-   tickConfig( 50 );
+   tickConfig( 50 ); // Osea 1000ms = 1seg = 20 ticks / El rango va de 1ms a 50 ms
 
    /* Se agrega ademas un "tick hook" nombrado myTickHook. El tick hook es
       simplemente una funcion que se ejecutara peri­odicamente con cada
@@ -90,7 +91,7 @@ int main(void)
       al ejecutarse. En este ejemplo se utiliza para pasarle el led a titilar.
    */
    tickCallbackSet( myTickHook, (void*)LEDR );
-   delay(1000);
+   delay(1000);// Meto un delay bloqueante
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
