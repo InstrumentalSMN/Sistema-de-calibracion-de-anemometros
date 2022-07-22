@@ -463,7 +463,7 @@ bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
 	//Configuramos el nombre del archivos
 	uartWriteString( UART_232, "AT+FTPPUT =1");/*Abro Sesion */
 	uartWriteString( UART_232, "\r\n");
-	delay(10000);//Importante esperara acá
+	delay(11000);//Importante esperara acá
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
@@ -472,7 +472,7 @@ bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
 		//gpioWrite( LED3, ON );
 		//uartWriteByte( UART_USB, dato);
 		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteString( UART_USB, "Respuesta de AT+FTPPUT =1\r\n");
 		uartWriteByte( UART_USB, dato);
 		uartWriteString( UART_USB, "\r\n");
 		return ERROR;
@@ -480,7 +480,7 @@ bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
 	sprintf(mystr, "%d", *size);
 	sprintf(aux,"%s%s","AT+FTPPUT=2,",mystr);
 	//uartWriteString( UART_USB, aux ); /*Pido enviar *size elementos*/
-	uartWriteString( UART_USB, "AT+FTPPUT=2,4" );
+	uartWriteString( UART_USB, aux );
 	uartWriteString( UART_USB, "\r\n");
 
 
@@ -497,7 +497,7 @@ bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
 		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
 		uartWriteString( UART_232, "AT+FTPPUT=2,0");
 		uartWriteString( UART_232, "\n");
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
+		uartWriteString( UART_USB, "Respuesta de AT+FTPPUT=size\r\n");
 		uartWriteByte( UART_USB, dato);
 		uartWriteString( UART_USB, "\r\n");
 		return ERROR;
