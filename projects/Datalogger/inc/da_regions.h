@@ -80,11 +80,11 @@ static real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDa
 
 
 /*Buffer para las estadisticas del DeltaOHM*/
-static real32_t AcumIntensidad[20];
-static real32_t AcumDireccion[20];
-static real32_t AcumPresion[20];
-static real32_t AcumTemp[20];
-static real32_t NvBateria[20];
+static real32_t AcumIntensidad[100];
+static real32_t AcumDireccion[100];
+static real32_t AcumPresion[100];
+static real32_t AcumTemp[100];
+static real32_t NvBateria[100];
 
 
 
