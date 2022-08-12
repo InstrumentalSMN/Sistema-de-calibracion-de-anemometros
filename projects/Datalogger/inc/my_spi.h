@@ -32,8 +32,8 @@
 
 /* Date: 2016-05-02 */
 
-#ifndef _SAPI_SPI_H_
-#define _SAPI_SPI_H_
+#ifndef _MY_SPI_H_
+#define _MY_SPI_H_
 
 /*==================[inclusions]=============================================*/
 
@@ -51,12 +51,13 @@ extern "C" {
 
 /*==================[external functions definition]==========================*/
 
+bool_t MySpi_Wiz_Init( spiMap_t spi );
 
-bool_t spiInit( spiMap_t spi );
+bool_t MySpiInit( spiMap_t spi );
 
-bool_t spiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize );
+bool_t MySpiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize );
 
-bool_t spiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize);
+bool_t MySpiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize);
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus
@@ -64,4 +65,4 @@ bool_t spiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize);
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* _SAPI_SPI_H_ */
+#endif /* _MY_SPI_H_ */

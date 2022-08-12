@@ -55,10 +55,10 @@ int main( void )
             ledValue = gpioRead( LEDR );
             // Chequear si el valor leido es encedido
             if( ledValue == ON ) {
-               // Si esta encendido mostrar por UART_USB "LED encendido."
+               // Si esta encendido mostrar por UART_USB con un BAUD RATE = 115200 "LED encendido."
                printf( "LED encendido.\r\n" );
             } else {
-               // Si esta apagado mostrar por UART_USB "LED apagado."
+               // Si esta apagado mostrar por UART_USB BAUD RATE = 115200 "LED apagado."
                printf( "LED apagado.\r\n" );
             }
             delay( 250 );

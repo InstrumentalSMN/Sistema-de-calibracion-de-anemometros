@@ -410,7 +410,7 @@ bool_t opConfigFTP(){
 }
 
 
-bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
+bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 
 	char mystr[20];
 	char aux[200];
@@ -544,4 +544,17 @@ bool_t TransmitirFTP( uint32_t * size, int32_t * NumberMesuare){
 
 	return OK;
 
+}
+
+
+
+bool_t opConfigSOCKET(){
+	return OK;
+}
+bool_t opConfigFTPSocket(){
+	return OK;
+}
+
+bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
+	return OK;
 }

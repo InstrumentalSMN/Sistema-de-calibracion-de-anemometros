@@ -448,7 +448,7 @@ void Chip_SSP_SetBitRate(LPC_SSP_T *pSSP, uint32_t bitRate)
 
 /* Initialize the SSP */
 void Chip_SSP_Init(LPC_SSP_T *pSSP)
-{
+{	/*esta bien la configuracion para interactuar con el W5100*/
 	Chip_Clock_Enable(Chip_SSP_GetClockIndex(pSSP));
 	Chip_Clock_Enable(Chip_SSP_GetPeriphClockIndex(pSSP));
 

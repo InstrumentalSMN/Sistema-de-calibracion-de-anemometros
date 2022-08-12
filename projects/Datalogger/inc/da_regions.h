@@ -127,8 +127,14 @@ extern bool_t opConfigGPRS();
 extern bool_t opConfigFTP();
 extern void KeepAlive();
 
+/*Region de config Socket and FTP*/
+
+extern bool_t opConfigSOCKET();
+extern bool_t opConfigFTPSocket();
+
 /*Region de Transmision*/
-extern bool_t TransmitirFTP(uint32_t * size, int32_t * NumberMesuare);
+extern bool_t TransmitirFTPViaGPRS(uint32_t * size, int32_t * NumberMesuare);
+extern bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare);
 
 #endif
 

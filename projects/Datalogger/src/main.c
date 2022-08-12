@@ -14,7 +14,7 @@
  */
 //Incluyo el .h de la maquina de estado aca y en TimerTicks.c y el TimerTicks.h en el main y en "TimerTicks.c"
 
-#include "..\gen\DataloggerSA5.h"
+#include "..\gen\DataloggerSA.h"
 #include "TimerTicks.h"
 
 /*==================Yo defino[macros and definitions]=================================*/
@@ -28,63 +28,63 @@ volatile bool SysTick_Time_Flag = false;
 
 /*! This is a state machine */
 //Declaro la maquina de estado
-static DataloggerSA5 statechart;
+static DataloggerSA statechart;
 
 /*! This is a timed state machine that requires timer services */
 //Defino la cantidad de servicios de timer
-#define NOF_TIMERS (sizeof(DataloggerSA5TimeEvents)/sizeof(sc_boolean))
+#define NOF_TIMERS (sizeof(DataloggerSATimeEvents)/sizeof(sc_boolean))
 
 //Creo un vector
 TimerTicks ticks[NOF_TIMERS];
 
 // Debo Implementar la acciones que se utilizan en Datalogger_SA.c,
 
-//void DataloggerSA5Iface_opLED(const Datalogger_SA* handle, const sc_integer LEDNumber, const sc_boolean State){
+//void DataloggerSAIface_opLED(const Datalogger_SA* handle, const sc_integer LEDNumber, const sc_boolean State){
 //
 //	//Esta función es de la biblioteca sapi.h, ver como esta implementada
 //	gpioWrite( (LEDR + LEDNumber), State );
 //
 //}
 
-void dataloggerSA5Iface_opAcumular(const DataloggerSA5* handle){
+void dataloggerSAIface_opAcumular(const DataloggerSA* handle){
 
 }
-void dataloggerSA5Iface_opEnvioMuestras(const DataloggerSA5* handle){
+void dataloggerSAIface_opEnvioMuestras(const DataloggerSA* handle){
 
 }
-void dataloggerSA5Iface_opProceso(const DataloggerSA5* handle){
+void dataloggerSAIface_opProceso(const DataloggerSA* handle){
 
 }
-void dataloggerSA5Iface_opGuardoEnMemoria(const DataloggerSA5* handle){
+void dataloggerSAIface_opGuardoEnMemoria(const DataloggerSA* handle){
 
 }
-sc_boolean dataloggerSA5Iface_opConfigGPRS(const DataloggerSA5* handle){
+sc_boolean dataloggerSAIface_opConfigGPRS(const DataloggerSA* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
-sc_boolean dataloggerSA5Iface_opConfigFTP(const DataloggerSA5* handle){
+sc_boolean dataloggerSAIface_opConfigFTP(const DataloggerSA* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
-void dataloggerSA5Iface_opTransmitirToFTP(const DataloggerSA5* handle){
+void dataloggerSAIface_opTransmitirToFTP(const DataloggerSA* handle){
 
 }
-sc_boolean dataloggerSA5Iface_opGetstatusFTP(const DataloggerSA5* handle){
+sc_boolean dataloggerSAIface_opGetstatusFTP(const DataloggerSA* handle){
 	sc_boolean var = TRUE;
 	return TRUE;
 
 }
 
-void dataloggerSA5_setTimer(DataloggerSA5* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic){
+void dataloggerSA_setTimer(DataloggerSA* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic){
 
 	//Esta funcion esta implementada en TimerTicks.h, ver como esta implementada
 	SetNewTimerTick(ticks, NOF_TIMERS, evid, time_ms, periodic);
 
 }
 
-void dataloggerSA5_unsetTimer(DataloggerSA5* handle, const sc_eventid evid){
+void dataloggerSA_unsetTimer(DataloggerSA* handle, const sc_eventid evid){
 
 	//Esta funcion esta implementada en TimerTicks.h, ver como esta implementada
 	UnsetTimerTick( ticks, NOF_TIMERS, evid );
@@ -146,8 +146,8 @@ int main(void) {
 	InitTimerTicks( ticks, NOF_TIMERS );
 
 	/* Statechart Initialization */
-	dataloggerSA5_init(&statechart);
-	dataloggerSA5_enter( &statechart );
+	dataloggerSA_init(&statechart);
+	dataloggerSA_enter( &statechart );
 	/* LED state is toggled in the main program */
 	while (1) {
 		/* The uC sleeps waiting for an interruption */
@@ -175,7 +175,7 @@ int main(void) {
 
 					/* Then Raise an Event -> Ticks.evid => OK */
 					//Esta definida en Datalogger_SA.h e implementada en Datalogger_SA.c
-					dataloggerSA5_raiseTimeEvent( &statechart, ticks[i].evid );
+					dataloggerSA_raiseTimeEvent( &statechart, ticks[i].evid );
 
 					/* Then Mark as Attached -> Ticks.evid => OK */
 					// Esta definida en TimerTicks.h
@@ -194,7 +194,7 @@ int main(void) {
 //				datalogger_SAIface_raise_evTECXNoOprimido(&statechart);
 //
 //			/* Then Run an Cycle of Statechart */
-			dataloggerSA5_runCycle(&statechart);		// Run Cycle of Statechart
+			dataloggerSA_runCycle(&statechart);		// Run Cycle of Statechart
 		}
 	}
 }
