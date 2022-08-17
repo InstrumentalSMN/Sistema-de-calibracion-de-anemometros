@@ -549,12 +549,12 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 
 
 bool_t opConfigSOCKET(){
-	return OK;
+	return ERROR;
 }
 bool_t opConfigFTPSocket(){
-	return OK;
+	return ERROR;
 }
 
 bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
-	return OK;
+	return ERROR;
 }
