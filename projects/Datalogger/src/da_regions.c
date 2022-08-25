@@ -1,8 +1,121 @@
 #include "../inc/da_regions.h"
 #include "../inc/da_func_process.h"//Funciones estadisticas
+#include "socket.h"
+#include "w5100.h"
+//#include "my_spi.h"
 
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
+#define SOCK	2
+//client information
+uint16_t PortLocal = 80;
+uint8_t mac[6] = { 0x00, 0xA2, 0xDA, 0x00, 0x59, 0x67 };
+uint8_t mac1[6];
+uint8_t IPLocal[4] = {10,10,13,234};
+uint8_t IPLocal1[4];
+uint8_t Gat[4] = {10,10,13,1};
+uint8_t Gat1[4];
+uint8_t MASKSUB[4] = {255,255,255,0};
+uint8_t MASKSUB1[4];
+
+
+//Server information
+uint8_t FTP_destip[4] = {192,168,5,5};
+uint16_t FTP_destport = 21;
+
+
+bool_t opConfigSOCKET(){
+	char auxiliarBuffer[7];
+//	Configurar Cliente
+	setSHAR(mac);
+	getSHAR(mac1);
+	setSIPR(IPLocal);
+	getSIPR(IPLocal1);
+	setGAR(Gat);
+	getGAR(Gat1);
+	setSUBR(MASKSUB);
+	getSUBR(MASKSUB1);
+
+
+	setSn_MR(SOCK, Sn_MR_TCP);
+	setSn_PORT(SOCK,PortLocal);
+	setSn_CR(SOCK,Sn_CR_OPEN);
+	//Conecto al FTP
+	setSn_DIPR(SOCK, FTP_destip);
+	setSn_DPORT(SOCK, FTP_destport);
+	setSn_CR(SOCK,Sn_CR_CONNECT);
+	//	socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
+//	connect(CTRL_SOCK, FTP_destip, FTP_destport))
+//	//setSn_CR(sn,Sn_CR_CONNECT);
+//	setSn_DIPR(CTRL_SOCK,FTP_destip);
+	uint8_t ret = getSn_MR(SOCK);
+	uint8_t ret3 = getSn_CR(SOCK);
+	uint16_t ret2 = getSn_PORT(SOCK);
+	getSn_DIPR(SOCK, FTP_destip);
+	uint16_t ret4 = getSn_DPORT(SOCK);
+	uint8_t ret5 = getSn_SR(SOCK);
+//	uint8_t ret5 = getSn_SR(CTRL_SOCK);
+//	connect(CTRL_SOCK, FTP_destip, FTP_destport)
+//	// see status register
+////	setSn_DIPR(CTRL_SOCK, FTP_destip);
+//	setSn_CR(CTRL_SOCK,0x02);
+
+//	setGAR(FTP_ip);
+//	getGAR(FTP_ip);
+
+
+	floatToString(FTP_destip[1],auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(FTP_ip[0],auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+	floatToString(ret,auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(ret2,auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(ret3,auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(ret4,auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(ret5,auxiliarBuffer,0);
+	uartWriteString( UART_USB, "\r\n" );
+	uartWriteString( UART_USB, auxiliarBuffer );
+	uartWriteString( UART_USB, "\r\n" );
+	/*-------------------------------*/
+
+
+//	char auxiliarBuffer[7];
+//	int8_t retSocket;
+//	uint8_t ret;
+//	retSocket = socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
+//	ret = getSn_MR(CTRL_SOCK);
+////	ret = getSn_SR(CTRL_SOCK);
+//	floatToString(ret,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n" );
+////	uartWriteString( UART_USB, "Respuesta Socket\r\n" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+
+
+	return ERROR;
+}
+bool_t opConfigFTPSocket(){
+	return ERROR;
+}
+
+bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
+	return ERROR;
+}
 
 
 // Todas las variables o punteros que se declaran en la maquina de estados se usaran en estas funciones
@@ -548,13 +661,3 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 
 
 
-bool_t opConfigSOCKET(){
-	return ERROR;
-}
-bool_t opConfigFTPSocket(){
-	return ERROR;
-}
-
-bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
-	return ERROR;
-}

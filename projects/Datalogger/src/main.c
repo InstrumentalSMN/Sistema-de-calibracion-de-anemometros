@@ -16,6 +16,7 @@
 
 #include "..\gen\DataloggerSA.h"
 #include "TimerTicks.h"
+#include "my_spi.h"
 
 /*==================Yo defino[macros and definitions]=================================*/
 
@@ -131,6 +132,9 @@ int main(void) {
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
 	boardConfig();
+//	init SPI0
+	MySpi_Wiz_Init(SPI0);
+
 	//uartConfig( UART_485, 9600 );
 	uartConfig( UART_USB, 9600 );
 	//uartWriteString( UART_USB, "Inicio");

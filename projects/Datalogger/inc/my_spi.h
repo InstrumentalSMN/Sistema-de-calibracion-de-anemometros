@@ -47,7 +47,6 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
-#define spiConfig spiInit
 
 /*==================[external functions definition]==========================*/
 
@@ -59,6 +58,7 @@ bool_t MySpiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize );
 
 bool_t MySpiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize);
 
+//int8_t  socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag);
 /*==================[c++]====================================================*/
 #ifdef __cplusplus
 }

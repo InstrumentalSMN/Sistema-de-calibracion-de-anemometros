@@ -46,7 +46,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-#include "..\wizchip_conf.h"
+#include "wizchip_conf.h"
 
 /// \cond DOXY_APPLY_CODE
 #if   (_WIZCHIP_ == 5100)
@@ -258,7 +258,7 @@ extern "C" {
  * - \ref IR_SOCK(1)  : SOCKET 1 Interrupt
  * - \ref IR_SOCK(0)  : SOCKET 0 Interrupt 
  */
-#define IRR					(_W5100_IO_BASE_ + (0x0015)) // Interrupt
+#define IRRR					(_W5100_IO_BASE_ + (0x0015)) // Interrupt
 
 /**
  * @ingroup Common_register_group_W5100
@@ -895,7 +895,7 @@ extern "C" {
  * @details This indicates that Socket n is released.\n
  * When DICON, CLOSE command is ordered, or when a timeout occurs, it is changed to \ref SOCK_CLOSED regardless of previous status.
  */
-#define SOCK_CLOSED			0x00 ///< closed 
+#define SOCK_CLOSED			0x00 ///< closed (0)
 
 /**
  * @brief Initiate state
@@ -903,7 +903,7 @@ extern "C" {
  * It is changed to \ref SOCK_INIT when Sn_MR(P[3:0]) = 001)and OPEN command is ordered.\n
  * After \ref SOCK_INIT, user can use LISTEN /CONNECT command.
  */
-#define SOCK_INIT 			0x13 ///< init state 
+#define SOCK_INIT 			0x13 ///< init state (19)
 
 /**
  * @brief Listen state
@@ -911,7 +911,7 @@ extern "C" {
  * It will change to \ref SOCK_ESTABLISHED when the connection-request is successfully accepted.\n
  * Otherwise it will change to \ref SOCK_CLOSED after TCPTO occurred (Sn_IR(TIMEOUT) = '1').
  */
-#define SOCK_LISTEN         0x14
+#define SOCK_LISTEN         0x14 //(20)
 
 /**
  * @brief Connection state
@@ -920,7 +920,7 @@ extern "C" {
  * If connect-accept(SYN/ACK packet) is received from the peer at SOCK_SYNSENT, it changes to \ref SOCK_ESTABLISHED.\n
  * Otherwise, it changes to \ref SOCK_CLOSED after TCPTO (\ref Sn_IR[TIMEOUT] = '1') is occurred.
  */
-#define SOCK_SYNSENT        0x15
+#define SOCK_SYNSENT        0x15 // (21)
 
 /**
  * @brief Connection state
@@ -928,7 +928,7 @@ extern "C" {
  * If socket n sends the response (SYN/ACK  packet) to the peer successfully,  it changes to \ref SOCK_ESTABLISHED. \n
  * If not, it changes to \ref SOCK_CLOSED after timeout occurs (\ref Sn_IR[TIMEOUT] = '1').
  */
-#define SOCK_SYNRECV        0x16
+#define SOCK_SYNRECV        0x16 //(22)
 
 /**
  * @brief Success to connect
@@ -937,7 +937,7 @@ extern "C" {
  * when the CONNECT command is successful.\n
  * During \ref SOCK_ESTABLISHED, DATA packet can be transferred using SEND or RECV command.
  */
-#define SOCK_ESTABLISHED    0x17
+#define SOCK_ESTABLISHED    0x17 //(23)
 
 /**
  * @brief Closing state
@@ -945,7 +945,7 @@ extern "C" {
  * These are shown in disconnect-process such as active-close and passive-close.\n
  * When Disconnect-process is successfully completed, or when timeout occurs, these change to \ref SOCK_CLOSED.
  */
-#define SOCK_FIN_WAIT       0x18
+#define SOCK_FIN_WAIT       0x18 // (24)
 
 /**
  * @brief Closing state
@@ -953,7 +953,7 @@ extern "C" {
  * These are shown in disconnect-process such as active-close and passive-close.\n
  * When Disconnect-process is successfully completed, or when timeout occurs, these change to \ref SOCK_CLOSED.
  */
-#define SOCK_CLOSING        0x1A
+#define SOCK_CLOSING        0x1A //(26)
 
 /**
  * @brief Closing state
@@ -961,7 +961,7 @@ extern "C" {
  * These are shown in disconnect-process such as active-close and passive-close.\n
  * When Disconnect-process is successfully completed, or when timeout occurs, these change to \ref SOCK_CLOSED.
  */
-#define SOCK_TIME_WAIT      0x1B
+#define SOCK_TIME_WAIT      0x1B //(27)
 
 /**
  * @brief Closing state
@@ -969,14 +969,14 @@ extern "C" {
  * This is half-closing status, and data can be transferred.\n
  * For full-closing, DISCON command is used. But For just-closing, @ref Sn_CR_CLOSE command is used.
  */
-#define SOCK_CLOSE_WAIT     0x1C
+#define SOCK_CLOSE_WAIT     0x1C//(28)
 
 /**
  * @brief Closing state
  * @details This indicates Socket n is waiting for the response (FIN/ACK packet) to the disconnect-request (FIN packet) by passive-close.\n
  * It changes to \ref SOCK_CLOSED when Socket n received the response successfully, or when timeout occurs  (\ref Sn_IR[TIMEOUT] = '1').
  */
-#define SOCK_LAST_ACK       0x1D
+#define SOCK_LAST_ACK       0x1D //(29)
 
 /**
  * @brief UDP socket
@@ -984,7 +984,7 @@ extern "C" {
  * It changes to SOCK_UDP when Sn_MR(P[3:0]) = 010 and @ref Sn_CR_OPEN command is ordered.\n
  * Unlike TCP mode, data can be transfered without the connection-process.
  */
-#define SOCK_UDP			0x22 ///< udp socket 
+#define SOCK_UDP			0x22 ///< udp socket //(34)
 
 /**
  * @brief IP raw mode socket
@@ -992,7 +992,7 @@ extern "C" {
  * Sn_MR_IPRAW and @ref Sn_CR_OPEN command is used.\n
  * IP Packet can be transferred without a connection similar to the UDP mode.
 */
-#define SOCK_IPRAW			0x32 ///< ip raw mode socket 
+#define SOCK_IPRAW			0x32 ///< ip raw mode socket //(50)
 
 /**
  * @brief MAC raw mode socket
@@ -1000,7 +1000,7 @@ extern "C" {
  * It changes to SOCK_MACRAW when @ref Sn_MR(P[3:0]) = '100' and @ref Sn_CR_OPEN command is ordered.\n
  * Like UDP mode socket, MACRAW mode Socket 0 can transfer a MAC packet (Ethernet frame) without the connection-process.
  */
-#define SOCK_MACRAW			0x42 ///< mac raw mode socket 
+#define SOCK_MACRAW			0x42 ///< mac raw mode socket //(66)
 
 /**
  * @brief PPPoE mode socket
@@ -1009,7 +1009,7 @@ extern "C" {
  * It is temporarily used at the PPPoE
 connection.
  */
-#define SOCK_PPPOE			0x5F ///< pppoe socket 
+#define SOCK_PPPOE			0x5F ///< pppoe socket //(95)
 
 // IP PROTOCOL 
 #define IPPROTO_IP			0 ///< Dummy for IP 
@@ -1207,7 +1207,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @sa getIR()
  */
 #define setIR(ir) \
-		WIZCHIP_WRITE(IRR, (ir & 0xA0))
+		WIZCHIP_WRITE(IRRR, (ir & 0xA0))
 /**
  * @ingroup Common_register_access_function_W5100
  * @brief Get \ref IR register
@@ -1215,7 +1215,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @sa setIR()
  */
 #define getIR() \
-		(WIZCHIP_READ(IRR) & 0xA0)
+		(WIZCHIP_READ(IRRR) & 0xA0)
 
 /**
  * @ingroup Common_register_access_function_W5100
@@ -1287,8 +1287,8 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint8_t. Value of @ref RMSR register.
  * @sa setRMSR()
  */
- #define getRMSR()   \
-      WIZCHIP_READ() // Receicve Memory Size
+ #define getRMSR(rmsr)   \
+      WIZCHIP_READ(RMSR) // Receicve Memory Size
 
 /**
  * @ingroup Common_register_access_function_W5100

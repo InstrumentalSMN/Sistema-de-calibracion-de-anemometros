@@ -53,7 +53,7 @@
 //
 
 #include "wizchip_conf.h"
-#include "sapi_spi.h"
+
 
 /////////////
 //M20150401 : Remove ; in the default callback function such as wizchip_cris_enter(), wizchip_cs_select() and etc.
@@ -81,7 +81,9 @@ void 	  wizchip_cris_exit(void)          {}
  * null function is called.
  */
 //void 	wizchip_cs_select(void)            {};
-void 	wizchip_cs_select(void)            {}
+void 	wizchip_cs_select(void)            {
+	gpioWrite( GPIO0, OFF );
+}
 
 /**
  * @brief Default function to deselect chip.
@@ -89,7 +91,10 @@ void 	wizchip_cs_select(void)            {}
  * null function is called.
  */
 //void 	wizchip_cs_deselect(void)          {};
-void 	wizchip_cs_deselect(void)          {}
+void 	wizchip_cs_deselect(void)          {
+
+	gpioWrite( GPIO0, ON );
+}
 
 /**
  * @brief Default function to read in direct or indirect interface.
@@ -122,7 +127,7 @@ uint8_t wizchip_spi_readbyte(void)        {
 	uint8_t bufferByte;
 	uint32_t bufferSize = 1;
 	/*validar con ret val de spiread*/
-	spiRead( SPI0, &bufferByte,bufferSize );
+	MySpiRead( SPI0, &bufferByte,bufferSize );
 	return bufferByte;
 }
 
@@ -137,7 +142,7 @@ uint8_t wizchip_spi_readbyte(void)        {
 void 	wizchip_spi_writebyte(uint8_t wb) {
 
 	uint32_t bufferSize = 1;
-	spiWrite( SPI0, &wb, bufferSize);
+	MySpiWrite( SPI0, &wb, bufferSize);
 }
 
 /**

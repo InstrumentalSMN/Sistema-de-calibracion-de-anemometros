@@ -67,6 +67,8 @@ int main(void){
       /* Prendo el led azul */
       gpioWrite( LEDB, ON );
 
+
+
       delay(500);
 
       /* Apago el led azul */

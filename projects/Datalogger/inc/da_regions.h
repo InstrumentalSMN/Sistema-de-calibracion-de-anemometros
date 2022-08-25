@@ -13,6 +13,7 @@
 #include "sapi.h"
 #include "sapi_uart.h"
 
+
 /*==================[macros]=================================================*/
 
 /* Functional states */

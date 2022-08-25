@@ -162,7 +162,7 @@
  *                        @ref SOCKERR_SOCKMODE    - Not support socket mode as TCP, UDP, and so on. \n
  *                        @ref SOCKERR_SOCKFLAG    - Invaild socket flag.
  */
-extern int8_t  socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag);
+int8_t  socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag);
 
 /**
  * @ingroup WIZnet_socket_APIs
