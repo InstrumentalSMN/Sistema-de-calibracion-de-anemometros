@@ -2,48 +2,60 @@
 #include "../inc/da_func_process.h"//Funciones estadisticas
 #include "socket.h"
 #include "w5100.h"
+#include "ftpc.h"
 //#include "my_spi.h"
 
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
-#define SOCK	2
+#define SOCK	1
 //client information
-uint16_t PortLocal = 80;
-uint8_t mac[6] = { 0x00, 0xA2, 0xDA, 0x00, 0x59, 0x67 };
+uint16_t PortLocal = 8080;
+uint8_t mac[6] = { 0x00, 0x08, 0xDC, 0x01, 0x02, 0x03 };
 uint8_t mac1[6];
-uint8_t IPLocal[4] = {10,10,13,234};
+//uint8_t IPLocal[4] = {10,10,13,234};
+uint8_t IPLocal[4] = {192,168,0,22};
 uint8_t IPLocal1[4];
-uint8_t Gat[4] = {10,10,13,1};
+//uint8_t Gat[4] = {10,10,13,1};
+uint8_t Gat[4] = {192,168,0,1};
 uint8_t Gat1[4];
 uint8_t MASKSUB[4] = {255,255,255,0};
 uint8_t MASKSUB1[4];
 
 
 //Server information
-uint8_t FTP_destip[4] = {192,168,5,5};
-uint16_t FTP_destport = 21;
+//uint8_t FTP_destip[4] = {129,6,15,29}; //NIST NTP
+//uint8_t FTP_destip[4] = {192,168,5,5};
+uint8_t _FTP_destip[4] = {200,16,116,5};
+//uint16_t FTP_destport = 37; //NTP port
+uint16_t _FTP_destport = 21;
 
 
 bool_t opConfigSOCKET(){
-	char auxiliarBuffer[7];
+	char auxiliarBuffer[50];
 //	Configurar Cliente
-	setSHAR(mac);
-	getSHAR(mac1);
-	setSIPR(IPLocal);
-	getSIPR(IPLocal1);
 	setGAR(Gat);
 	getGAR(Gat1);
+	setSHAR(mac);
+	getSHAR(mac1);
 	setSUBR(MASKSUB);
 	getSUBR(MASKSUB1);
+	setSIPR(IPLocal);
+	getSIPR(IPLocal1);
 
 
+
+//	ftpc_init(IPLocal);
+//	ftpc_run(auxiliarBuffer);
 	setSn_MR(SOCK, Sn_MR_TCP);
 	setSn_PORT(SOCK,PortLocal);
 	setSn_CR(SOCK,Sn_CR_OPEN);
-	//Conecto al FTP
-	setSn_DIPR(SOCK, FTP_destip);
-	setSn_DPORT(SOCK, FTP_destport);
+//
+//	//Conecto al FTP
+	setSn_DIPR(SOCK, _FTP_destip);
+	setSn_DPORT(SOCK, _FTP_destport);
 	setSn_CR(SOCK,Sn_CR_CONNECT);
+	uint8_t ret5 = getSn_SR(SOCK);
+
 	//	socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
 //	connect(CTRL_SOCK, FTP_destip, FTP_destport))
 //	//setSn_CR(sn,Sn_CR_CONNECT);
@@ -51,10 +63,11 @@ bool_t opConfigSOCKET(){
 	uint8_t ret = getSn_MR(SOCK);
 	uint8_t ret3 = getSn_CR(SOCK);
 	uint16_t ret2 = getSn_PORT(SOCK);
-	getSn_DIPR(SOCK, FTP_destip);
+	getSn_DIPR(SOCK, _FTP_destip);
 	uint16_t ret4 = getSn_DPORT(SOCK);
-	uint8_t ret5 = getSn_SR(SOCK);
-//	uint8_t ret5 = getSn_SR(CTRL_SOCK);
+//	uint8_t ret5 = getSn_RX_RSR(SOCK);
+
+//	uint8_t ret5 = getSn_SR(SOCK);
 //	connect(CTRL_SOCK, FTP_destip, FTP_destport)
 //	// see status register
 ////	setSn_DIPR(CTRL_SOCK, FTP_destip);
@@ -64,7 +77,7 @@ bool_t opConfigSOCKET(){
 //	getGAR(FTP_ip);
 
 
-	floatToString(FTP_destip[1],auxiliarBuffer,0);
+	floatToString(_FTP_destip[0],auxiliarBuffer,0);
 	uartWriteString( UART_USB, "\r\n" );
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );

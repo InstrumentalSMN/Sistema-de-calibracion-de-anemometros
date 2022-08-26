@@ -674,6 +674,12 @@ void uartInit2( uartMap_t uart, uint32_t baudRate,
    }
 }
 
+uint8_t ReadByte(){
+	uint8_t receiveByte;
+	uartReadByte( UART_USB, &receiveByte );
+	return receiveByte;
+}
+
 // Read 1 byte from RX FIFO, check first if exist aviable data
 bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte )
 {
