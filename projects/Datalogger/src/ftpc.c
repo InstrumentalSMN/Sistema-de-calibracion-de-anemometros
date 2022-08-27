@@ -7,8 +7,12 @@ uint16_t  local_port;
 uint8_t connect_state_control_ftpc = 0;
 uint8_t connect_state_data_ftpc = 0;
 uint8_t gModeActivePassiveflag = 0;
-uint8_t FTP_destip[4] = {200,16,116,5};	// For FTP client examples; destination network info
-uint16_t FTP_destport = 21;						// For FTP client examples; destination network info
+//uint8_t FTP_destip[4] = {200,16,116,5};	// For FTP client examples; destination network info
+//uint16_t FTP_destport = 21;						// For FTP client examples; destination network info
+
+uint8_t FTP_destip[4] = {10,10,13,157};
+uint16_t FTP_destport = 21;
+
 uint8_t gMenuStart = 0;
 uint8_t gDataSockReady = 0;
 uint8_t gDataPutGetStart = 0;
@@ -25,7 +29,7 @@ void ftpc_init(uint8_t * src_ip)
 	local_ip.cVal[1] = src_ip[1];
 	local_ip.cVal[2] = src_ip[2];
 	local_ip.cVal[3] = src_ip[3];
-	local_port = 35000;
+	local_port = 5000;
 	strcpy(ftpc.workingdir, "/");
 	socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
 }
