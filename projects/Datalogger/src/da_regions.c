@@ -8,31 +8,38 @@
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
 #define SOCK	1
+#define _MAX_SS		512
+#define USER "estaut"
+#define PASS "estacionesautomaticas17"
+
 //client information
 uint16_t PortLocal = 30001;
 uint8_t mac[6] = { 0x18, 0x66, 0xDA, 0x01, 0x02, 0x03 };
 uint8_t mac1[6];
-uint8_t IPLocal[4] = {10,10,13,121};
-//uint8_t IPLocal[4] = {192,168,0,22};
+//uint8_t IPLocal[4] = {10,10,13,121};
+uint8_t IPLocal[4] = {192,168,0,22}; //casa
 uint8_t IPLocal1[4];
-uint8_t Gat[4] = {10,10,13,1};
-//uint8_t Gat[4] = {192,168,0,1};
+//uint8_t Gat[4] = {10,10,13,1};
+uint8_t Gat[4] = {192,168,0,1}; //casa
 uint8_t Gat1[4];
 uint8_t MASKSUB[4] = {255,255,255,0};
 uint8_t MASKSUB1[4];
 
 
 ////Server information
-uint8_t _FTP_destip[4] = {129,6,15,29}; //NIST NTP
+//uint8_t _FTP_destip[4] = {129,6,15,29}; //NIST NTP
 //uint8_t _FTP_destip[4] = {192,168,5,5};
 //uint8_t _FTP_destip[4] = {10,10,13,157};
-//uint8_t _FTP_destip[4] = {200,16,116,5};
-uint16_t _FTP_destport = 37; //NTP port
-//uint16_t _FTP_destport = 21;
+uint8_t _FTP_destip[4] = {200,16,116,5};
+//uint16_t _FTP_destport = 37; //NTP port
+uint16_t _FTP_destport = 21;
 
 
 bool_t opConfigSOCKET(){
 	char auxiliarBuffer[50];
+	char dbuf[550];
+	long ret = 0;
+	uint8_t dat[100];
 //	Configurar Cliente
 	setIMR(0x00);
 	//Reset registers
@@ -53,53 +60,91 @@ bool_t opConfigSOCKET(){
 //	ftpc_run(auxiliarBuffer);
 
 	setSn_MR(SOCK, Sn_MR_TCP);
+//	delay(500);
 	setSn_PORT(SOCK,PortLocal);
+//	delay(500);
 	setSn_CR(SOCK,Sn_CR_OPEN);
+//	delay(500);
 //
 //	//Conecto al FTP
 	setSn_DIPR(SOCK, _FTP_destip);
+//	delay(500);
 	setSn_DPORT(SOCK, _FTP_destport);
+//	delay(500);
+
 	setSn_CR(SOCK,Sn_CR_CONNECT);
 
-	delay(1500);
+	delay(2000);
 
 
-	//	socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
+//		socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
 //	connect(CTRL_SOCK, FTP_destip, FTP_destport))
-//	//setSn_CR(sn,Sn_CR_CONNECT);
-//	setSn_DIPR(CTRL_SOCK,FTP_destip);
-	getSn_DIPR(SOCK, _FTP_destip);
-	uint8_t ret = getSn_MR(SOCK);
+
+
+	uint8_t ret1 = getSn_MR(SOCK);
+	delay(500);
 	uint16_t ret2 = getSn_PORT(SOCK);
+	delay(500);
 //	uint8_t ret3 = getSn_CR(SOCK);
 	uint16_t ret4 = getSn_DPORT(SOCK);
+	delay(500);
 	uint8_t ret5 = getSn_SR(SOCK);
-//	delay(1000);
-	uint16_t ret6 = getSn_RX_RSR(SOCK);
+	delay(500);
+
+	sprintf(dat,"USER %s\r\n",USER);
+	wiz_send_data(SOCK, dat, strlen(dat));
+	delay(500);
+	setSn_CR(SOCK,Sn_CR_SEND);
+	while(getSn_CR(SOCK));
+
+	sprintf(dat,"PASS %s\r\n",PASS);
+	wiz_send_data(SOCK, dat, strlen(dat));
+	delay(500);
+	setSn_CR(SOCK,Sn_CR_SEND);
+	while(getSn_CR(SOCK));
+
+	sprintf(dat,"PASV\r\n");
+	wiz_send_data(SOCK, dat, strlen(dat));
+	delay(500);
+	setSn_CR(SOCK,Sn_CR_SEND);
+	while(getSn_CR(SOCK));
+//	send(SOCK, (uint8_t *)dat, strlen(dat));
+	delay(1000);
+	uint16_t size = getSn_RX_RSR(SOCK);
+	delay(500);
+
+/*Hasta ahora logre acceder al FTP, ahora ver como se hace para poner
+ * Path dirección
+ * Nombre de archivo con extension
+ * datos del archivo en ascii
+ * Revisar si hay delays inecesarios
+ * */
 
 
-
-
-
+	//Recibo MSJ del server e imprimo
+	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(SOCK,dbuf,size);
+	dbuf[ret] = '\0';
+	uartWriteString( UART_USB, "\r\n " );
+	uartWriteString( UART_USB, dbuf );
+	uartWriteString( UART_USB, "\r\n" );
+//
 //	uint8_t ret5 = getSn_SR(SOCK);
 //	connect(CTRL_SOCK, FTP_destip, FTP_destport)
 //	// see status register
 ////	setSn_DIPR(CTRL_SOCK, FTP_destip);
 //	setSn_CR(CTRL_SOCK,0x02);
-
+//
 //	setGAR(FTP_ip);
 //	getGAR(FTP_ip);
-
+//
 
 	floatToString(_FTP_destip[0],auxiliarBuffer,0);
 	uartWriteString( UART_USB, "\r\n ServerFTP \t" );
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );
-//	floatToString(FTP_ip[0],auxiliarBuffer,0);
-//	uartWriteString( UART_USB, "\r\n" );
-//	uartWriteString( UART_USB, auxiliarBuffer );
-//	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret,auxiliarBuffer,0);
+	floatToString(ret1,auxiliarBuffer,0);
 	uartWriteString( UART_USB, "\r\nModo  \t" );
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );
@@ -119,15 +164,13 @@ bool_t opConfigSOCKET(){
 	uartWriteString( UART_USB, "\r\n StatusRegister \t" );
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret6,auxiliarBuffer,0);
+	floatToString(size,auxiliarBuffer,0);
 	uartWriteString( UART_USB, "\r\nRX Received Size \t" );
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );
 	/*-------------------------------*/
-	floatToString(ret6,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\nRX Received Size \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
+
+	setSn_CR(SOCK,Sn_CR_DISCON); //Fundamental desconectame si salgo con ERROR
 
 //	char auxiliarBuffer[7];
 //	int8_t retSocket;

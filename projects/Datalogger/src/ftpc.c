@@ -7,11 +7,11 @@ uint16_t  local_port;
 uint8_t connect_state_control_ftpc = 0;
 uint8_t connect_state_data_ftpc = 0;
 uint8_t gModeActivePassiveflag = 0;
-//uint8_t FTP_destip[4] = {200,16,116,5};	// For FTP client examples; destination network info
-//uint16_t FTP_destport = 21;						// For FTP client examples; destination network info
+uint8_t FTP_destip[4] = {200,16,116,5};	// For FTP client examples; destination network info
+uint16_t FTP_destport = 21;						// For FTP client examples; destination network info
 
-uint8_t FTP_destip[4] = {10,10,13,157};
-uint16_t FTP_destport = 21;
+//uint8_t FTP_destip[4] = {10,10,13,157};
+//uint16_t FTP_destport = 21;
 
 uint8_t gMenuStart = 0;
 uint8_t gDataSockReady = 0;
@@ -45,7 +45,7 @@ uint8_t ftpc_run(uint8_t * dbuf)
 	uint8_t msg_c;
 	uint8_t dat[50]={0,};
 	uint32_t totalSize = 0, availableSize = 0;
-
+	delay(3000);
     switch(getSn_SR(CTRL_SOCK))
     {
     	case SOCK_ESTABLISHED :
