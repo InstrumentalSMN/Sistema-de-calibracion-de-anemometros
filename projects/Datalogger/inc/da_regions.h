@@ -130,7 +130,8 @@ extern void KeepAlive();
 
 /*Region de config Socket and FTP*/
 
-extern bool_t opConfigSOCKET();
+extern bool_t opConfigSocketControl();
+extern bool_t opConfigSocketData();
 extern bool_t opConfigFTPSocket();
 
 /*Region de Transmision*/

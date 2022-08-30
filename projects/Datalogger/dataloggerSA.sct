@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_2s6_oNtyEeyHZqpmACSfBQ" specification="import:&quot;inc/da_regions.h&quot;&#xA;/*Datalogger para Sistema anemométrico con EDU-CIAA-NXP */&#xA;/* Using Time Events (Timer Ticks) */&#xA;interface:&#xA;//Todas esta operaciones se van a volver funciones en da_sa_aux, igual las va usar &#xA;//la maquina de estados pero tengo mas&#xA;//libertad para usar los tipos de datos&#xA;&#xA;//Variable interna voltaje&#xA;var viVoltajeMuestra: real32_t&#xA;//Puntero Correspodiente&#xA;var ptrVoltajeMuestra: ptrReal32_t&#xA;//Variable interna Viento declarada en da_sa_aux.h&#xA;var viSizeStringToSend: uint32_t&#xA;var ptrSizeStringToSend: ptrUint32_t&#xA;//Acumular en un array los datos a procesar&#xA;//utilizar  punteros&#xA;var viTeclaOprim: uint16_t&#xA;&#xA;var NumMuestra: uint16_t =0&#xA;var ptrNumMuestra: ptrUnt16_t&#xA;&#xA;var i: uint16_t =0&#xA;var cantDatosProcesado: int32_t =0&#xA;var ptrCantDatosProcesado:ptrInt32_t&#xA;&#xA;var redGRPSConnect: uint8_t =FALSE&#xA;var ConfigFtpOK: uint8_t=FALSE&#xA;&#xA;var redSocketConnect: uint8_t = FALSE&#xA;var ConfigFtpSocket: uint8_t=FALSE&#xA;&#xA;var buffertempLleno: uint8_t = TRUE&#xA;var TransmisionExitosa: uint8_t=FALSE&#xA;&#xA;&#xA;/*A futuro esta funcion puede ser RS485DataSensor(ASCII, NMEA, MODBUS, etc) , mas generico*/&#xA; &#xA;//Led RGB para la comunicacion&#xA;const LEDR: uint16_t = 0&#xA;const LEDG: uint16_t = 1&#xA;const LEDB: uint16_t = 2&#xA;//Led para adquisición, Procesamiento y almacenamiento&#xA;const LED1: uint16_t = 3 // adquisición&#xA;const LED2: uint16_t = 4 // Procesamiento&#xA;const LED3: uint16_t = 5 // almacenamiento&#xA;&#xA;const LED_ON: booleano_t = true&#xA;const LED_OFF: booleano_t = false&#xA;const TRUE: uint8_t =1&#xA;const FALSE: uint8_t =0&#xA;&#xA;const Tec1: uint16_t = 1&lt;&lt;0&#xA;const Tec2: uint16_t = 1&lt;&lt;1&#xA;const Tec3: uint16_t = 1&lt;&lt;2&#xA;const Tec4: uint16_t = 1&lt;&lt;3&#xA;&#xA;const DelayGprsInit: uint16_t = 5&#xA;const IntervaloMuestra: uint16_t = 10&#xA;const IntervaloTabla: uint16_t &#x9;= 30&#xA;const StatusTrue: uint8_t = TRUE&#xA;const StatusFalse: uint8_t = FALSE&#xA;&#xA;&#xA;&#xA;&#xA;internal:&#xA;&#xA;//En forma interna tengo señales para vincular las maquinas de estado&#xA;&#xA;//el evento siTitilarLED le manda una señal a la maquina que sigue&#xA;&#xA;&#xA;event siDatosListosParaFTP&#xA;event siReconfigurarGRPS&#xA;event siReconfigurarSocket&#xA;event siDatoProcesado&#xA;event siProcesamientoOk&#xA;event siDatosRemanentesParaFTP&#xA;event siMuestrasNuevas&#xA;event siNoSignal_noFtp&#xA;event siAlmacenarTemp&#xA;&#xA;&#xA;&#xA;" name="dataloggerSA" domainID="com.yakindu.domain.c">
+  <sgraph:Statechart xmi:id="_2s6_oNtyEeyHZqpmACSfBQ" specification="import:&quot;inc/da_regions.h&quot;&#xA;/*Datalogger para Sistema anemométrico con EDU-CIAA-NXP */&#xA;/* Using Time Events (Timer Ticks) */&#xA;interface:&#xA;//Todas esta operaciones se van a volver funciones en da_sa_aux, igual las va usar &#xA;//la maquina de estados pero tengo mas&#xA;//libertad para usar los tipos de datos&#xA;&#xA;//Variable interna voltaje&#xA;var viVoltajeMuestra: real32_t&#xA;//Puntero Correspodiente&#xA;var ptrVoltajeMuestra: ptrReal32_t&#xA;//Variable interna Viento declarada en da_sa_aux.h&#xA;var viSizeStringToSend: uint32_t&#xA;var ptrSizeStringToSend: ptrUint32_t&#xA;//Acumular en un array los datos a procesar&#xA;//utilizar  punteros&#xA;var viTeclaOprim: uint16_t&#xA;&#xA;var NumMuestra: uint16_t =0&#xA;var ptrNumMuestra: ptrUnt16_t&#xA;&#xA;var i: uint16_t =0&#xA;var cantDatosProcesado: int32_t =0&#xA;var ptrCantDatosProcesado:ptrInt32_t&#xA;&#xA;var redGRPSConnect: uint8_t =FALSE&#xA;var ConfigFtpOK: uint8_t=FALSE&#xA;&#xA;var redSocketConnect: uint8_t = FALSE&#xA;var ConfigFtpSocket: uint8_t=FALSE&#xA;var ConfigSocketData: uint8_t=FALSE&#xA;&#xA;var buffertempLleno: uint8_t = TRUE&#xA;var TransmisionExitosa: uint8_t=FALSE&#xA;&#xA;&#xA;/*A futuro esta funcion puede ser RS485DataSensor(ASCII, NMEA, MODBUS, etc) , mas generico*/&#xA; &#xA;//Led RGB para la comunicacion&#xA;const LEDR: uint16_t = 0&#xA;const LEDG: uint16_t = 1&#xA;const LEDB: uint16_t = 2&#xA;//Led para adquisición, Procesamiento y almacenamiento&#xA;const LED1: uint16_t = 3 // adquisición&#xA;const LED2: uint16_t = 4 // Procesamiento&#xA;const LED3: uint16_t = 5 // almacenamiento&#xA;&#xA;const LED_ON: booleano_t = true&#xA;const LED_OFF: booleano_t = false&#xA;const TRUE: uint8_t =1&#xA;const FALSE: uint8_t =0&#xA;&#xA;const Tec1: uint16_t = 1&lt;&lt;0&#xA;const Tec2: uint16_t = 1&lt;&lt;1&#xA;const Tec3: uint16_t = 1&lt;&lt;2&#xA;const Tec4: uint16_t = 1&lt;&lt;3&#xA;&#xA;const DelayGprsInit: uint16_t = 5&#xA;const IntervaloMuestra: uint16_t = 10&#xA;const IntervaloTabla: uint16_t &#x9;= 30&#xA;const StatusTrue: uint8_t = TRUE&#xA;const StatusFalse: uint8_t = FALSE&#xA;&#xA;&#xA;&#xA;&#xA;internal:&#xA;&#xA;//En forma interna tengo señales para vincular las maquinas de estado&#xA;&#xA;//el evento siTitilarLED le manda una señal a la maquina que sigue&#xA;&#xA;&#xA;event siDatosListosParaFTP&#xA;event siReconfigurarGRPS&#xA;event siReconfigurarSocket&#xA;event siDatoProcesado&#xA;event siProcesamientoOk&#xA;event siDatosRemanentesParaFTP&#xA;event siMuestrasNuevas&#xA;event siNoSignal_noFtp&#xA;event siAlmacenarTemp&#xA;&#xA;&#xA;&#xA;" name="dataloggerSA" domainID="com.yakindu.domain.c">
     <regions xmi:id="_W39uUNt0EeyHZqpmACSfBQ" name="Muestreo Bateria">
       <vertices xsi:type="sgraph:Entry" xmi:id="_ERMlgPGDEeykSvcSIt4NWw">
         <outgoingTransitions xmi:id="_yVqGwPTUEeykSvcSIt4NWw" specification="" target="_v0zTkPTUEeykSvcSIt4NWw"/>
@@ -74,7 +74,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_SjyT8hpgEe2NDqO2Wx_vaw" specification="entry / ptrCantDatosProcesado = cantDatosProcesado.pointer;&#xD;&#xA;TransmisionExitosa=TransmitirFTPViaEthernet(ptrSizeStringToSend,ptrCantDatosProcesado)&#xD;&#xA;&#xD;&#xA;//Aca tengo que ver cuantos datos hay almacenados en el buffer &#xD;&#xA;//y tratar de enviar todo en funcion de la cantidad que me permite&#xD;&#xA;// el SIM800L , y liberar el contador en esa cantidad" name="TX_VIA_SOCKET_TO_FTP" incomingTransitions="_rkjXwBpiEe2NDqO2Wx_vaw">
         <outgoingTransitions xmi:id="_YOP8UBpgEe2NDqO2Wx_vaw" specification="[TransmisionExitosa == StatusFalse]/raise siReconfigurarSocket" target="_etAJ0PriEeyNme-ktDxjrA"/>
-        <outgoingTransitions xmi:id="_aKlbQBpiEe2NDqO2Wx_vaw" specification="[TransmisionExitosa == StatusTrue]/cantDatosProcesado+=1" target="_YuzpQPPgEeyzR7iz7i6iZQ"/>
+        <outgoingTransitions xmi:id="_aKlbQBpiEe2NDqO2Wx_vaw" specification="[TransmisionExitosa == StatusTrue]/cantDatosProcesado+=1;raise siReconfigurarSocket" target="_YuzpQPPgEeyzR7iz7i6iZQ"/>
       </vertices>
     </regions>
     <regions xmi:id="_UXlxYPPgEeyzR7iz7i6iZQ" name="ConfigPortadoraAndFtp">
@@ -104,15 +104,15 @@
       </vertices>
     </regions>
     <regions xmi:id="_YNxAsBpLEe2NDqO2Wx_vaw" name="ConfigFTPSocket">
-      <vertices xsi:type="sgraph:State" xmi:id="_uFLZIBpLEe2NDqO2Wx_vaw" name="IDLE" incomingTransitions="_uFY0URpLEe2NDqO2Wx_vaw">
+      <vertices xsi:type="sgraph:State" xmi:id="_uFLZIBpLEe2NDqO2Wx_vaw" name="IDLE" incomingTransitions="_hvJgsCiLEe2hvue-qxRrTA">
         <outgoingTransitions xmi:id="_uFL_8hpLEe2NDqO2Wx_vaw" specification="siReconfigurarSocket" target="_uFlBgBpLEe2NDqO2Wx_vaw"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_uFY0QBpLEe2NDqO2Wx_vaw" specification="entry/ ConfigFtpSocket = opConfigFTPSocket()&#xD;&#xA;//;ConfigFtpOK = true" name="CONFIG_FTP_SOCKET" incomingTransitions="_uFlooBpLEe2NDqO2Wx_vaw _uFx10xpLEe2NDqO2Wx_vaw">
-        <outgoingTransitions xmi:id="_uFY0URpLEe2NDqO2Wx_vaw" specification="[ConfigFtpSocket == StatusTrue]" target="_uFLZIBpLEe2NDqO2Wx_vaw"/>
+        <outgoingTransitions xmi:id="_uFY0URpLEe2NDqO2Wx_vaw" specification="[ConfigFtpSocket == StatusTrue]" target="_idY8MCiKEe2hvue-qxRrTA"/>
         <outgoingTransitions xmi:id="_uFZbVRpLEe2NDqO2Wx_vaw" specification="after 1 s[ConfigFtpSocket == StatusFalse]" target="_uFx10BpLEe2NDqO2Wx_vaw"/>
         <outgoingTransitions xmi:id="_uFZbXhpLEe2NDqO2Wx_vaw" specification="siReconfigurarSocket" target="_uFlBgBpLEe2NDqO2Wx_vaw"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_uFlBgBpLEe2NDqO2Wx_vaw" specification="entry/ redSocketConnect= opConfigSOCKET()&#xD;&#xA;// Si logre obtener portadora pongo redGRPSConnect en true" name="CONFIG_ETHERNET_SOCKET" incomingTransitions="_uFL_8hpLEe2NDqO2Wx_vaw _uFyc4RpLEe2NDqO2Wx_vaw _uFZbXhpLEe2NDqO2Wx_vaw">
+      <vertices xsi:type="sgraph:State" xmi:id="_uFlBgBpLEe2NDqO2Wx_vaw" specification="entry/ redSocketConnect= opConfigSocketControl()&#xD;&#xA;// Si logre obtener portadora pongo redGRPSConnect en true" name="CONFIG_ETHERNET_SOCKET_CTRL" incomingTransitions="_uFL_8hpLEe2NDqO2Wx_vaw _uFyc4RpLEe2NDqO2Wx_vaw _uFZbXhpLEe2NDqO2Wx_vaw">
         <outgoingTransitions xmi:id="_uFlooBpLEe2NDqO2Wx_vaw" specification="[redSocketConnect == StatusTrue]" target="_uFY0QBpLEe2NDqO2Wx_vaw"/>
         <outgoingTransitions xmi:id="_uFlophpLEe2NDqO2Wx_vaw" specification="after 1 s [redSocketConnect == StatusFalse]" target="_uFx11hpLEe2NDqO2Wx_vaw"/>
       </vertices>
@@ -127,6 +127,13 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_uFyc5BpLEe2NDqO2Wx_vaw" name="INIT" incomingTransitions="_uFxOwRpLEe2NDqO2Wx_vaw">
         <outgoingTransitions xmi:id="_uFyc5xpLEe2NDqO2Wx_vaw" specification="always" target="_uFx11hpLEe2NDqO2Wx_vaw"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_idY8MCiKEe2hvue-qxRrTA" specification="entry/ ConfigSocketData = opConfigSocketData()" name="CONFIG_ETHERNET_SOCKET_DATA" incomingTransitions="_uFY0URpLEe2NDqO2Wx_vaw _WQokECiNEe29W8bSTm95jg">
+        <outgoingTransitions xmi:id="_hvJgsCiLEe2hvue-qxRrTA" specification="[ConfigSocketData == StatusTrue]" target="_uFLZIBpLEe2NDqO2Wx_vaw"/>
+        <outgoingTransitions xmi:id="_MRT0MCiNEe29W8bSTm95jg" specification="after 1 s[ConfigSocketData == StatusFalse]" target="_TxNUQCiNEe29W8bSTm95jg"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_TxNUQCiNEe29W8bSTm95jg" name="DEBOUNCE_2" incomingTransitions="_MRT0MCiNEe29W8bSTm95jg">
+        <outgoingTransitions xmi:id="_WQokECiNEe29W8bSTm95jg" specification="always" target="_idY8MCiKEe2hvue-qxRrTA"/>
       </vertices>
     </regions>
   </sgraph:Statechart>
@@ -809,7 +816,7 @@
           <styles xsi:type="notation:FontStyle" xmi:id="_uFKx3hpLEe2NDqO2Wx_vaw"/>
           <styles xsi:type="notation:BooleanValueStyle" xmi:id="_uFKx3xpLEe2NDqO2Wx_vaw" name="isHorizontal" booleanValue="true"/>
           <styles xsi:type="notation:StringValueStyle" xmi:id="_uFKx4BpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_uFKx4RpLEe2NDqO2Wx_vaw" x="274" y="566" width="153" height="77"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_uFKx4RpLEe2NDqO2Wx_vaw" x="295" y="823" width="153" height="77"/>
         </children>
         <children xmi:id="_uFKx4hpLEe2NDqO2Wx_vaw" type="State" element="_uFY0QBpLEe2NDqO2Wx_vaw">
           <children xsi:type="notation:DecorationNode" xmi:id="_uFKx4xpLEe2NDqO2Wx_vaw" type="StateName">
@@ -891,7 +898,7 @@
           <styles xsi:type="notation:FontStyle" xmi:id="_uFLY-hpLEe2NDqO2Wx_vaw"/>
           <styles xsi:type="notation:BooleanValueStyle" xmi:id="_uFLY-xpLEe2NDqO2Wx_vaw" name="isHorizontal" booleanValue="true"/>
           <styles xsi:type="notation:StringValueStyle" xmi:id="_uFLY_BpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_uFLY_RpLEe2NDqO2Wx_vaw" x="527" y="268"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_uFLY_RpLEe2NDqO2Wx_vaw" x="549" y="277"/>
         </children>
         <children xmi:id="_uFLY_hpLEe2NDqO2Wx_vaw" type="State" element="_uFx11hpLEe2NDqO2Wx_vaw">
           <children xsi:type="notation:DecorationNode" xmi:id="_uFLY_xpLEe2NDqO2Wx_vaw" type="StateName">
@@ -937,10 +944,48 @@
           <styles xsi:type="notation:StringValueStyle" xmi:id="_uFLZHhpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
           <layoutConstraint xsi:type="notation:Bounds" xmi:id="_uFLZHxpLEe2NDqO2Wx_vaw" x="81" y="18"/>
         </children>
+        <children xmi:id="_ifAFwCiKEe2hvue-qxRrTA" type="State" element="_idY8MCiKEe2hvue-qxRrTA">
+          <children xsi:type="notation:DecorationNode" xmi:id="_ifBT4CiKEe2hvue-qxRrTA" type="StateName">
+            <styles xsi:type="notation:ShapeStyle" xmi:id="_ifBT4SiKEe2hvue-qxRrTA"/>
+            <layoutConstraint xsi:type="notation:Location" xmi:id="_ifBT4iiKEe2hvue-qxRrTA"/>
+          </children>
+          <children xsi:type="notation:Compartment" xmi:id="_ifB68CiKEe2hvue-qxRrTA" type="StateTextCompartment">
+            <children xsi:type="notation:Shape" xmi:id="_ifB68SiKEe2hvue-qxRrTA" type="StateTextCompartmentExpression" fontName="Verdana" lineColor="4210752">
+              <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ifB68iiKEe2hvue-qxRrTA"/>
+            </children>
+          </children>
+          <children xsi:type="notation:Compartment" xmi:id="_ifDJECiKEe2hvue-qxRrTA" type="StateFigureCompartment"/>
+          <styles xsi:type="notation:ShapeStyle" xmi:id="_ifAFwSiKEe2hvue-qxRrTA" fontName="Verdana" fillColor="15981773" lineColor="12632256"/>
+          <styles xsi:type="notation:FontStyle" xmi:id="_ifAFwiiKEe2hvue-qxRrTA"/>
+          <styles xsi:type="notation:BooleanValueStyle" xmi:id="_ifDJESiKEe2hvue-qxRrTA" name="isHorizontal" booleanValue="true"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_ifAFwyiKEe2hvue-qxRrTA" x="274" y="593" width="246" height="83"/>
+        </children>
+        <children xmi:id="_TxMtMCiNEe29W8bSTm95jg" type="State" element="_TxNUQCiNEe29W8bSTm95jg">
+          <children xsi:type="notation:DecorationNode" xmi:id="_TxMtMSiNEe29W8bSTm95jg" type="StateName">
+            <styles xsi:type="notation:ShapeStyle" xmi:id="_TxMtMiiNEe29W8bSTm95jg"/>
+            <styles xsi:type="notation:StringValueStyle" xmi:id="_TxMtMyiNEe29W8bSTm95jg" name="featureToShow" stringValue="specification"/>
+            <layoutConstraint xsi:type="notation:Location" xmi:id="_TxMtNCiNEe29W8bSTm95jg"/>
+          </children>
+          <children xsi:type="notation:Compartment" xmi:id="_TxMtNSiNEe29W8bSTm95jg" type="StateTextCompartment">
+            <children xsi:type="notation:Shape" xmi:id="_TxMtNiiNEe29W8bSTm95jg" type="StateTextCompartmentExpression" fontName="Verdana" lineColor="4210752">
+              <styles xsi:type="notation:StringValueStyle" xmi:id="_TxMtNyiNEe29W8bSTm95jg" name="featureToShow" stringValue="specification"/>
+              <layoutConstraint xsi:type="notation:Bounds" xmi:id="_TxMtOCiNEe29W8bSTm95jg"/>
+            </children>
+            <styles xsi:type="notation:StringValueStyle" xmi:id="_TxMtOSiNEe29W8bSTm95jg" name="featureToShow" stringValue="specification"/>
+          </children>
+          <children xsi:type="notation:Compartment" xmi:id="_TxMtOiiNEe29W8bSTm95jg" type="StateFigureCompartment">
+            <styles xsi:type="notation:StringValueStyle" xmi:id="_TxMtOyiNEe29W8bSTm95jg" name="featureToShow" stringValue="specification"/>
+          </children>
+          <styles xsi:type="notation:ShapeStyle" xmi:id="_TxMtPCiNEe29W8bSTm95jg" fontName="Verdana" fillColor="15981773" lineColor="12632256"/>
+          <styles xsi:type="notation:FontStyle" xmi:id="_TxMtPSiNEe29W8bSTm95jg"/>
+          <styles xsi:type="notation:BooleanValueStyle" xmi:id="_TxMtPiiNEe29W8bSTm95jg" name="isHorizontal" booleanValue="true"/>
+          <styles xsi:type="notation:StringValueStyle" xmi:id="_TxMtPyiNEe29W8bSTm95jg" name="featureToShow" stringValue="specification"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_TxMtQCiNEe29W8bSTm95jg" x="610" y="523"/>
+        </children>
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_YNy15BpLEe2NDqO2Wx_vaw"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_YNyO0RpLEe2NDqO2Wx_vaw" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_YNyO0hpLEe2NDqO2Wx_vaw" x="1455" y="395" width="845" height="788"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_YNyO0hpLEe2NDqO2Wx_vaw" x="1444" y="384" width="848" height="1076"/>
     </children>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_2s7mt9tyEeyHZqpmACSfBQ" name="inlineDefinitionSection"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_2s7muNtyEeyHZqpmACSfBQ"/>
@@ -1331,18 +1376,18 @@
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFyc8xpLEe2NDqO2Wx_vaw" id="(0.4545519919459226,0.936)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFyc9BpLEe2NDqO2Wx_vaw" id="(0.5276204905581875,0.125)"/>
     </edges>
-    <edges xmi:id="_uFyc9RpLEe2NDqO2Wx_vaw" type="Transition" element="_uFY0URpLEe2NDqO2Wx_vaw" source="_uFKx4hpLEe2NDqO2Wx_vaw" target="_uFKx0RpLEe2NDqO2Wx_vaw">
+    <edges xmi:id="_uFyc9RpLEe2NDqO2Wx_vaw" type="Transition" element="_uFY0URpLEe2NDqO2Wx_vaw" source="_uFKx4hpLEe2NDqO2Wx_vaw" target="_ifAFwCiKEe2hvue-qxRrTA">
       <children xsi:type="notation:DecorationNode" xmi:id="_uFyc9hpLEe2NDqO2Wx_vaw" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_uFyc9xpLEe2NDqO2Wx_vaw"/>
         <styles xsi:type="notation:StringValueStyle" xmi:id="_uFyc-BpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_uFyc-RpLEe2NDqO2Wx_vaw" x="-35" y="33"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_uFyc-RpLEe2NDqO2Wx_vaw" x="-14" y="-117"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_uFyc-hpLEe2NDqO2Wx_vaw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_uFyc-xpLEe2NDqO2Wx_vaw" fontName="Verdana"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_uFyc_BpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_uFyc_RpLEe2NDqO2Wx_vaw" points="[0, 0, 32, -223]$[0, 160, 32, -63]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFyc_hpLEe2NDqO2Wx_vaw" id="(0.5682536866440844,1.0)"/>
-      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFyc_xpLEe2NDqO2Wx_vaw" id="(0.43137254901960786,0.8831168831168831)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFyc_xpLEe2NDqO2Wx_vaw" id="(0.43089430894308944,0.060240963855421686)"/>
     </edges>
     <edges xmi:id="_uFzD8BpLEe2NDqO2Wx_vaw" type="Transition" element="_uFxOwRpLEe2NDqO2Wx_vaw" source="_uFLY4BpLEe2NDqO2Wx_vaw" target="_uFLZDxpLEe2NDqO2Wx_vaw">
       <children xsi:type="notation:DecorationNode" xmi:id="_uFzD8RpLEe2NDqO2Wx_vaw" type="TransitionExpression">
@@ -1374,12 +1419,12 @@
       <children xsi:type="notation:DecorationNode" xmi:id="_uFzEBxpLEe2NDqO2Wx_vaw" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_uFzECBpLEe2NDqO2Wx_vaw"/>
         <styles xsi:type="notation:StringValueStyle" xmi:id="_uFzECRpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_uFzEChpLEe2NDqO2Wx_vaw" x="-122" y="-38"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_uFzEChpLEe2NDqO2Wx_vaw" x="-122" y="-73"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_uFzECxpLEe2NDqO2Wx_vaw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_uFzEDBpLEe2NDqO2Wx_vaw" fontName="Verdana"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_uFzEDRpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_uFzEDhpLEe2NDqO2Wx_vaw" points="[206, 72, 112, 1]$[341, 72, 247, 1]$[341, -33, 247, -104]$[146, -33, 52, -104]$[146, 0, 52, -71]"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_uFzEDhpLEe2NDqO2Wx_vaw" points="[261, 46, -64, 78]$[491, 46, 166, 78]$[491, -110, 166, -78]$[319, -110, -6, -78]$[319, -38, -6, -6]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFzEDxpLEe2NDqO2Wx_vaw" id="(0.22577389106295456,0.0)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFzEEBpLEe2NDqO2Wx_vaw" id="(0.3055555555555556,0.1320754716981132)"/>
     </edges>
@@ -1392,7 +1437,7 @@
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_uFzEFhpLEe2NDqO2Wx_vaw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_uFzEFxpLEe2NDqO2Wx_vaw" fontName="Verdana"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_uFzEGBpLEe2NDqO2Wx_vaw" name="featureToShow" stringValue="specification"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_uFzEGRpLEe2NDqO2Wx_vaw" points="[0, 0, 96, 486]$[-230, 0, -134, 486]$[-230, -460, -134, 26]$[-96, -460, 0, 26]"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_uFzEGRpLEe2NDqO2Wx_vaw" points="[0, 0, 117, 743]$[-230, 0, -113, 743]$[-230, -742, -113, 1]$[-117, -742, 0, 1]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFzEGhpLEe2NDqO2Wx_vaw" id="(0.0,0.6363636363636364)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_uFzEGxpLEe2NDqO2Wx_vaw" id="(0.002405036994422871,0.19171084337349398)"/>
     </edges>
@@ -1498,6 +1543,39 @@
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_rkl0ARpiEe2NDqO2Wx_vaw" points="[-1, -55, -290, -179]$[331, -55, 42, -179]$[331, 116, 42, -8]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_rkoQQBpiEe2NDqO2Wx_vaw" id="(0.6666666666666666,1.0)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_rkoQQRpiEe2NDqO2Wx_vaw" id="(0.050590219224283306,0.06666666666666667)"/>
+    </edges>
+    <edges xmi:id="_hvKu0CiLEe2hvue-qxRrTA" type="Transition" element="_hvJgsCiLEe2hvue-qxRrTA" source="_ifAFwCiKEe2hvue-qxRrTA" target="_uFKx0RpLEe2NDqO2Wx_vaw">
+      <children xsi:type="notation:DecorationNode" xmi:id="_hvLV4SiLEe2hvue-qxRrTA" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_hvLV4iiLEe2hvue-qxRrTA"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_hvLV4yiLEe2hvue-qxRrTA"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_hvKu0SiLEe2hvue-qxRrTA" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_hvLV4CiLEe2hvue-qxRrTA" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_hvKu0iiLEe2hvue-qxRrTA" points="[-57, 0, 4, -165]$[-57, 152, 4, -13]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_hvMkACiLEe2hvue-qxRrTA" id="(0.6991869918699187,1.0)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_hvMkASiLEe2hvue-qxRrTA" id="(0.5816993464052288,0.18181818181818182)"/>
+    </edges>
+    <edges xmi:id="_MRW3gCiNEe29W8bSTm95jg" type="Transition" element="_MRT0MCiNEe29W8bSTm95jg" source="_ifAFwCiKEe2hvue-qxRrTA" target="_TxMtMCiNEe29W8bSTm95jg">
+      <children xsi:type="notation:DecorationNode" xmi:id="_MRYFoCiNEe29W8bSTm95jg" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_MRYFoSiNEe29W8bSTm95jg"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_MRYFoiiNEe29W8bSTm95jg" x="-99" y="2"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_MRW3gSiNEe29W8bSTm95jg" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_MRXekCiNEe29W8bSTm95jg" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_MRW3giiNEe29W8bSTm95jg" points="[0, -10, -192, 89]$[227, -10, 35, 89]$[227, -165, 35, -66]$[132, -165, -60, -66]$[132, -119, -60, -20]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_MRah4CiNEe29W8bSTm95jg" id="(1.0,0.6385542168674698)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_MRah4SiNEe29W8bSTm95jg" id="(0.9807692307692307,0.43396226415094336)"/>
+    </edges>
+    <edges xmi:id="_WQpLICiNEe29W8bSTm95jg" type="Transition" element="_WQokECiNEe29W8bSTm95jg" source="_TxMtMCiNEe29W8bSTm95jg" target="_ifAFwCiKEe2hvue-qxRrTA">
+      <children xsi:type="notation:DecorationNode" xmi:id="_WQpyMSiNEe29W8bSTm95jg" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_WQpyMiiNEe29W8bSTm95jg"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_WQpyMyiNEe29W8bSTm95jg" y="10"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_WQpLISiNEe29W8bSTm95jg" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_WQpyMCiNEe29W8bSTm95jg" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_WQpLIiiNEe29W8bSTm95jg" points="[0, 0, 163, -66]$[-159, 66, 4, 0]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_WQrAUCiNEe29W8bSTm95jg" id="(0.0,0.6226415094339622)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_WQrAUSiNEe29W8bSTm95jg" id="(0.7804878048780488,0.012048192771084338)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>
