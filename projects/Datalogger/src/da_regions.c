@@ -48,7 +48,8 @@ bool_t opConfigSOCKET(){
 	char dbuf[550];
 	long ret = 0;
 	uint8_t dat[500];
-//	Configurar Cliente
+
+	//	Configurar Cliente
 	setIMR(0x00);
 	//Reset registers
 	setIMR(MR_RST);
@@ -63,100 +64,61 @@ bool_t opConfigSOCKET(){
 	getSIPR(IPLocal1);
 
 
-
+	//Configurar Socket de control para el FTP
 //	ftpc_init(IPLocal);
 //	ftpc_run(auxiliarBuffer);
 
 	setSn_MR(CTRL_SOCK_FTP, Sn_MR_TCP);
-//	delay(500);
 	setSn_PORT(CTRL_SOCK_FTP,PortLocal);
-//	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_OPEN);
-//	delay(500);
-//
-//	//Conecto al FTP
+//Conecto al FTP
 	setSn_DIPR(CTRL_SOCK_FTP, _FTP_destip);
-//	delay(500);
 	setSn_DPORT(CTRL_SOCK_FTP, _FTP_destport);
-//	delay(500);
-
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
 
-	delay(2000);
-
-
-//		socket(CTRL_SOCK_FTP, Sn_MR_TCP, FTP_destport, 0x0);
-//	connect(CTRL_SOCK_FTP, FTP_destip, FTP_destport))
-
+	delay(10); // Necesario para recibir respuestas
 
 	uint8_t ret1 = getSn_MR(CTRL_SOCK_FTP);
-	delay(500);
 	uint16_t ret2 = getSn_PORT(CTRL_SOCK_FTP);
-	delay(500);
 //	uint8_t ret3 = getSn_CR(CTRL_SOCK_FTP);
 	uint16_t ret4 = getSn_DPORT(CTRL_SOCK_FTP);
-	delay(500);
 	uint8_t ret5 = getSn_SR(CTRL_SOCK_FTP);
-	delay(500);
+
 
 	sprintf(dat,"USER %s\r\n",USER);
 	send(CTRL_SOCK_FTP, dat, strlen(dat));
-//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"PASS %s\r\n",PASS);
 	send(CTRL_SOCK_FTP, dat, strlen(dat));
-//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"PASV\r\n"); // Pasive mode
 	send(CTRL_SOCK_FTP, dat, strlen(dat));
-//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"TYPE A\r\n"); //Ascii mode
 	send(CTRL_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"CWD %s\r\n",PATH); //Eligo la ruta
 	send(CTRL_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"STOR %s\r\n", "Prueba.txt");
 	send(CTRL_SOCK_FTP,dat, strlen(dat));
-	delay(500);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
-//	sprintf(dat,"/%s", "como estas?");
-//	send(CTRL_SOCK_FTP,dat, strlen(dat));
-//	delay(500);
-//	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
-//	while(getSn_CR(CTRL_SOCK_FTP));
-
-	delay(500);
+	delay(10);//Necesario para recibir una respuesta del Server
 	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
-	delay(500);
 
-/*Hasta ahora logre acceder al FTP, ahora ver como se hace para poner
- * Path dirección
- * Nombre de archivo con extension
- * datos del archivo en ascii
- * Revisar si hay delays inecesarios
- * */
-
-
-	//Recibo MSJ del server e imprimo
+	//Recibo MSJ del socket de control e imprimo
 	memset(dbuf, 0, _MAX_SS);
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(CTRL_SOCK_FTP,dbuf,size);
@@ -168,36 +130,28 @@ bool_t opConfigSOCKET(){
 		printf("Bad port syntax\r\n");
 	}
 
+	//Configurar Socket de control para el FTP
+
 	setSn_MR(DATA_SOCK_FTP, Sn_MR_TCP);
-//	delay(500);
 	setSn_PORT(DATA_SOCK_FTP,PortLocal);
-//	delay(500);
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_OPEN);
-//	delay(500);
 //
 //	//Conecto al FTP
 	setSn_DIPR(DATA_SOCK_FTP, remoteIp);
-//	delay(500);
 	setSn_DPORT(DATA_SOCK_FTP, remotePort);
-//	delay(500);
-
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_CONNECT);
 
-	delay(2000);
+	delay(10); //Necesario para recibir una respuesta del Server
 
 	ret1 = getSn_MR(DATA_SOCK_FTP);
-	delay(500);
 	ret2 = getSn_PORT(DATA_SOCK_FTP);
-	delay(500);
 //	uint8_t ret3 = getSn_CR(CTRL_SOCK_FTP);
 	ret4 = getSn_DPORT(DATA_SOCK_FTP);
-	delay(500);
 	ret5 = getSn_SR(DATA_SOCK_FTP);
-	delay(500);
+
 
 	sprintf(dat,"%s","Lo lograste, ahora vamos por mas Flaque"); //Eligo la ruta
 	send(DATA_SOCK_FTP, dat, strlen(dat));
-	delay(500);
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(DATA_SOCK_FTP));
 
@@ -205,7 +159,6 @@ bool_t opConfigSOCKET(){
 
 	//Recibo MSJ del server e imprimo
 	size = getSn_RX_RSR(DATA_SOCK_FTP);
-	delay(500);
 	memset(dbuf, 0, _MAX_SS);
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(DATA_SOCK_FTP,dbuf,size);
@@ -261,6 +214,13 @@ bool_t opConfigSOCKET(){
 	return ERROR;
 }
 bool_t opConfigFTPSocket(){
+
+
+
+
+
+
+
 	return ERROR;
 }
 
