@@ -280,6 +280,7 @@ int8_t connect(uint8_t sn, uint8_t * addr, uint16_t port)
 	delay(1500);
    while(getSn_CR(sn));
    if(sock_io_mode & (1<<sn)) return SOCK_BUSY;
+   delay(1500);
    while(getSn_SR(sn) != SOCK_ESTABLISHED)
    {
 		if (getSn_IR(sn) & Sn_IR_TIMEOUT)

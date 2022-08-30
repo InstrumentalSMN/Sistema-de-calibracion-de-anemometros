@@ -13,10 +13,12 @@
 #include "sapi.h"
 
 
+
+
 extern real32_t maxValue(real32_t myArray[], size_t size);
 extern real32_t minValue(real32_t myArray[], size_t size);
 extern real32_t AverageValue(real32_t myArray[], size_t size);
-
+extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort);
 
 
 #endif

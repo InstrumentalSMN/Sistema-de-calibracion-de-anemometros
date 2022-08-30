@@ -7,39 +7,47 @@
 
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
-#define SOCK	1
+#define CTRL_SOCK_FTP	1
+#define DATA_SOCK_FTP	3
 #define _MAX_SS		512
 #define USER "estaut"
 #define PASS "estacionesautomaticas17"
+#define PATH "EMA_LABO_CLI/SIM800L/AnemometroAeroparque"
 
 //client information
 uint16_t PortLocal = 30001;
 uint8_t mac[6] = { 0x18, 0x66, 0xDA, 0x01, 0x02, 0x03 };
 uint8_t mac1[6];
-//uint8_t IPLocal[4] = {10,10,13,121};
-uint8_t IPLocal[4] = {192,168,0,22}; //casa
+uint8_t IPLocal[4] = {10,10,13,121};
+//uint8_t IPLocal[4] = {192,168,0,22}; //casa
 uint8_t IPLocal1[4];
-//uint8_t Gat[4] = {10,10,13,1};
-uint8_t Gat[4] = {192,168,0,1}; //casa
+uint8_t Gat[4] = {10,10,13,1};
+//uint8_t Gat[4] = {192,168,0,1}; //casa
 uint8_t Gat1[4];
 uint8_t MASKSUB[4] = {255,255,255,0};
 uint8_t MASKSUB1[4];
 
 
-////Server information
+//Server information CONTROLSOCK
 //uint8_t _FTP_destip[4] = {129,6,15,29}; //NIST NTP
-//uint8_t _FTP_destip[4] = {192,168,5,5};
+uint8_t _FTP_destip[4] = {192,168,5,5};
 //uint8_t _FTP_destip[4] = {10,10,13,157};
-uint8_t _FTP_destip[4] = {200,16,116,5};
+//uint8_t _FTP_destip[4] = {200,16,116,5};
 //uint16_t _FTP_destport = 37; //NTP port
 uint16_t _FTP_destport = 21;
+//Server information DATASOCK
+uint8_t remoteIp[4];
+uint16_t  remotePort;
+
 
 
 bool_t opConfigSOCKET(){
+	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
+	disconnect(DATA_SOCK_FTP);
 	char auxiliarBuffer[50];
 	char dbuf[550];
 	long ret = 0;
-	uint8_t dat[100];
+	uint8_t dat[500];
 //	Configurar Cliente
 	setIMR(0x00);
 	//Reset registers
@@ -59,58 +67,85 @@ bool_t opConfigSOCKET(){
 //	ftpc_init(IPLocal);
 //	ftpc_run(auxiliarBuffer);
 
-	setSn_MR(SOCK, Sn_MR_TCP);
+	setSn_MR(CTRL_SOCK_FTP, Sn_MR_TCP);
 //	delay(500);
-	setSn_PORT(SOCK,PortLocal);
+	setSn_PORT(CTRL_SOCK_FTP,PortLocal);
 //	delay(500);
-	setSn_CR(SOCK,Sn_CR_OPEN);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_OPEN);
 //	delay(500);
 //
 //	//Conecto al FTP
-	setSn_DIPR(SOCK, _FTP_destip);
+	setSn_DIPR(CTRL_SOCK_FTP, _FTP_destip);
 //	delay(500);
-	setSn_DPORT(SOCK, _FTP_destport);
+	setSn_DPORT(CTRL_SOCK_FTP, _FTP_destport);
 //	delay(500);
 
-	setSn_CR(SOCK,Sn_CR_CONNECT);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
 
 	delay(2000);
 
 
-//		socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
-//	connect(CTRL_SOCK, FTP_destip, FTP_destport))
+//		socket(CTRL_SOCK_FTP, Sn_MR_TCP, FTP_destport, 0x0);
+//	connect(CTRL_SOCK_FTP, FTP_destip, FTP_destport))
 
 
-	uint8_t ret1 = getSn_MR(SOCK);
+	uint8_t ret1 = getSn_MR(CTRL_SOCK_FTP);
 	delay(500);
-	uint16_t ret2 = getSn_PORT(SOCK);
+	uint16_t ret2 = getSn_PORT(CTRL_SOCK_FTP);
 	delay(500);
-//	uint8_t ret3 = getSn_CR(SOCK);
-	uint16_t ret4 = getSn_DPORT(SOCK);
+//	uint8_t ret3 = getSn_CR(CTRL_SOCK_FTP);
+	uint16_t ret4 = getSn_DPORT(CTRL_SOCK_FTP);
 	delay(500);
-	uint8_t ret5 = getSn_SR(SOCK);
+	uint8_t ret5 = getSn_SR(CTRL_SOCK_FTP);
 	delay(500);
 
 	sprintf(dat,"USER %s\r\n",USER);
-	wiz_send_data(SOCK, dat, strlen(dat));
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
 	delay(500);
-	setSn_CR(SOCK,Sn_CR_SEND);
-	while(getSn_CR(SOCK));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
 
 	sprintf(dat,"PASS %s\r\n",PASS);
-	wiz_send_data(SOCK, dat, strlen(dat));
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
 	delay(500);
-	setSn_CR(SOCK,Sn_CR_SEND);
-	while(getSn_CR(SOCK));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
 
-	sprintf(dat,"PASV\r\n");
-	wiz_send_data(SOCK, dat, strlen(dat));
+	sprintf(dat,"PASV\r\n"); // Pasive mode
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+//	wiz_send_data(CTRL_SOCK_FTP, dat, strlen(dat));
 	delay(500);
-	setSn_CR(SOCK,Sn_CR_SEND);
-	while(getSn_CR(SOCK));
-//	send(SOCK, (uint8_t *)dat, strlen(dat));
-	delay(1000);
-	uint16_t size = getSn_RX_RSR(SOCK);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"TYPE A\r\n"); //Ascii mode
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	delay(500);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"CWD %s\r\n",PATH); //Eligo la ruta
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	delay(500);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"STOR %s\r\n", "Prueba.txt");
+	send(CTRL_SOCK_FTP,dat, strlen(dat));
+	delay(500);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+//	sprintf(dat,"/%s", "como estas?");
+//	send(CTRL_SOCK_FTP,dat, strlen(dat));
+//	delay(500);
+//	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+//	while(getSn_CR(CTRL_SOCK_FTP));
+
+	delay(500);
+	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
 	delay(500);
 
 /*Hasta ahora logre acceder al FTP, ahora ver como se hace para poner
@@ -124,21 +159,58 @@ bool_t opConfigSOCKET(){
 	//Recibo MSJ del server e imprimo
 	memset(dbuf, 0, _MAX_SS);
 	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(SOCK,dbuf,size);
+	ret = recv(CTRL_SOCK_FTP,dbuf,size);
 	dbuf[ret] = '\0';
-	uartWriteString( UART_USB, "\r\n " );
-	uartWriteString( UART_USB, dbuf );
-	uartWriteString( UART_USB, "\r\n" );
+	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
+//	proc_ftpc((char *)dbuf);
+	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
+							//Despues probar de conectarme a ese port que me da y mandar datos
+		printf("Bad port syntax\r\n");
+	}
+
+	setSn_MR(DATA_SOCK_FTP, Sn_MR_TCP);
+//	delay(500);
+	setSn_PORT(DATA_SOCK_FTP,PortLocal);
+//	delay(500);
+	setSn_CR(DATA_SOCK_FTP,Sn_CR_OPEN);
+//	delay(500);
 //
-//	uint8_t ret5 = getSn_SR(SOCK);
-//	connect(CTRL_SOCK, FTP_destip, FTP_destport)
-//	// see status register
-////	setSn_DIPR(CTRL_SOCK, FTP_destip);
-//	setSn_CR(CTRL_SOCK,0x02);
-//
-//	setGAR(FTP_ip);
-//	getGAR(FTP_ip);
-//
+//	//Conecto al FTP
+	setSn_DIPR(DATA_SOCK_FTP, remoteIp);
+//	delay(500);
+	setSn_DPORT(DATA_SOCK_FTP, remotePort);
+//	delay(500);
+
+	setSn_CR(DATA_SOCK_FTP,Sn_CR_CONNECT);
+
+	delay(2000);
+
+	ret1 = getSn_MR(DATA_SOCK_FTP);
+	delay(500);
+	ret2 = getSn_PORT(DATA_SOCK_FTP);
+	delay(500);
+//	uint8_t ret3 = getSn_CR(CTRL_SOCK_FTP);
+	ret4 = getSn_DPORT(DATA_SOCK_FTP);
+	delay(500);
+	ret5 = getSn_SR(DATA_SOCK_FTP);
+	delay(500);
+
+	sprintf(dat,"%s","Lo lograste, ahora vamos por mas Flaque"); //Eligo la ruta
+	send(DATA_SOCK_FTP, dat, strlen(dat));
+	delay(500);
+	setSn_CR(DATA_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(DATA_SOCK_FTP));
+
+
+
+	//Recibo MSJ del server e imprimo
+	size = getSn_RX_RSR(DATA_SOCK_FTP);
+	delay(500);
+	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(DATA_SOCK_FTP,dbuf,size);
+	dbuf[ret] = '\0';
+	printf("Rcvd Command for dataSock: %s\r\n", dbuf);
 
 	floatToString(_FTP_destip[0],auxiliarBuffer,0);
 	uartWriteString( UART_USB, "\r\n ServerFTP \t" );
@@ -169,15 +241,17 @@ bool_t opConfigSOCKET(){
 	uartWriteString( UART_USB, auxiliarBuffer );
 	uartWriteString( UART_USB, "\r\n" );
 	/*-------------------------------*/
-
-	setSn_CR(SOCK,Sn_CR_DISCON); //Fundamental desconectame si salgo con ERROR
+	disconnect(CTRL_SOCK_FTP);
+	disconnect(DATA_SOCK_FTP);
+//	setSn_CR(SOCK,Sn_CR_DISCON); //Fundamental desconectame si salgo con ERROR
+	//close(SOCK);
 
 //	char auxiliarBuffer[7];
 //	int8_t retSocket;
 //	uint8_t ret;
-//	retSocket = socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
-//	ret = getSn_MR(CTRL_SOCK);
-////	ret = getSn_SR(CTRL_SOCK);
+//	retSocket = socket(CTRL_SOCK_FTP, Sn_MR_TCP, FTP_destport, 0x0);
+//	ret = getSn_MR(CTRL_SOCK_FTP);
+////	ret = getSn_SR(CTRL_SOCK_FTP);
 //	floatToString(ret,auxiliarBuffer,0);
 //	uartWriteString( UART_USB, "\r\n" );
 ////	uartWriteString( UART_USB, "Respuesta Socket\r\n" );

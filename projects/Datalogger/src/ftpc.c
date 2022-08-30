@@ -32,6 +32,7 @@ void ftpc_init(uint8_t * src_ip)
 	local_port = 5000;
 	strcpy(ftpc.workingdir, "/");
 	socket(CTRL_SOCK, Sn_MR_TCP, FTP_destport, 0x0);
+
 }
 uint8_t ftpc_run(uint8_t * dbuf)
 {
