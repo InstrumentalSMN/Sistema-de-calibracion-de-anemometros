@@ -51,8 +51,8 @@ char dbuf[550];
 
 bool_t opConfigSocketControl(){
 
-	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
-	disconnect(DATA_SOCK_FTP);
+//	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
+//	disconnect(DATA_SOCK_FTP);
 	//	Configurar Cliente
 	setIMR(0x00);
 	//Reset registers
@@ -247,11 +247,11 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(DATA_SOCK_FTP));
 
-//	disconnect(CTRL_SOCK_FTP);
-//	disconnect(DATA_SOCK_FTP);
-	gpioWrite( LEDB, ON );
+	disconnect(CTRL_SOCK_FTP);
+	disconnect(DATA_SOCK_FTP);
+	gpioWrite( LEDG, ON );
 	delay(1000);
-	gpioWrite( LEDB, OFF );
+	gpioWrite( LEDG, OFF );
 	return OK;
 }
 
@@ -466,6 +466,7 @@ void opProceso( uint32_t * size){
 
 bool_t opConfigGPRS(){
 	gpioWrite( LED1, OFF );
+	gpioWrite( LED2, OFF );
 	uartWriteString( UART_USB, "ConfiguroGPRS\r\n");
 //	uartConfig( UART_232, 115200 );
 //	uartWriteString( UART_232, "AT+FTPPUT=2,0");
@@ -551,7 +552,7 @@ bool_t opConfigGPRS(){
 	return OK;
 }
 bool_t opConfigFTP(){
-	gpioWrite( LED2, OFF );
+
 	uartWriteString( UART_USB, "ConfiguroFTP\r\n");
 	uartConfig( UART_232, 115200 );
 	uint8_t dato = 1;
@@ -741,7 +742,7 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 
 	uartWriteString( UART_232, aux );/*Pido enviar *size elementos*/
 	uartWriteString( UART_232, "\n");
-	delay(10000);//Importante esperara acá
+	delay(11000);//Importante esperara acá
 	if(dato == '4'){
 		//gpioWrite( LED2, ON );
 		//uartWriteByte( UART_USB, dato);
@@ -768,7 +769,7 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 	uartWriteString( UART_USB, "\r\n");
 
 
-
+	delay(500);
 	uartConfig( UART_232, 115200 );
 	uartWriteString( UART_USB, "AT+FTPPUT=2,0" );
 	uartWriteString( UART_USB, "\r\n");
@@ -779,15 +780,15 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
 
-//	if(dato != '0'){
-//		//gpioWrite( LED3, ON );
-//		//uartWriteByte( UART_USB, dato);
-//		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-//		uartWriteString( UART_USB, "No pude cerrarRespuesta de AT\r\n");
-//		uartWriteByte( UART_USB, dato);
-//		uartWriteString( UART_USB, "\r\n");
-//		return ERROR;
-//	}
+	if(dato != '0'){
+		//gpioWrite( LED3, ON );
+		//uartWriteByte( UART_USB, dato);
+		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
+		uartWriteString( UART_USB, "No pude cerrarRespuesta de AT\r\n");
+		uartWriteByte( UART_USB, dato);
+		uartWriteString( UART_USB, "\r\n");
+		return ERROR;
+	}
 	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
 	gpioWrite( LEDB, ON );
 	delay(1000);
