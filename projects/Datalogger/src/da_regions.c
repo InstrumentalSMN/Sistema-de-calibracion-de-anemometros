@@ -483,7 +483,8 @@ bool_t opConfigGPRS(){
 	uint8_t dato = 1;
 	uartWriteString( UART_232, "AT");
 	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(1000);
+
+	delay(300);
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
@@ -536,7 +537,7 @@ bool_t opConfigGPRS(){
 
 	uartWriteString( UART_232, "AT+SAPBR=1,1");
 	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(1000);
+	delay(300);
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
@@ -771,7 +772,7 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 
 	uartWriteString( UART_232, aux );/*Pido enviar *size elementos*/
 	uartWriteString( UART_232, "\n");
-	delay(11000);//Importante esperara acá
+	delay(500);//Importante esperara acá
 	if(dato == '4'){
 		//gpioWrite( LED2, ON );
 		//uartWriteByte( UART_USB, dato);
@@ -798,13 +799,13 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 	uartWriteString( UART_USB, "\r\n");
 
 
-	delay(500);
+	delay(300);
 	uartConfig( UART_232, 115200 );
 	uartWriteString( UART_USB, "AT+FTPPUT=2,0" );
 	uartWriteString( UART_USB, "\r\n");
 	uartWriteString( UART_232, "AT+FTPPUT=2,0");
 	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
-	delay(2000);
+	delay(300);
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
@@ -818,13 +819,13 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 		uartWriteString( UART_USB, "\r\n");
 		return ERROR;
 	}
-	delay(500);
+//	delay(500);
 	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
 	uartWriteString( UART_USB, "AT+SAPBR=0,1 respuesta" );
 	uartWriteString( UART_USB, "\r\n");
 	uartWriteString( UART_232, "AT+SAPBR=0,1");
 	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
-	delay(500);
+	delay(300);
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
@@ -839,7 +840,7 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 //		return ERROR;
 //	}
 	gpioWrite( LEDB, ON );
-	delay(1000);
+	delay(500);
 	gpioWrite( LEDB, OFF );
 	return OK;
 
