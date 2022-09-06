@@ -114,6 +114,7 @@ void boardInit(void)
       gpioInit( LED1, GPIO_OUTPUT );
       gpioInit( LED2, GPIO_OUTPUT );
       gpioInit( LED3, GPIO_OUTPUT );
+      gpioInit( GPIO2, GPIO_OUTPUT );
 
       //#error EDU-CIAA-NXP
 

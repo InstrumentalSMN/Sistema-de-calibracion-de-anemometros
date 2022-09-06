@@ -132,6 +132,7 @@ int main(void) {
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
 	boardConfig();
+	gpioWrite( GPIO2, ON );
 //	init SPI0
 	MySpi_Wiz_Init(SPI0);
 
