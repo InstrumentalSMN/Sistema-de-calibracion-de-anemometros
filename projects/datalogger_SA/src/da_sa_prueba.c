@@ -1,28 +1,13 @@
 #include "da_sa_prueba.h"
+#include "auxiliar.h"
 
 
-void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n, real32_t * DataDeltaOhm){
 
-	//Esta función es de la biblioteca sapi.h, ver como esta implementada
-	gpioWrite( (LEDR + LEDNumber), State );
-	*n +=2;/*inicializo acá el putero*/
-	if((*n) > 4){
-		gpioWrite( LEDB, State );
-	}
-	if((*n) > 7){
-		gpioWrite( LEDR, State );
-	}
-	if((*n) > 10){
-		gpioWrite( LEDG, State );
-	}
-	DataDeltaOhm[0] += 1;
-	DataDeltaOhm[1] += 2;
-	DataDeltaOhm[2] += 3;
-}
+void _opLEDprint(uint16_t LEDNumber,  BOOL_8 State){
 
-void _opLEDprint(uint16_t LEDNumber,  BOOL_8 State, real32_t * DataDeltaOhm){
-
-
+	real32_t DataDeltaOhm[] = {NAN,NAN,NAN};
+	MisDatas[0] = 1996;
+	MisDatas[1] = 1996;
 	gpioWrite( (LEDR + LEDNumber), State );
 	_opParceo(DataDeltaOhm);
 
@@ -31,6 +16,11 @@ void _opLEDprint(uint16_t LEDNumber,  BOOL_8 State, real32_t * DataDeltaOhm){
 void _opParceo(real32_t * DataDeltaOhm){
 
 	static char uartBuff[20];
+	DataDeltaOhm[0] =128;
+	DataDeltaOhm[1] =192;
+	DataDeltaOhm[2] =0;
+
+	uartWriteString( UART_USB, "\r\n Imprimo mis datas pasado por argumento al statechart \r\n" );
 	floatToString(DataDeltaOhm[0],uartBuff,2);
 	uartWriteString( UART_USB, uartBuff );
 	uartWriteString( UART_USB, "\r\n" );
@@ -40,6 +30,19 @@ void _opParceo(real32_t * DataDeltaOhm){
 	floatToString(DataDeltaOhm[2],uartBuff,2);
 	uartWriteString( UART_USB, uartBuff );
 	uartWriteString( UART_USB, "\r\n" );
+	MisDatas[1] = 1586;
+
+	uartWriteString( UART_USB, "\r\n Imprimo mis datas del .h \r\n" );
+	floatToString(MisDatas[0],uartBuff,2);
+	uartWriteString( UART_USB, uartBuff );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(MisDatas[1],uartBuff,2);
+	uartWriteString( UART_USB, uartBuff );
+	uartWriteString( UART_USB, "\r\n" );
+	floatToString(MisDatas[2],uartBuff,2);
+	uartWriteString( UART_USB, uartBuff );
+	uartWriteString( UART_USB, "\r\n" );
+
 
 
 }

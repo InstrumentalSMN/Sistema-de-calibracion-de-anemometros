@@ -138,7 +138,7 @@ typedef void (*callBackFuncPtr_t)(void *);
 bool_t sAPI_NullFuncPtr(void *);
 
 /* Estructuras*/
-#define NAN  -99999 //No hay dato
+
 typedef struct{
 	 real32_t Intensidad;
 	 real32_t Direccion;
@@ -156,15 +156,15 @@ typedef uint16_t* ptrUnt16_t;
 typedef dataWind_t* ptrDataWind_t;
 
 //Se comporta como una variable global para la maquina de estados, esto es genial ya que conserva su estado
-static  real32_t MisDatas[] = {NAN,NAN,NAN}; // el0,ele1,ele2,
+
 
 
 
 /*==================Prototipos=========================*/
 
-extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n, real32_t * DataDeltaOhm );
 
-extern void _opLEDprint(uint16_t LEDNumber,  BOOL_8 State, real32_t * DataDeltaOhm);
+
+extern void _opLEDprint(uint16_t LEDNumber,  BOOL_8 State);
 
 extern void _opParceo(real32_t * DataDeltaOhm);
 

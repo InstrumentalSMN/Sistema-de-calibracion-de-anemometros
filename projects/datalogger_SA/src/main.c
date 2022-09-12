@@ -17,6 +17,7 @@
 #include "Datalogger_SA.h"
 #include "TimerTicks.h"
 
+
 /*==================Yo defino[macros and definitions]=================================*/
 
 #define TICKRATE_1MS	(1)				/* 1000 ticks per second */
@@ -100,7 +101,7 @@ int main(void) {
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
 	boardConfig();
-	uartConfig( UART_USB, 115200 );
+	uartConfig( UART_USB, 9600 );
 	/* Init Ticks counter => TICKRATE_MS */
 	tickConfig( TICKRATE_MS );
 
@@ -112,6 +113,7 @@ int main(void) {
 	InitTimerTicks( ticks, NOF_TIMERS );
 
 	/* Statechart Initialization */
+	MisDatas[2] = 1996;
 	datalogger_SA_init(&statechart);
 	datalogger_SA_enter( &statechart );
 	/* LED state is toggled in the main program */

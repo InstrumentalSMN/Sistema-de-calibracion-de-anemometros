@@ -1,14 +1,7 @@
-/*
- * main.h
- *
- *  Created on: 12 may. 2022
- *      Author: Zozimo
- */
-
-/* Copyright 2017, Pablo Ridolfi, Juan Esteban Alarcón, Juan Manuel Cruz
+/* Copyright 2015, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of Workspace.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,42 +28,29 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+/* Date: 2015-09-23 */
 
-/** \addtogroup statechart Simple UML Statechart example.
- ** @{ */
+#ifndef _AUXILIAR_H_
+#define _AUXILIAR_H_
 
 /*==================[inclusions]=============================================*/
 
-/*==================[cplusplus]==============================================*/
+#include <stdbool.h>
+#include <stdint.h>
+#include "chip.h"
+#include "board.h"
+#include "sapi_boards.h"
+#include "sapi.h"
+#define NAN  -99999 //No hay dato
+static  real32_t MisDatas[] = {NAN,NAN,NAN}; // el0,ele1,ele2,
 
-#ifdef __cplusplus
-extern "C" {
+
+
+
+/*==================Prototipos=========================*/
+
+extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n, real32_t * DataDeltaOhm );
+
 #endif
-#include "auxiliar.h"
-/*==================[macros]=================================================*/
-
-/*==================[typedef]================================================*/
-
-/*==================[external data declaration]==============================*/
-
-/*==================[external functions declaration]=========================*/
-
-/** @brief main function
- * @return main function should never return
- */
-int main(void);
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-}
-#endif
-
-/** @} doxygen end group definition */
-/*==================[end of file]============================================*/
-#endif /* #ifndef _MAIN_H_ */

@@ -113,7 +113,7 @@ static void uartProcessIRQ( uartMap_t uart )
    if(status & UART_LSR_RDR) { // uartRxReady
       // Execute callback
       if( ( uart == UART_GPIO ) && (rxIsrCallbackUART0 != 0) )
-         (*rxIsrCallbackUART0)(0);
+         (*rxIsrCallbackUART0)(rxIsrCallbackUART0Params); //Cambie esto en teoria ahora puedo enviar argumentos !!
 
       if( ( uart == UART_USB )  && (rxIsrCallbackUART2 != 0) )
          (*rxIsrCallbackUART2)(0);

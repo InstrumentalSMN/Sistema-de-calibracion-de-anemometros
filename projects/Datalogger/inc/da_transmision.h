@@ -11,14 +11,29 @@
 #include "board.h"
 #include "sapi_boards.h"
 #include "sapi.h"
-#include "sapi_datatypes.h"
-
-
-//extern bool_t opConfigGPRS();
-//extern bool_t opConfigFTP();
+#include "sapi_uart.h"
+#include "common.h"
+#include "../inc/da_processing.h"
 
 
 
+/*Region de config GPRS and FTP*/
+
+extern void resetGRPS();
+extern bool_t opConfigGPRS();
+extern bool_t opConfigFTP();
+//extern void KeepAlive();
+
+/*Region de config Socket and FTP*/
+
+extern bool_t opConfigSocketControl();
+extern bool_t opConfigSocketData();
+extern bool_t opConfigFTPSocket();
+extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort);
+
+/*Region de Transmision*/
+extern bool_t TransmitirFTPViaGPRS(uint32_t * size, int32_t * NumberMesuare);
+extern bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare);
 
 #endif
 
