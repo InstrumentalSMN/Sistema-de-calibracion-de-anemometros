@@ -1,7 +1,7 @@
 #include "../inc/da_processing.h"
 #include "../inc/da_acquisition.h"
 
-char TableToFTP[40];
+char TableToFTP[150];
 /*Region Procesamiento */
 
 void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt ){
@@ -19,6 +19,8 @@ void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt ){
 
 
 void opProceso( uint32_t * size){
+
+	uint32_t i = 0;
 	//char aux[150];
 	char miBuffer1[7];
 	char miBuffer2[7];
@@ -53,45 +55,62 @@ void opProceso( uint32_t * size){
 	float nv_bateriaMin = minValue(NvBateria,sizeof(NvBateria)/sizeof(NvBateria[0]));
 	float nv_bateriaPromedio = AverageValue(NvBateria,sizeof(NvBateria)/sizeof(NvBateria[0]));
 
-//	real32_t Tabla[16] ={	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
-//							direccionInst,direccionMin,direccionMax,direccionPromedio,
-//							presionInst,presionMin,presionMax,presionPromedio,
-//							nv_bateriaInst,nv_bateriaMin,nv_bateriaMax,nv_bateriaPromedio};
+	real32_t Tabla_10min[20] ={	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
+							direccionInst,direccionMin,direccionMax,direccionPromedio,
+							presionInst,presionMin,presionMax,presionPromedio,
+							TempInst,TempMin,TempMax,TempPromedio,
+							nv_bateriaInst,nv_bateriaMin,nv_bateriaMax,nv_bateriaPromedio};
 
 //	real32_t Tabla[4] ={	velocidadPromedio,
 //							direccionPromedio,
 //							presionPromedio,
 //							nv_bateriaPromedio};
-	if (velocidadInst == NoDato ){
-		sprintf(miBuffer1,"%s","NAN");
-	}else{
-		floatToString(velocidadInst,miBuffer1,2);
-	}
-	if (direccionInst == NoDato ){
-		sprintf(miBuffer2,"%s","NAN");
-	}else{
-		floatToString(direccionInst,miBuffer2,1);
-	}
-	if (presionInst == NoDato ){
-		sprintf(miBuffer3,"%s","NAN");
-	}else{
-		floatToString(presionInst,miBuffer3,1);
-	}
-	if (TempInst == NoDato ){
-		sprintf(miBuffer4,"%s","NAN");
-	}else{
-		floatToString(TempInst,miBuffer4,2);
-	}
-	if (nv_bateriaInst == NoDato ){
-		sprintf(miBuffer5,"%s","NAN");
-	}else{
-		floatToString(nv_bateriaInst,miBuffer5,2);
+	char * auxi = TableToFTP; //Reinicializo el apunte a la posicion 0
+	for (i = 0; i<sizeof(Tabla_10min)/sizeof(Tabla_10min[0]);i++){
+
+		if (Tabla_10min[i] == NoDato ){
+				sprintf(miBuffer1,"%s","NAN");
+			}else{
+				floatToString(Tabla_10min[i],miBuffer1,2);
+
+			}
+//		printf("\r\ncantidad de bytes %d\r\n",strlen(miBuffer1));
+		sprintf(auxi, "%s;", miBuffer1);
+		auxi = auxi + strlen(miBuffer1)+1;//hacia falta el + 1 por \0
+
 	}
 
-	sprintf(TableToFTP, "%s;%s;%s;%s;%s", miBuffer1,miBuffer2 , miBuffer3,miBuffer4,miBuffer5);
+
+//	if (velocidadInst == NoDato ){
+//		sprintf(miBuffer1,"%s","NAN");
+//	}else{
+//		floatToString(velocidadInst,miBuffer1,2);
+//	}
+//	if (direccionInst == NoDato ){
+//		sprintf(miBuffer2,"%s","NAN");
+//	}else{
+//		floatToString(direccionInst,miBuffer2,1);
+//	}
+//	if (presionInst == NoDato ){
+//		sprintf(miBuffer3,"%s","NAN");
+//	}else{
+//		floatToString(presionInst,miBuffer3,1);
+//	}
+//	if (TempInst == NoDato ){
+//		sprintf(miBuffer4,"%s","NAN");
+//	}else{
+//		floatToString(TempInst,miBuffer4,2);
+//	}
+//	if (nv_bateriaInst == NoDato ){
+//		sprintf(miBuffer5,"%s","NAN");
+//	}else{
+//		floatToString(nv_bateriaInst,miBuffer5,2);
+//	}
+//
+//	sprintf(TableToFTP, "%s;%s;%s;%s;%s", miBuffer1,miBuffer2 , miBuffer3,miBuffer4,miBuffer5);
 	//ver si va strlen
 	*size = (uint32_t)strlen(TableToFTP);
-	uartWriteString( UART_USB, "\r \n Mi tabla:-------" );
+	uartWriteString( UART_USB, "\r \n Mi tabla:-------\r\n" );
 	uartWriteString( UART_USB, TableToFTP );
 	uartWriteString( UART_USB, "\r \n" );
 //	gpioWrite( LED3, ON );

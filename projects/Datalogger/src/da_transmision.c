@@ -238,7 +238,7 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 	while(getSn_CR(CTRL_SOCK_FTP));
 
 
-	uartWriteString( UART_USB, "\r \n Mi tabla por ethernet:-------" );
+	uartWriteString( UART_USB, "\r \n Mi tabla por ethernet:-------\r\n" );
 	uartWriteString( UART_USB, TableToFTP );
 	uartWriteString( UART_USB, "\r \n" );
 
