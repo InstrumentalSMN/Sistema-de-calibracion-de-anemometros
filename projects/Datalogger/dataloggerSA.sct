@@ -29,10 +29,10 @@
     </regions>
     <regions xmi:id="_-xBDEPNGEeykSvcSIt4NWw" name="Procesamiento">
       <vertices xsi:type="sgraph:State" xmi:id="_AlDMmPNHEeykSvcSIt4NWw" specification="entry/ &#xD;&#xA;ptrNumMuestra =  NumMuestra.pointer;&#xD;&#xA;opAcumular(ptrNumMuestra,ptrVoltajeMuestra);&#xD;&#xA;NumMuestra +=1&#xD;&#xA;" name="ACUMULO_MUESTRAS" incomingTransitions="_eRBXEPNQEeykSvcSIt4NWw">
-        <outgoingTransitions xmi:id="_AlDMm_NHEeykSvcSIt4NWw" specification="[NumMuestra>=(IntervaloTabla/IntervaloMuestra)]&#xD;&#xA;/NumMuestra=0" target="_AlIFAPNHEeykSvcSIt4NWw"/>
+        <outgoingTransitions xmi:id="_AlDMm_NHEeykSvcSIt4NWw" specification="[NumMuestra>=(IntervaloTabla/IntervaloMuestra)]&#xD;&#xA;" target="_AlIFAPNHEeykSvcSIt4NWw"/>
         <outgoingTransitions xmi:id="_uby8kPNQEeykSvcSIt4NWw" specification="always" target="_cP2wkPNQEeykSvcSIt4NWw"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_AlIFAPNHEeykSvcSIt4NWw" specification="entry / ptrSizeStringToSend = viSizeStringToSend.pointer;&#xD;&#xA;opProceso( ptrSizeStringToSend)&#xD;&#xA;//;opGuardoEnMemoria() // Los datos quedan almacenados aca, seria la nandFlash&#xD;&#xA;&#xD;&#xA;exit/ raise siDatoProcesado// Copio el dato en un buffer de donde se enviaran los datos al FP&#xD;&#xA;&#xD;&#xA;//Memoriza en una estructura cola&#xD;&#xA;//Guarda en la cola y enviar el ultimo, tener una marca de cual fue el ultimo que  pudo salir a espera datos" name="PROCESO_y_ALMACENO" incomingTransitions="_AlDMm_NHEeykSvcSIt4NWw">
+      <vertices xsi:type="sgraph:State" xmi:id="_AlIFAPNHEeykSvcSIt4NWw" specification="entry / ptrSizeStringToSend = viSizeStringToSend.pointer;ptrNumMuestra =  NumMuestra.pointer;&#xD;&#xA;opProceso( ptrSizeStringToSend,ptrNumMuestra);NumMuestra=0&#xD;&#xA;//;opGuardoEnMemoria() // Los datos quedan almacenados aca, seria la nandFlash&#xD;&#xA;&#xD;&#xA;exit/ raise siDatoProcesado// Copio el dato en un buffer de donde se enviaran los datos al FP&#xD;&#xA;&#xD;&#xA;//Memoriza en una estructura cola&#xD;&#xA;//Guarda en la cola y enviar el ultimo, tener una marca de cual fue el ultimo que  pudo salir a espera datos" name="PROCESO_y_ALMACENO" incomingTransitions="_AlDMm_NHEeykSvcSIt4NWw">
         <outgoingTransitions xmi:id="_isZ9QPNQEeykSvcSIt4NWw" specification="always" target="_cP2wkPNQEeykSvcSIt4NWw"/>
       </vertices>
       <vertices xsi:type="sgraph:Entry" xmi:id="_EDykQPNHEeykSvcSIt4NWw">
@@ -316,7 +316,7 @@
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_-xCRMfNGEeykSvcSIt4NWw" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_QlHlUPPgEeyzR7iz7i6iZQ" name="featureToShow" stringValue="specification"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_-xCRMvNGEeykSvcSIt4NWw" x="-66" y="-86" width="882" height="626"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_-xCRMvNGEeykSvcSIt4NWw" x="-80" y="-65" width="882" height="626"/>
     </children>
     <children xmi:id="_74f-wPP_EeyzR7iz7i6iZQ" type="Region" element="_74eJkPP_EeyzR7iz7i6iZQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_74f-w_P_EeyzR7iz7i6iZQ" type="RegionName">

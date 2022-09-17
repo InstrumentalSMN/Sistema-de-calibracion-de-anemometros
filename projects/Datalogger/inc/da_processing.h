@@ -22,6 +22,7 @@ static real32_t AcumPresion[100];
 static real32_t AcumTemp[100];
 static real32_t NvBateria[100];
 
+
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
 extern char TableToFTP[150];
@@ -31,7 +32,8 @@ extern char TableToFTP[150];
 
 
 extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt);
-extern void opProceso( uint32_t * size);
+//extern void opProceso( uint32_t * size);
+extern void opProceso( uint32_t * size, uint16_t * NumMuestra);
 
 
 
