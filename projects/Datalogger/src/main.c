@@ -137,7 +137,7 @@ int main(void) {
 	MySpi_Wiz_Init(SPI0);
 
 	//uartConfig( UART_485, 9600 );
-	uartConfig( UART_USB, 9600 );
+	uartConfig( UART_USB, 115200 );
 	//uartWriteString( UART_USB, "Inicio");
 	//uartConfig( UART_485, 9600 );
 	/* Init Ticks counter => TICKRATE_MS */

@@ -19,7 +19,8 @@
 uint16_t PortLocal = 30001;
 uint8_t mac[6] = { 0x18, 0x66, 0xDA, 0x01, 0x02, 0x03 };
 uint8_t mac1[6];
-uint8_t IPLocal[4] = {10,10,13,121};
+//uint8_t IPLocal[4] = {10,10,13,121};
+uint8_t IPLocal[4] = {10,10,13,70}; // IP EMA instrumental
 //uint8_t IPLocal[4] = {192,168,0,22}; //casa
 uint8_t IPLocal1[4];
 uint8_t Gat[4] = {10,10,13,1};
@@ -536,7 +537,8 @@ bool_t opConfigFTP(){
 
 
 	gpioWrite( LED2, ON );/*FTP Config ok*/
-	return OK;
+	return ERROR;
+//	return OK;
 }
 
 
