@@ -1,5 +1,7 @@
 #include "../inc/da_processing.h"
 #include "../inc/da_acquisition.h"
+#include "../inc/da_rtc.h"
+#include "sapi_rtc.h"
 
 char TableToFTP[150];
 //char TableToFTP2[10000];
@@ -121,6 +123,13 @@ void opProceso( uint32_t * size, uint16_t * NumMuestra){
 	uartWriteString( UART_USB, "\r \n Mi tabla:-------\r\n" );
 	uartWriteString( UART_USB, TableToFTP );
 	uartWriteString( UART_USB, "\r \n" );
+	rtcRead( &rtc ); // en la variable de estructura rtc te queda la fecha/hora actual
+
+// Envio por UART de forma humanamente legible
+// %02d == %d y ademas completa con 2 0 a izquierda
+	printf( "%02d/%02d/%04d, %02d:%02d:%02d\r\n",
+			rtc.mday, rtc.month, rtc.year,
+			rtc.hour, rtc.min, rtc.sec );
 //	gpioWrite( LED3, ON );
 //	size_t size = sizeof(Tabla)/sizeof(Tabla[0]);
 //	stringToSentToFTP = converTableToStringToSend(Tabla,size);

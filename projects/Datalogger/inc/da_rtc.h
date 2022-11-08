@@ -17,8 +17,12 @@
 
 static char bufferRtc[100]; //Buffer donde guardamos el string del DeltaOhm
 static char * ptrBufferRtc = bufferRtc; // un puntero global que apunta a Buffer
-extern uint16_t gmsDatetime[10];
+extern uint16_t gmsDatetime[100];
+extern rtc_t rtc;
 extern bool_t opSetRtcViaGsm();
+extern bool_t MyParserToDatetimeGsm(char * bufferRtc);
+
+
 
 extern bool_t opConfigNtpSocket();
 extern bool_t opConfigNTP();
