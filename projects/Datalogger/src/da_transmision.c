@@ -537,8 +537,8 @@ bool_t opConfigFTP(){
 
 
 	gpioWrite( LED2, ON );/*FTP Config ok*/
-	return ERROR;
-//	return OK;
+//	return ERROR;
+	return OK;
 }
 
 
