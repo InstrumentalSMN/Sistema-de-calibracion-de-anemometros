@@ -78,28 +78,37 @@ void opProceso( uint32_t * size, uint16_t * NumMuestra){
 
 
 
-
-
 	//Armo el string con los datos medidos
 	char * auxi = TableToFTP; //Reinicializo el apunte a la posicion 0
-	floatToString(rtc.year,miBuffer1,0);
-	sprintf(auxi, "%s-", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
-	floatToString(rtc.month,miBuffer1,0);
-	sprintf(auxi, "%s-", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
-	floatToString(rtc.mday,miBuffer1,0);
-	sprintf(auxi, "%s ", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
-	floatToString(rtc.hour,miBuffer1,0);
-	sprintf(auxi, "%s:", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
-	floatToString(rtc.min,miBuffer1,0);
-	sprintf(auxi, "%s:", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
-	floatToString(rtc.sec,miBuffer1,0);
-	sprintf(auxi, "%s,", miBuffer1);
-	auxi = auxi + strlen(miBuffer1)+1;
+	rtcRead( &rtc );
+	sprintf( auxi,"%02d-%02d-%04d,%02d:%02d:%02d,",
+	              rtc.mday, rtc.month, rtc.year,
+	              rtc.hour, rtc.min, rtc.sec);
+	printf("%f",strlen(auxi));
+	auxi = auxi + strlen(auxi);
+
+
+
+
+
+//	floatToString(rtc.year,miBuffer1,0);
+//	sprintf(auxi, "%s-", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
+//	floatToString(rtc.month,miBuffer1,0);
+//	sprintf(auxi, "%s-", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
+//	floatToString(rtc.mday,miBuffer1,0);
+//	sprintf(auxi, "%s ", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
+//	floatToString(rtc.hour,miBuffer1,0);
+//	sprintf(auxi, "%s:", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
+//	floatToString(rtc.min,miBuffer1,0);
+//	sprintf(auxi, "%s:", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
+//	floatToString(rtc.sec,miBuffer1,0);
+//	sprintf(auxi, "%s,", miBuffer1);
+//	auxi = auxi + strlen(miBuffer1)+1;
 //	printf("\nFecha------------------------%s\n",miBuffer1);
 
 	//Armo el string con los datos medidos

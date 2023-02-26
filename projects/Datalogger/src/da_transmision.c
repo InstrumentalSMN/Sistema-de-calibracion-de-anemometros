@@ -1,5 +1,6 @@
 #include "../inc/da_processing.h"//Funciones estadisticas
 #include "../inc/da_transmision.h"
+#include "../inc/da_rtc.h"
 #include "socket.h"
 #include "w5100.h"
 //#include "my_spi.h"
@@ -58,10 +59,9 @@ bool_t opConfigSocketControl(){
 //	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
 //	disconnect(DATA_SOCK_FTP);
 	//	Configurar Cliente
-	setIMR(0x00);
-	//Reset registers
-	setIMR(MR_RST);
-	uint8_t registroModo = getIMR();
+	uint8_t registroModo = getMR();
+	setMR(MR_RST);
+	registroModo = getMR();
 	setGAR(Gat);
 	getGAR(Gat1);
 	setSHAR(mac);
@@ -238,8 +238,15 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
+	// en la variable de estructura rtc te queda la fecha/hora actual
 
-	uartWriteString( UART_USB, "\r \n Mi tabla por ethernet:-------\r\n" );
+	      // Envio por UART de forma humanamente legible
+	      // %02d == %d y ademas completa con 2 0 a izquierda
+
+	rtcRead( &rtc );
+	printf( "\r \n Hora de transmisión: %02d/%02d/%04d, %02d:%02d:%02d\r\n",
+		              rtc.mday, rtc.month, rtc.year,
+		              rtc.hour, rtc.min, rtc.sec );
 	uartWriteString( UART_USB, TableToFTP );
 	uartWriteString( UART_USB, "\r \n" );
 
@@ -302,11 +309,12 @@ void resetGRPS(){
 
 	gpioWrite( GPIO2, OFF );
 	//	printf("\r\n entro");
-	delay(1000);
+	delay(2000);
 	gpioWrite( GPIO2, ON );
-
+//	delay(1000);
 	gpioWrite( LED1, OFF );
 	gpioWrite( LED2, OFF );
+
 }
 
 
@@ -400,7 +408,8 @@ bool_t opConfigGPRS(){
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
 	gpioWrite( LED1, ON );/*GPRS Config OK*/
-	return OK;
+//	return OK;
+	return ERROR;
 }
 
 
@@ -677,18 +686,18 @@ bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
 		resetGRPS();
 		return ERROR;
 	}
-	delay(500);
+	delay(300);
 	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
 	uartWriteString( UART_USB, "AT+SAPBR=0,1 respuesta" );
 	uartWriteString( UART_USB, "\r\n");
 	uartWriteString( UART_232, "AT+SAPBR=0,1");
 	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
-	delay(500);
+	delay(300);
 	uartReadByte( UART_232, &dato );
 	uartWriteByte( UART_USB, dato);
 	uartWriteString( UART_USB, "\r\n");
 
-//	if(dato != '0'){
+//	if(dato != '+' || dato != '0' ){
 //		//gpioWrite( LED3, ON );
 //		//uartWriteByte( UART_USB, dato);
 //		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
