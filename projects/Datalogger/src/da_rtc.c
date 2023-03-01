@@ -115,11 +115,11 @@ bool_t opSetRtcViaNtpViaTCP(){
 
 	if (MyParserToDatetimeNTP(BufferDayTime) == ERROR){  //pasar esta funcion a socket.h o daregion.h
 							//Despues probar de conectarme a ese port que me da y mandar datos
-		printf("No pude obtener la hora por GSM\r\n");
+		printf("No pude obtener la hora por Ethernet\r\n");
 		return ERROR;
 	}else{
 		//Setear el RTC con los datos parseados
-		printf("Si pude obtener la hora por GSM: %s \r\n",ntpDatetime);
+		printf("Si pude obtener la hora por Ethernet: %s \r\n",ntpDatetime);
 		// Completar estructura RTC
 		rtc.year = ntpDatetime[0];
 		rtc.month = (uint8_t)ntpDatetime[1];

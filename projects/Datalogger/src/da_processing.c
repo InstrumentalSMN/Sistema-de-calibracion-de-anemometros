@@ -10,11 +10,15 @@ char TableToFTP[150];
 
 void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt ){
 	static char auxiliarBuffer[100];
+//	printf("muestra numero: %04d",*NumMuestra);
+	rtcRead( &rtc );
+	printf( "%02d/%02d/%04d, %02d:%02d:%02d\r\n",rtc.mday, rtc.month, rtc.year,rtc.hour, rtc.min, rtc.sec );
 	AcumIntensidad[*NumMuestra] = DataDeltaOhm[0];
 	AcumDireccion[*NumMuestra] = DataDeltaOhm[1];
 	AcumPresion[*NumMuestra] = DataDeltaOhm[2];
 	AcumTemp[*NumMuestra] = DataDeltaOhm[3];
 	NvBateria[*NumMuestra] = *MuestraVolt;
+
 //	uartWriteString( UART_USB, "Presion-------------------:" );
 //	floatToString(AcumDireccion[*NumMuestra],auxiliarBuffer,2);
 //	uartWriteString( UART_USB, auxiliarBuffer );
