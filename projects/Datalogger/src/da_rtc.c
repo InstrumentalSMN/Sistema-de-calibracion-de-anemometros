@@ -119,7 +119,7 @@ bool_t opSetRtcViaNtpViaTCP(){
 		return ERROR;
 	}else{
 		//Setear el RTC con los datos parseados
-		printf("Si pude obtener la hora por Ethernet: %s \r\n",ntpDatetime);
+		printf("Si pude obtener la hora por Ethernet:\r\n");
 		// Completar estructura RTC
 		rtc.year = ntpDatetime[0];
 		rtc.month = (uint8_t)ntpDatetime[1];
@@ -130,7 +130,7 @@ bool_t opSetRtcViaNtpViaTCP(){
 		rtc.sec= (uint8_t)ntpDatetime[5];
 		rtcInit();
 		rtcWrite( &rtc );
-//		disconnect(SOCK_NTP);
+		close(SOCK_NTP);
 		return OK;
 	}
 

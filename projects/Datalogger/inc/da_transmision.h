@@ -15,7 +15,8 @@
 #include "common.h"
 #include "../inc/da_processing.h"
 
-
+#define CTRL_SOCK_FTP	1
+#define DATA_SOCK_FTP	3
 
 /*Region de config GPRS and FTP*/
 
@@ -28,7 +29,12 @@ extern bool_t opConfigFTP();
 
 extern bool_t opConfigSocketControl();
 extern bool_t opConfigSocketData();
+extern bool_t opCheckSocketData();
+extern bool_t opSetSocketData();
+
 extern bool_t opConfigFTPSocket();
+extern void opSetFTPSocket();
+extern bool_t opParametersFTPSocket();
 extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort);
 
 /*Region de Transmision*/

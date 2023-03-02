@@ -7,8 +7,7 @@
 
 
 
-#define CTRL_SOCK_FTP	1
-#define DATA_SOCK_FTP	3
+
 #define _MAX_SS		512
 #define USER "estaut"
 #define PASS "estacionesautomaticas17"
@@ -55,7 +54,8 @@ char dbuf[550];
 bool_t opConfigSocketControl(){
 
 
-
+	close(DATA_SOCK_FTP);
+	close(CTRL_SOCK_FTP);
 //	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
 //	disconnect(DATA_SOCK_FTP);
 	//	Configurar Cliente
@@ -79,12 +79,12 @@ bool_t opConfigSocketControl(){
 	setSn_MR(CTRL_SOCK_FTP, Sn_MR_TCP);
 	setSn_PORT(CTRL_SOCK_FTP,PortLocal);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_OPEN);
-	delay(10); // Necesario para recibir respuestas
+//	delay(5); // Necesario para recibir respuestas
 	ret1 = getSn_MR(CTRL_SOCK_FTP);
 	ret2 = getSn_PORT(CTRL_SOCK_FTP);
 	ret5 = getSn_SR(CTRL_SOCK_FTP);
 	if(ret5 != SOCK_INIT){
-		disconnect(CTRL_SOCK_FTP);
+		close(CTRL_SOCK_FTP);
 		return ERROR;
 	}
 
@@ -97,9 +97,74 @@ bool_t opConfigFTPSocket(){
 	setSn_DPORT(CTRL_SOCK_FTP, _FTP_destport);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
 
-	delay(10); // Necesario para recibir respuestas
+	delay(2000); // Necesario para recibir respuestas
 	ret4 = getSn_DPORT(CTRL_SOCK_FTP);
 	ret5 = getSn_SR(CTRL_SOCK_FTP);
+//	delay(2000);
+//	ret5 = getSn_SR(CTRL_SOCK_FTP);
+	if(ret5 != SOCK_ESTABLISHED){
+		close(CTRL_SOCK_FTP);
+		return ERROR;
+		//gpioWrite( LED2, ON );
+	}
+	sprintf(dat,"USER %s\r\n",USER);
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"PASS %s\r\n",PASS);
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"PASV\r\n"); // Pasive mode
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"TYPE A\r\n"); //Ascii mode
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+	sprintf(dat,"CWD %s\r\n",PATH); //Eligo la ruta
+	send(CTRL_SOCK_FTP, dat, strlen(dat));
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
+	while(getSn_CR(CTRL_SOCK_FTP));
+
+//	floatToString(_FTP_destip_Local[0],auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n ServerFTP \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret4,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\nDestPort \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret5,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n StatusRegister \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+
+	return OK;
+}
+
+
+
+
+void opSetFTPSocket(){
+	//Conecto al FTP
+	setSn_DIPR(CTRL_SOCK_FTP, _FTP_destip_Local);
+	setSn_DPORT(CTRL_SOCK_FTP, _FTP_destport);
+	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
+
+}
+// Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
+bool_t opParametersFTPSocket(){
+
+	ret4 = getSn_DPORT(CTRL_SOCK_FTP);
+	ret5 = getSn_SR(CTRL_SOCK_FTP);
+	//	delay(2000);
+	//	ret5 = getSn_SR(CTRL_SOCK_FTP);
 	if(ret5 != SOCK_ESTABLISHED){
 		disconnect(CTRL_SOCK_FTP);
 		return ERROR;
@@ -130,26 +195,27 @@ bool_t opConfigFTPSocket(){
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(CTRL_SOCK_FTP));
 
-	floatToString(_FTP_destip_Local[0],auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\n ServerFTP \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret4,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\nDestPort \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret5,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\n StatusRegister \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
+	//	floatToString(_FTP_destip_Local[0],auxiliarBuffer,0);
+	//	uartWriteString( UART_USB, "\r\n ServerFTP \t" );
+	//	uartWriteString( UART_USB, auxiliarBuffer );
+	//	uartWriteString( UART_USB, "\r\n" );
+	//	floatToString(ret4,auxiliarBuffer,0);
+	//	uartWriteString( UART_USB, "\r\nDestPort \t" );
+	//	uartWriteString( UART_USB, auxiliarBuffer );
+	//	uartWriteString( UART_USB, "\r\n" );
+	//	floatToString(ret5,auxiliarBuffer,0);
+	//	uartWriteString( UART_USB, "\r\n StatusRegister \t" );
+	//	uartWriteString( UART_USB, auxiliarBuffer );
+	//	uartWriteString( UART_USB, "\r\n" );
 
 	return OK;
 }
 
+
 bool_t opConfigSocketData(){
 
 	long ret = 0;
-	delay(10);//Necesario para recibir una respuesta del Server
+//	delay(10);//Necesario para recibir una respuesta del Server
 	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
 
 	//Recibo MSJ del socket de control e imprimo
@@ -157,10 +223,12 @@ bool_t opConfigSocketData(){
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(CTRL_SOCK_FTP,dbuf,size);
 	dbuf[ret] = '\0';
-	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
+//	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
 	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
 							//Despues probar de conectarme a ese port que me da y mandar datos
 		printf("Bad port syntax\r\n");
+		close(DATA_SOCK_FTP);
+		close(CTRL_SOCK_FTP);
 		return ERROR;
 	}
 
@@ -169,10 +237,10 @@ bool_t opConfigSocketData(){
 	setSn_MR(DATA_SOCK_FTP, Sn_MR_TCP);
 	setSn_PORT(DATA_SOCK_FTP,PortLocal);
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_OPEN);
-	delay(10); // Necesario para recibir respuestas
+	delay(5); // Necesario para recibir respuestas
 	ret3 = getSn_SR(DATA_SOCK_FTP);
 	if(ret3 != SOCK_INIT){
-		disconnect(DATA_SOCK_FTP);
+		close(DATA_SOCK_FTP);
 		return ERROR;
 	}
 //	//Conecto al FTP
@@ -192,38 +260,91 @@ bool_t opConfigSocketData(){
 		//gpioWrite( LED2, ON );
 	}
 	//Recibo MSJ del server e imprimo
-	size = getSn_RX_RSR(DATA_SOCK_FTP);
-	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(DATA_SOCK_FTP,dbuf,size);
-	dbuf[ret] = '\0';
-	printf("Rcvd Command for dataSock: %s\r\n", dbuf);
+//	size = getSn_RX_RSR(DATA_SOCK_FTP);
+//	memset(dbuf, 0, _MAX_SS);
+//	if(size > _MAX_SS) size = _MAX_SS - 1;
+//	ret = recv(DATA_SOCK_FTP,dbuf,size);
+//	dbuf[ret] = '\0';
+//	printf("Rcvd Command for dataSock: %s\r\n", dbuf);
 
-	floatToString(ret1,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\nModo  \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret2,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\nPuerto \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret3,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\n StatusRegister init\t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret4,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\n Destination Port \t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
-	floatToString(ret5,auxiliarBuffer,0);
-	uartWriteString( UART_USB, "\r\n StatusRegister connection\t" );
-	uartWriteString( UART_USB, auxiliarBuffer );
-	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret1,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\nModo  \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret2,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\nPuerto \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret3,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n StatusRegister init\t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret4,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n Destination Port \t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
+//	floatToString(ret5,auxiliarBuffer,0);
+//	uartWriteString( UART_USB, "\r\n StatusRegister connection\t" );
+//	uartWriteString( UART_USB, auxiliarBuffer );
+//	uartWriteString( UART_USB, "\r\n" );
 
 
 
 	return OK;
 }
+
+// Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
+
+bool_t opSetSocketData(){
+	long ret = 0;
+//	delay(10);//Necesario para recibir una respuesta del Server
+	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
+
+	//Recibo MSJ del socket de control e imprimo
+	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(CTRL_SOCK_FTP,dbuf,size);
+	dbuf[ret] = '\0';
+//	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
+	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
+							//Despues probar de conectarme a ese port que me da y mandar datos
+		printf("Bad port syntax\r\n");
+		close(DATA_SOCK_FTP);
+		close(CTRL_SOCK_FTP);
+		return ERROR;
+	}
+
+	//Configurar Socket de control para el FTP
+
+	setSn_MR(DATA_SOCK_FTP, Sn_MR_TCP);
+	setSn_PORT(DATA_SOCK_FTP,PortLocal);
+	setSn_CR(DATA_SOCK_FTP,Sn_CR_OPEN);
+//	delay(5); // Necesario para recibir respuestas
+	ret3 = getSn_SR(DATA_SOCK_FTP);
+	if(ret3 != SOCK_INIT){
+		close(DATA_SOCK_FTP);
+		return ERROR;
+	}
+//	//Conecto al FTP
+	setSn_DIPR(DATA_SOCK_FTP, remoteIp);
+	setSn_DPORT(DATA_SOCK_FTP, remotePort);
+	setSn_CR(DATA_SOCK_FTP,Sn_CR_CONNECT);
+	return OK;
+}
+// Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
+bool_t opCheckSocketData(){
+	ret1 = getSn_MR(DATA_SOCK_FTP);
+	ret2 = getSn_PORT(DATA_SOCK_FTP);
+	ret4 = getSn_DPORT(DATA_SOCK_FTP);
+	ret5 = getSn_SR(DATA_SOCK_FTP);
+	if(ret5 != SOCK_ESTABLISHED){
+		close(DATA_SOCK_FTP);
+		return ERROR;
+		//gpioWrite( LED2, ON );
+	}
+	return OK;
+}
+
 
 bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 
@@ -244,11 +365,11 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 	      // %02d == %d y ademas completa con 2 0 a izquierda
 
 	rtcRead( &rtc );
-	printf( "\r \n Hora de transmisión: %02d/%02d/%04d, %02d:%02d:%02d\r\n",
+	printf( "\r \n Hora de transmision: %02d/%02d/%04d, %02d:%02d:%02d\r\n",
 		              rtc.mday, rtc.month, rtc.year,
 		              rtc.hour, rtc.min, rtc.sec );
-	uartWriteString( UART_USB, TableToFTP );
-	uartWriteString( UART_USB, "\r \n" );
+//	uartWriteString( UART_USB, TableToFTP );
+//	uartWriteString( UART_USB, "\r \n" );
 
 	char ParaEnviar[*size];
 
@@ -259,12 +380,13 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size, int32_t * NumberMesuare){
 	send(DATA_SOCK_FTP, dat, strlen(dat));
 	setSn_CR(DATA_SOCK_FTP,Sn_CR_SEND);
 	while(getSn_CR(DATA_SOCK_FTP));
-
-	disconnect(CTRL_SOCK_FTP);
-	disconnect(DATA_SOCK_FTP);
-	gpioWrite( LEDG, ON );
-	delay(1000);
-	gpioWrite( LEDG, OFF );
+	close(CTRL_SOCK_FTP);
+	close(DATA_SOCK_FTP);
+//	disconnect(CTRL_SOCK_FTP);
+//	disconnect(DATA_SOCK_FTP);
+//	gpioWrite( LEDG, ON );
+//	delay(1000);
+//	gpioWrite( LEDG, OFF );
 	return OK;
 }
 
@@ -294,7 +416,7 @@ int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remote
 			return -1;
 		}
 	}
-	printf("ip : %d.%d.%d.%d, port : %d\r\n", remoteIp[0], remoteIp[1], remoteIp[2], remoteIp[3], *remotePort);
+//	printf("ip : %d.%d.%d.%d, port : %d\r\n", remoteIp[0], remoteIp[1], remoteIp[2], remoteIp[3], *remotePort);
 	return 0;
 }
 

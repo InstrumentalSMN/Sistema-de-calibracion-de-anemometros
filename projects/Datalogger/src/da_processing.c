@@ -160,16 +160,16 @@ void opProceso( uint32_t * size, uint16_t * NumMuestra){
 //	sprintf(TableToFTP, "%s;%s;%s;%s;%s", miBuffer1,miBuffer2 , miBuffer3,miBuffer4,miBuffer5);
 	//ver si va strlen
 	*size = (uint32_t)strlen(TableToFTP);
-	uartWriteString( UART_USB, "\r \n Mi tabla:-------\r\n" );
-	uartWriteString( UART_USB, TableToFTP );
-	uartWriteString( UART_USB, "\r \n" );
-	rtcRead( &rtc ); // en la variable de estructura rtc te queda la fecha/hora actual
+//	uartWriteString( UART_USB, "\r \n Mi tabla:-------\r\n" );
+//	uartWriteString( UART_USB, TableToFTP );
+//	uartWriteString( UART_USB, "\r \n" );
+//	rtcRead( &rtc ); // en la variable de estructura rtc te queda la fecha/hora actual
 
 // Envio por UART de forma humanamente legible
 // %02d == %d y ademas completa con 2 0 a izquierda
-	printf( "\nHora y fecha del RTC -----------%02d/%02d/%04d, %02d:%02d:%02d\r\n",
-			rtc.mday, rtc.month, rtc.year,
-			rtc.hour, rtc.min, rtc.sec );
+//	printf( "\nHora y fecha del RTC -----------%02d/%02d/%04d, %02d:%02d:%02d\r\n",
+//			rtc.mday, rtc.month, rtc.year,
+//			rtc.hour, rtc.min, rtc.sec );
 //	gpioWrite( LED3, ON );
 //	size_t size = sizeof(Tabla)/sizeof(Tabla[0]);
 //	stringToSentToFTP = converTableToStringToSend(Tabla,size);

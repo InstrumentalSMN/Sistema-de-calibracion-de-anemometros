@@ -3,7 +3,7 @@ GeneratorModel for yakindu::c {
 	statechart dataloggerSA{
 
 		feature Outlet {
-			targetProject = "Sistema-de-monitoreo-de-anemometros"
+			targetProject = "Sistema-de-calibracion-de-anemometros"
 			targetFolder = "projects/Datalogger/gen"
 			libraryTargetFolder = "projects/Datalogger/inc"
 		}
