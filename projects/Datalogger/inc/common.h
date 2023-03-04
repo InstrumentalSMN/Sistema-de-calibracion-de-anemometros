@@ -10,6 +10,7 @@
 #include "sapi_boards.h"
 #include "sapi.h"
 #include "sapi_uart.h"
+#include "w5100.h"
 
 /*==================[macros]=================================================*/
 
