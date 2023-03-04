@@ -104,8 +104,6 @@ uint8_t  sock_pack_info[_WIZCHIP_SOCK_NUM_] = {0,};
 
 int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
 {
-
-//	Revisar el hardware, revisar que SPIO este deacuerdo al protocolo
 	CHECK_SOCKNUM();
 	switch(protocol)
 	{
@@ -277,10 +275,8 @@ int8_t connect(uint8_t sn, uint8_t * addr, uint16_t port)
 	setSn_DIPR(sn,addr);
 	setSn_DPORT(sn,port);
 	setSn_CR(sn,Sn_CR_CONNECT);
-	delay(1500);
    while(getSn_CR(sn));
    if(sock_io_mode & (1<<sn)) return SOCK_BUSY;
-   delay(1500);
    while(getSn_SR(sn) != SOCK_ESTABLISHED)
    {
 		if (getSn_IR(sn) & Sn_IR_TIMEOUT)
@@ -326,47 +322,47 @@ int32_t send(uint8_t sn, uint8_t * buf, uint16_t len)
    CHECK_SOCKNUM();
    CHECK_SOCKMODE(Sn_MR_TCP);
    CHECK_SOCKDATA();
-//   tmp = getSn_SR(sn);
-//   if(tmp != SOCK_ESTABLISHED && tmp != SOCK_CLOSE_WAIT) return SOCKERR_SOCKSTATUS;
-//   if( sock_is_sending & (1<<sn) )
-//   {
-//      tmp = getSn_IR(sn);
-//      if(tmp & Sn_IR_SENDOK)
-//      {
-//         setSn_IR(sn, Sn_IR_SENDOK);
-//         //M20150401 : Typing Error
-//         //#if _WZICHIP_ == 5200
-//         #if _WIZCHIP_ == 5200
-//            if(getSn_TX_RD(sn) != sock_next_rd[sn])
-//            {
-//               setSn_CR(sn,Sn_CR_SEND);
-//               while(getSn_CR(sn));
-//               return SOCK_BUSY;
-//            }
-//         #endif
-//         sock_is_sending &= ~(1<<sn);
-//      }
-//      else if(tmp & Sn_IR_TIMEOUT)
-//      {
-//         close(sn);
-//         return SOCKERR_TIMEOUT;
-//      }
-//      else return SOCK_BUSY;
-//   }
-//   freesize = getSn_TxMAX(sn);
-//   if (len > freesize) len = freesize; // check size not to exceed MAX size.
-//   while(1)
-//   {
-//      freesize = getSn_TX_FSR(sn);
-//      tmp = getSn_SR(sn);
-//      if ((tmp != SOCK_ESTABLISHED) && (tmp != SOCK_CLOSE_WAIT))
-//      {
-//         close(sn);
-//         return SOCKERR_SOCKSTATUS;
-//      }
-//      if( (sock_io_mode & (1<<sn)) && (len > freesize) ) return SOCK_BUSY;
-//      if(len <= freesize) break;
-//   }
+   tmp = getSn_SR(sn);
+   if(tmp != SOCK_ESTABLISHED && tmp != SOCK_CLOSE_WAIT) return SOCKERR_SOCKSTATUS;
+   if( sock_is_sending & (1<<sn) )
+   {
+      tmp = getSn_IR(sn);
+      if(tmp & Sn_IR_SENDOK)
+      {
+         setSn_IR(sn, Sn_IR_SENDOK);
+         //M20150401 : Typing Error
+         //#if _WZICHIP_ == 5200
+         #if _WIZCHIP_ == 5200
+            if(getSn_TX_RD(sn) != sock_next_rd[sn])
+            {
+               setSn_CR(sn,Sn_CR_SEND);
+               while(getSn_CR(sn));
+               return SOCK_BUSY;
+            }
+         #endif
+         sock_is_sending &= ~(1<<sn);         
+      }
+      else if(tmp & Sn_IR_TIMEOUT)
+      {
+         close(sn);
+         return SOCKERR_TIMEOUT;
+      }
+      else return SOCK_BUSY;
+   }
+   freesize = getSn_TxMAX(sn);
+   if (len > freesize) len = freesize; // check size not to exceed MAX size.
+   while(1)
+   {
+      freesize = getSn_TX_FSR(sn);
+      tmp = getSn_SR(sn);
+      if ((tmp != SOCK_ESTABLISHED) && (tmp != SOCK_CLOSE_WAIT))
+      {
+         close(sn);
+         return SOCKERR_SOCKSTATUS;
+      }
+      if( (sock_io_mode & (1<<sn)) && (len > freesize) ) return SOCK_BUSY;
+      if(len <= freesize) break;
+   }
    wiz_send_data(sn, buf, len);
    #if _WIZCHIP_ == 5200
       sock_next_rd[sn] = getSn_TX_RD(sn) + len;
