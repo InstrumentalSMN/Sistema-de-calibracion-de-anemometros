@@ -48,8 +48,8 @@ char dbuf[550];
 void opConfigSocket(){
 
 
-	DesconectarSocket(DATA_SOCK_FTP);
-	DesconectarSocket(CTRL_SOCK_FTP);
+	close(DATA_SOCK_FTP);
+	close(CTRL_SOCK_FTP);
 //	disconnect(CTRL_SOCK_FTP);//Fundamental desconectame si salgo con ERROR
 //	disconnect(DATA_SOCK_FTP);
 	//	Configurar Cliente
@@ -389,9 +389,11 @@ bool_t TransmitirFTPViaEthernet(uint32_t * size){
 
 //	close(DATA_SOCK_FTP);
 //	close(CTRL_SOCK_FTP);
-
-	DesconectarSocket(CTRL_SOCK_FTP);
+//	disconnect(CTRL_SOCK_FTP);
+//	disconnect(DATA_SOCK_FTP);
 	DesconectarSocket(DATA_SOCK_FTP);
+	DesconectarSocket(CTRL_SOCK_FTP);
+
 //	gpioWrite( LEDG, ON );
 //	delay(1000);
 //	gpioWrite( LEDG, OFF );

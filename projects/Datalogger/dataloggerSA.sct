@@ -53,7 +53,7 @@
     </regions>
     <regions xmi:id="_-xBDEPNGEeykSvcSIt4NWw" name="SA">
       <vertices xsi:type="sgraph:State" xmi:id="_AlDMmPNHEeykSvcSIt4NWw" specification="&#xD;&#xA;" name="ACUMULO_MUESTRAS" incomingTransitions="_eRBXEPNQEeykSvcSIt4NWw">
-        <outgoingTransitions xmi:id="_AlDMm_NHEeykSvcSIt4NWw" specification="after IntervaloTabla s" target="_AlIFAPNHEeykSvcSIt4NWw"/>
+        <outgoingTransitions xmi:id="_AlDMm_NHEeykSvcSIt4NWw" specification="[NumMuestra==(IntervaloTabla/IntervaloMuestra)]&#xD;&#xA;" target="_AlIFAPNHEeykSvcSIt4NWw"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_AlIFAPNHEeykSvcSIt4NWw" specification="entry / ptrSizeStringToSend = viSizeStringToSend.pointer;ptrNumMuestra =  NumMuestra.pointer;&#xD;&#xA;opProceso( ptrSizeStringToSend,ptrNumMuestra);NumMuestra=0&#xD;&#xA;//;opGuardoEnMemoria() // Los datos quedan almacenados aca, seria la nandFlash&#xD;&#xA;&#xD;&#xA;exit/ raise siDatoProcesado// Copio el dato en un buffer de donde se enviaran los datos al FP&#xD;&#xA;&#xD;&#xA;//Memoriza en una estructura cola&#xD;&#xA;//Guarda en la cola y enviar el ultimo, tener una marca de cual fue el ultimo que  pudo salir a espera datos" name="PROCESO_y_ALMACENO" incomingTransitions="_AlDMm_NHEeykSvcSIt4NWw">
         <outgoingTransitions xmi:id="_isZ9QPNQEeykSvcSIt4NWw" specification="always" target="_cP2wkPNQEeykSvcSIt4NWw"/>
@@ -78,17 +78,17 @@
     </regions>
     <regions xmi:id="_1eoh-SoeEe2saeTHCvbqHQ" name="ConfigTransmision">
       <vertices xsi:type="sgraph:State" xmi:id="_1e4ZvioeEe2saeTHCvbqHQ" specification="" name="IDLE" incomingTransitions="_1e3ylCoeEe2saeTHCvbqHQ _FSQD4rqnEe2aq8aOKDbGgQ _1exr6ioeEe2saeTHCvbqHQ _1eqXMSoeEe2saeTHCvbqHQ _eH0-ICofEe2saeTHCvbqHQ _qLoHMCofEe2saeTHCvbqHQ _pmyC8LikEe2eHvoqTU1D1A">
-        <outgoingTransitions xmi:id="_CM-8ELqnEe2aq8aOKDbGgQ" specification="always" target="_1etacCoeEe2saeTHCvbqHQ"/>
+        <outgoingTransitions xmi:id="_1e5AqSoeEe2saeTHCvbqHQ" specification="siDatosListosParaFTP" target="_1etacCoeEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:Entry" xmi:id="_1e3LeSoeEe2saeTHCvbqHQ">
         <outgoingTransitions xmi:id="_1e3ylCoeEe2saeTHCvbqHQ" specification="" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_1ev21yoeEe2saeTHCvbqHQ" specification="entry/ ConfigFtpSocket = opParametersFTPSocket()&#xD;&#xA;//;ConfigFtpOK = true" name="CONFIG_FTP_SOCKET" incomingTransitions="_7T6CcLiYEe2eHvoqTU1D1A">
-        <outgoingTransitions xmi:id="_1ey6BSoeEe2saeTHCvbqHQ" specification="after 500 ms[ConfigFtpSocket == StatusTrue]" target="_cq5bULikEe2eHvoqTU1D1A"/>
+        <outgoingTransitions xmi:id="_1ey6BSoeEe2saeTHCvbqHQ" specification="after 200 ms[ConfigFtpSocket == StatusTrue]" target="_cq5bULikEe2eHvoqTU1D1A"/>
         <outgoingTransitions xmi:id="_1exr6ioeEe2saeTHCvbqHQ" specification="[ConfigFtpSocket == StatusFalse]" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_1etacCoeEe2saeTHCvbqHQ" specification="entry/ opConfigSocket()&#xD;&#xA;// Si logre obtener portadora pongo redGRPSConnect en true" name="CONFIG_ETHERNET_SOCKET_CTRL" incomingTransitions="_CM-8ELqnEe2aq8aOKDbGgQ">
-        <outgoingTransitions xmi:id="_1e5AqSoeEe2saeTHCvbqHQ" specification="siDatosListosParaFTP" target="_rrF6gLiYEe2eHvoqTU1D1A"/>
+      <vertices xsi:type="sgraph:State" xmi:id="_1etacCoeEe2saeTHCvbqHQ" specification="entry/ opConfigSocket()&#xD;&#xA;// Si logre obtener portadora pongo redGRPSConnect en true" name="CONFIG_ETHERNET_SOCKET_CTRL" incomingTransitions="_1e5AqSoeEe2saeTHCvbqHQ">
+        <outgoingTransitions xmi:id="_s5tb0LrfEe2RV7rTTSDD5w" specification="always" target="_rrF6gLiYEe2eHvoqTU1D1A"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_1epwJSoeEe2saeTHCvbqHQ" specification="entry/ ConfigSocketData = opCheckSocketData()" name="CONFIG_ETHERNET_SOCKET_DATA" incomingTransitions="_jFb10LikEe2eHvoqTU1D1A">
         <outgoingTransitions xmi:id="_WKhwYCofEe2saeTHCvbqHQ" specification="[ConfigSocketData == StatusTrue]" target="_0a69kLqqEe2aq8aOKDbGgQ"/>
@@ -98,12 +98,12 @@
         <outgoingTransitions xmi:id="_eH0-ICofEe2saeTHCvbqHQ" specification="[TransmisionExitosa == StatusTrue]/cantDatosProcesado+=1" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
         <outgoingTransitions xmi:id="_qLoHMCofEe2saeTHCvbqHQ" specification="[TransmisionExitosa == StatusFalse]" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_rrF6gLiYEe2eHvoqTU1D1A" specification="entry/redSocketConnect = opSetFTPSocketCtrl()" name="SET_FTP" incomingTransitions="_1e5AqSoeEe2saeTHCvbqHQ">
-        <outgoingTransitions xmi:id="_7T6CcLiYEe2eHvoqTU1D1A" specification="after 1 s[redSocketConnect == StatusTrue]" target="_1ev21yoeEe2saeTHCvbqHQ"/>
+      <vertices xsi:type="sgraph:State" xmi:id="_rrF6gLiYEe2eHvoqTU1D1A" specification="entry/redSocketConnect = opSetFTPSocketCtrl()" name="SET_FTP" incomingTransitions="_s5tb0LrfEe2RV7rTTSDD5w">
+        <outgoingTransitions xmi:id="_7T6CcLiYEe2eHvoqTU1D1A" specification="after 800 ms[redSocketConnect == StatusTrue]" target="_1ev21yoeEe2saeTHCvbqHQ"/>
         <outgoingTransitions xmi:id="_FSQD4rqnEe2aq8aOKDbGgQ" specification=" [redSocketConnect == StatusFalse]" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_cq5bULikEe2eHvoqTU1D1A" specification="entry/ ConfigSocketData = opSetSocketData()" name="SET_SOCKET_DATA" incomingTransitions="_1ey6BSoeEe2saeTHCvbqHQ">
-        <outgoingTransitions xmi:id="_jFb10LikEe2eHvoqTU1D1A" specification="after 1 s[ConfigSocketData == StatusTrue]" target="_1epwJSoeEe2saeTHCvbqHQ"/>
+        <outgoingTransitions xmi:id="_jFb10LikEe2eHvoqTU1D1A" specification="after 500 ms[ConfigSocketData == StatusTrue]" target="_1epwJSoeEe2saeTHCvbqHQ"/>
         <outgoingTransitions xmi:id="_pmyC8LikEe2eHvoqTU1D1A" specification="[ConfigSocketData == StatusFalse]" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_0a69kLqqEe2aq8aOKDbGgQ" specification="entry /ptrCantDatosProcesado = cantDatosProcesado.pointer;&#xD;&#xA;OpenFileFTP(ptrCantDatosProcesado)" name="OPEN_FILE_FTP" incomingTransitions="_WKhwYCofEe2saeTHCvbqHQ">
@@ -661,7 +661,7 @@
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_1eoh8SoeEe2saeTHCvbqHQ" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_1eoh8CoeEe2saeTHCvbqHQ" name="featureToShow" stringValue="specification"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_1en64SoeEe2saeTHCvbqHQ" x="-220" y="600" width="2244" height="1429"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_1en64SoeEe2saeTHCvbqHQ" x="-210" y="610" width="2244" height="1429"/>
     </children>
     <children xmi:id="_UIC6MD52Ee2oZKn9Vo89Lw" type="Region" element="_UHSFMD52Ee2oZKn9Vo89Lw">
       <children xsi:type="notation:DecorationNode" xmi:id="_UIEIUD52Ee2oZKn9Vo89Lw" type="RegionName">
@@ -972,7 +972,7 @@
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e4ZqioeEe2saeTHCvbqHQ" id="(0.4666666666666667,1.0)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e4ZqyoeEe2saeTHCvbqHQ" id="(0.0,0.29387755102040813)"/>
     </edges>
-    <edges xmi:id="_1e4ZwSoeEe2saeTHCvbqHQ" type="Transition" element="_1e5AqSoeEe2saeTHCvbqHQ" source="_1eszaSoeEe2saeTHCvbqHQ" target="_rrHIoLiYEe2eHvoqTU1D1A">
+    <edges xmi:id="_1e4ZwSoeEe2saeTHCvbqHQ" type="Transition" element="_1e5AqSoeEe2saeTHCvbqHQ" source="_1e4ZkCoeEe2saeTHCvbqHQ" target="_1eszaSoeEe2saeTHCvbqHQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_1e5ApSoeEe2saeTHCvbqHQ" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_1e5AqCoeEe2saeTHCvbqHQ"/>
         <styles xsi:type="notation:StringValueStyle" xmi:id="_1e5ApyoeEe2saeTHCvbqHQ" name="featureToShow" stringValue="specification"/>
@@ -982,8 +982,8 @@
       <styles xsi:type="notation:FontStyle" xmi:id="_1e5AoyoeEe2saeTHCvbqHQ" fontName="Verdana"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_1e5AoioeEe2saeTHCvbqHQ" name="featureToShow" stringValue="specification"/>
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_1e5AoSoeEe2saeTHCvbqHQ" points="[60, 4, 54, -71]$[60, 66, 54, -9]"/>
-      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e5AoCoeEe2saeTHCvbqHQ" id="(0.36231884057971014,0.967479674796748)"/>
-      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e4ZwioeEe2saeTHCvbqHQ" id="(0.2166666666666667,0.1886792452830189)"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e5AoCoeEe2saeTHCvbqHQ" id="(0.25076452599388377,0.9517241379310345)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_1e4ZwioeEe2saeTHCvbqHQ" id="(0.3743961352657005,0.06504065040650407)"/>
     </edges>
     <edges xmi:id="_1eyS_ioeEe2saeTHCvbqHQ" type="Transition" element="_1ey6BSoeEe2saeTHCvbqHQ" source="_1ev2sCoeEe2saeTHCvbqHQ" target="_cq8eoLikEe2eHvoqTU1D1A">
       <children xsi:type="notation:DecorationNode" xmi:id="_1ey6ASoeEe2saeTHCvbqHQ" type="TransitionExpression">
@@ -1200,17 +1200,6 @@
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_pm7z8LikEe2eHvoqTU1D1A" id="(1.0,0.7735849056603774)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_pm8bALikEe2eHvoqTU1D1A" id="(0.8960244648318043,0.896551724137931)"/>
     </edges>
-    <edges xmi:id="_CNBYULqnEe2aq8aOKDbGgQ" type="Transition" element="_CM-8ELqnEe2aq8aOKDbGgQ" source="_1e4ZkCoeEe2saeTHCvbqHQ" target="_1eszaSoeEe2saeTHCvbqHQ">
-      <children xsi:type="notation:DecorationNode" xmi:id="_CNDNgLqnEe2aq8aOKDbGgQ" type="TransitionExpression">
-        <styles xsi:type="notation:ShapeStyle" xmi:id="_CNDNgbqnEe2aq8aOKDbGgQ"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_CNDNgrqnEe2aq8aOKDbGgQ" x="-5" y="61"/>
-      </children>
-      <styles xsi:type="notation:ConnectorStyle" xmi:id="_CNBYUbqnEe2aq8aOKDbGgQ" routing="Rectilinear" lineColor="4210752"/>
-      <styles xsi:type="notation:FontStyle" xmi:id="_CNB_YLqnEe2aq8aOKDbGgQ" fontName="Verdana"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_CNBYUrqnEe2aq8aOKDbGgQ" points="[3, 0, 88, -144]$[3, 135, 88, -9]"/>
-      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_CNFCsLqnEe2aq8aOKDbGgQ" id="(0.19724770642201836,1.0)"/>
-      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_CNFCsbqnEe2aq8aOKDbGgQ" id="(0.13043478260869565,0.08130081300813008)"/>
-    </edges>
     <edges xmi:id="_mAdpsLqrEe2aq8aOKDbGgQ" type="Transition" element="_mAcbkLqrEe2aq8aOKDbGgQ" source="_0bF8sLqqEe2aq8aOKDbGgQ" target="_XMe8oCofEe2saeTHCvbqHQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_mAeQwbqrEe2aq8aOKDbGgQ" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_mAeQwrqrEe2aq8aOKDbGgQ"/>
@@ -1221,6 +1210,17 @@
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_mAdpsrqrEe2aq8aOKDbGgQ" points="[0, 0, 78, -139]$[-75, 131, 3, -8]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_mAgtALqrEe2aq8aOKDbGgQ" id="(0.6282352941176471,1.0)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_mAgtAbqrEe2aq8aOKDbGgQ" id="(0.42327150084317033,0.06666666666666667)"/>
+    </edges>
+    <edges xmi:id="_s5wfILrfEe2RV7rTTSDD5w" type="Transition" element="_s5tb0LrfEe2RV7rTTSDD5w" source="_1eszaSoeEe2saeTHCvbqHQ" target="_rrHIoLiYEe2eHvoqTU1D1A">
+      <children xsi:type="notation:DecorationNode" xmi:id="_s5xtQLrfEe2RV7rTTSDD5w" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_s5xtQbrfEe2RV7rTTSDD5w"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_s5xtQrrfEe2RV7rTTSDD5w" y="10"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_s5wfIbrfEe2RV7rTTSDD5w" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_s5wfI7rfEe2RV7rTTSDD5w" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_s5wfIrrfEe2RV7rTTSDD5w" points="[0, 0, 27, -56]$[-25, 46, 2, -10]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_s50JgLrfEe2RV7rTTSDD5w" id="(0.5628019323671497,1.0)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_s50JgbrfEe2RV7rTTSDD5w" id="(0.23353293413173654,0.2830188679245283)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>
