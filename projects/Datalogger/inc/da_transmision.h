@@ -48,7 +48,7 @@ extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t *
 /*Region de Transmision*/
 extern bool_t TransmitirFTPViaGPRS(uint32_t * size, int32_t * NumberMesuare);
 extern void OpenFileFTP( int32_t * NumberMesuare);
-extern bool_t TransmitirFTPViaEthernet(uint32_t * size);
+extern bool_t TransmitirFTPViaEthernet();
 extern int8_t DesconectarSocket(uint8_t sn);
 
 #endif

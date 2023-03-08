@@ -25,7 +25,7 @@ static real32_t NvBateria[100];
 
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
-extern char TableToFTP[150];
+extern char TableToFTP[400];
 
 /*Region Procesamiento */
 
@@ -33,7 +33,7 @@ extern char TableToFTP[150];
 
 extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt);
 //extern void opProceso( uint32_t * size);
-extern void opProceso( uint32_t * size, uint16_t * NumMuestra);
+extern void opProceso( uint16_t * NumMuestra);
 
 
 

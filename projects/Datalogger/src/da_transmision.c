@@ -367,15 +367,20 @@ void OpenFileFTP( int32_t * NumberMesuare){
 //	uartWriteString( UART_USB, "\r \n" );
 
 }
-bool_t TransmitirFTPViaEthernet(uint32_t * size){
+//bool_t TransmitirFTPViaEthernet(uint32_t * size){
+bool_t TransmitirFTPViaEthernet(){
 
-	char ParaEnviar[*size];
+//	char ParaEnviar[*size];
 
-	sprintf(ParaEnviar, "%s", TableToFTP);
+//	sprintf(ParaEnviar, "%s", TableToFTP);
 	//Lo deberia hacer en transmision
 
 //	sprintf(dat,"%s",ParaEnviar); //Eligo la ruta
-	send(DATA_SOCK_FTP, ParaEnviar, strlen(ParaEnviar));
+	send(DATA_SOCK_FTP, TableToFTP, (uint32_t)strlen(TableToFTP));
+	uint32_t size = (uint32_t)strlen(TableToFTP);
+	if((uint32_t)strlen(TableToFTP) == 0){
+		printf("\r\n Esta vacio el string por algun motivo");
+	}
 	rtcRead( &rtc );
 		printf( "\r \n Hora de transmision: %02d/%02d/%04d, %02d:%02d:%02d\r\n",
 			              rtc.mday, rtc.month, rtc.year,

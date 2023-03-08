@@ -3,7 +3,7 @@
 #include "../inc/da_rtc.h"
 #include "sapi_rtc.h"
 
-char TableToFTP[150];
+char TableToFTP[400];
 //char TableToFTP2[10000];
 
 /*Region Procesamiento */
@@ -26,7 +26,7 @@ void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt ){
 }
 
 
-void opProceso( uint32_t * size, uint16_t * NumMuestra){
+void opProceso(  uint16_t * NumMuestra){
 
 	uint32_t i = 0;
 	//char aux[150];
@@ -90,31 +90,6 @@ void opProceso( uint32_t * size, uint16_t * NumMuestra){
 	              rtc.hour, rtc.min, rtc.sec);
 	printf("%f",strlen(auxi));
 	auxi = auxi + strlen(auxi);
-
-
-
-
-
-//	floatToString(rtc.year,miBuffer1,0);
-//	sprintf(auxi, "%s-", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	floatToString(rtc.month,miBuffer1,0);
-//	sprintf(auxi, "%s-", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	floatToString(rtc.mday,miBuffer1,0);
-//	sprintf(auxi, "%s ", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	floatToString(rtc.hour,miBuffer1,0);
-//	sprintf(auxi, "%s:", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	floatToString(rtc.min,miBuffer1,0);
-//	sprintf(auxi, "%s:", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	floatToString(rtc.sec,miBuffer1,0);
-//	sprintf(auxi, "%s,", miBuffer1);
-//	auxi = auxi + strlen(miBuffer1)+1;
-//	printf("\nFecha------------------------%s\n",miBuffer1);
-
 	//Armo el string con los datos medidos
 	for (i = 0; i<sizeof(Tabla_10min)/sizeof(Tabla_10min[0]);i++){
 
@@ -130,51 +105,7 @@ void opProceso( uint32_t * size, uint16_t * NumMuestra){
 
 	}
 
-
-//	if (velocidadInst == NoDato ){
-//		sprintf(miBuffer1,"%s","NAN");
-//	}else{
-//		floatToString(velocidadInst,miBuffer1,2);
-//	}
-//	if (direccionInst == NoDato ){
-//		sprintf(miBuffer2,"%s","NAN");
-//	}else{
-//		floatToString(direccionInst,miBuffer2,1);
-//	}
-//	if (presionInst == NoDato ){
-//		sprintf(miBuffer3,"%s","NAN");
-//	}else{
-//		floatToString(presionInst,miBuffer3,1);
-//	}
-//	if (TempInst == NoDato ){
-//		sprintf(miBuffer4,"%s","NAN");
-//	}else{
-//		floatToString(TempInst,miBuffer4,2);
-//	}
-//	if (nv_bateriaInst == NoDato ){
-//		sprintf(miBuffer5,"%s","NAN");
-//	}else{
-//		floatToString(nv_bateriaInst,miBuffer5,2);
-//	}
-//
-//	sprintf(TableToFTP, "%s;%s;%s;%s;%s", miBuffer1,miBuffer2 , miBuffer3,miBuffer4,miBuffer5);
-	//ver si va strlen
-	*size = (uint32_t)strlen(TableToFTP);
-//	uartWriteString( UART_USB, "\r \n Mi tabla:-------\r\n" );
-//	uartWriteString( UART_USB, TableToFTP );
-//	uartWriteString( UART_USB, "\r \n" );
-//	rtcRead( &rtc ); // en la variable de estructura rtc te queda la fecha/hora actual
-
-// Envio por UART de forma humanamente legible
-// %02d == %d y ademas completa con 2 0 a izquierda
-//	printf( "\nHora y fecha del RTC -----------%02d/%02d/%04d, %02d:%02d:%02d\r\n",
-//			rtc.mday, rtc.month, rtc.year,
-//			rtc.hour, rtc.min, rtc.sec );
-//	gpioWrite( LED3, ON );
-//	size_t size = sizeof(Tabla)/sizeof(Tabla[0]);
-//	stringToSentToFTP = converTableToStringToSend(Tabla,size);
-
-
+// agregar alguna validacion en caso de que aca size de tabla sea cero.
 }
 
 
