@@ -100,7 +100,7 @@
         <outgoingTransitions xmi:id="_qLoHMCofEe2saeTHCvbqHQ" specification="[TransmisionExitosa == StatusFalse]" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_rrF6gLiYEe2eHvoqTU1D1A" specification="entry/redSocketConnect = opSetFTPSocketCtrl()" name="SET_FTP" incomingTransitions="_s5tb0LrfEe2RV7rTTSDD5w">
-        <outgoingTransitions xmi:id="_7T6CcLiYEe2eHvoqTU1D1A" specification="after 150 ms[redSocketConnect == StatusTrue]" target="_1ev21yoeEe2saeTHCvbqHQ"/>
+        <outgoingTransitions xmi:id="_7T6CcLiYEe2eHvoqTU1D1A" specification="after 100 ms[redSocketConnect == StatusTrue]" target="_1ev21yoeEe2saeTHCvbqHQ"/>
         <outgoingTransitions xmi:id="_FSQD4rqnEe2aq8aOKDbGgQ" specification=" [redSocketConnect == StatusFalse]" target="_MUBkML4uEe25YsDLF2Wiew"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_cq5bULikEe2eHvoqTU1D1A" specification="entry/ ConfigSocketData = opSetSocketData()" name="SET_SOCKET_DATA" incomingTransitions="_1ey6BSoeEe2saeTHCvbqHQ">
@@ -108,7 +108,7 @@
         <outgoingTransitions xmi:id="_pmyC8LikEe2eHvoqTU1D1A" specification="[ConfigSocketData == StatusFalse]" target="_MUBkML4uEe25YsDLF2Wiew"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_0a69kLqqEe2aq8aOKDbGgQ" specification="entry /ptrCantDatosProcesado = cantDatosProcesado.pointer;&#xD;&#xA;OpenFileFTP(ptrCantDatosProcesado)" name="OPEN_FILE_FTP" incomingTransitions="_WKhwYCofEe2saeTHCvbqHQ">
-        <outgoingTransitions xmi:id="_mAcbkLqrEe2aq8aOKDbGgQ" specification="after 650 ms" target="_XMe8sSofEe2saeTHCvbqHQ"/>
+        <outgoingTransitions xmi:id="_mAcbkLqrEe2aq8aOKDbGgQ" specification="after 700 ms" target="_XMe8sSofEe2saeTHCvbqHQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_MUBkML4uEe25YsDLF2Wiew" specification="entry/ backUpData()" name="BACKUP_DATOS" incomingTransitions="_FSQD4rqnEe2aq8aOKDbGgQ _pmyC8LikEe2eHvoqTU1D1A _1exr6ioeEe2saeTHCvbqHQ _1eqXMSoeEe2saeTHCvbqHQ">
         <outgoingTransitions xmi:id="_jYSKAL4uEe25YsDLF2Wiew" specification="always" target="_1e4ZvioeEe2saeTHCvbqHQ"/>
