@@ -25,7 +25,8 @@ static real32_t NvBateria[100];
 
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
-extern char TableToFTP[400];
+extern char TableToFTP[10000];
+extern uint32_t next;
 
 /*Region Procesamiento */
 

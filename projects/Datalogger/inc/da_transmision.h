@@ -50,6 +50,7 @@ extern bool_t TransmitirFTPViaGPRS(uint32_t * size, int32_t * NumberMesuare);
 extern void OpenFileFTP( int32_t * NumberMesuare);
 extern bool_t TransmitirFTPViaEthernet();
 extern int8_t DesconectarSocket(uint8_t sn);
+extern void backUpData();
 
 #endif
 

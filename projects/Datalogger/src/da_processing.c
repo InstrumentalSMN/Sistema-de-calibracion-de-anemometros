@@ -3,7 +3,8 @@
 #include "../inc/da_rtc.h"
 #include "sapi_rtc.h"
 
-char TableToFTP[400];
+char TableToFTP[10000];
+uint32_t next = 0;
 //char TableToFTP2[10000];
 
 /*Region Procesamiento */
@@ -83,7 +84,7 @@ void opProceso(  uint16_t * NumMuestra){
 
 
 	//Armo el string con los datos medidos
-	char * auxi = TableToFTP; //Reinicializo el apunte a la posicion 0
+	char * auxi = TableToFTP+next; //Reinicializo el apunte a la posicion 0
 	rtcRead( &rtc );
 	sprintf( auxi,"%02d-%02d-%04d,%02d:%02d:%02d,",
 	              rtc.mday, rtc.month, rtc.year,
