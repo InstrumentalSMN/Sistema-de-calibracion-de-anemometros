@@ -130,6 +130,7 @@ bool_t opSetRtcViaNtpViaTCP(){
 		rtc.sec= (uint8_t)ntpDatetime[5];
 		rtcInit();
 		rtcWrite( &rtc );
+		DesconectarSocket(SOCK_NTP);
 		close(SOCK_NTP);
 		return OK;
 	}

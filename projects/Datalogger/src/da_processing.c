@@ -45,27 +45,27 @@ void opProceso(  uint16_t * NumMuestra){
 //	uartWriteString( UART_USB, "\r\n" );
 
 
-	float velocidadInst = AcumIntensidad[1];
+	float velocidadInst = AcumIntensidad[0];
 	float velocidadMax = maxValue(AcumIntensidad,(size_t)*NumMuestra);
 	float velocidadMin = minValue(AcumIntensidad,(size_t)*NumMuestra);
 	float velocidadPromedio = AverageValue(AcumIntensidad,(size_t)*NumMuestra);
 
-	float direccionInst = AcumDireccion[1];
+	float direccionInst = AcumDireccion[0];
 	float direccionMax = maxValue(AcumDireccion,(size_t)*NumMuestra);
 	float direccionMin = minValue(AcumDireccion,(size_t)*NumMuestra);
 	float direccionPromedio = AverageValue(AcumDireccion,(size_t)*NumMuestra);
 
-	float presionInst = AcumPresion[1];
+	float presionInst = AcumPresion[0];
 	float presionMax = maxValue(AcumPresion,(size_t)*NumMuestra);
 	float presionMin = minValue(AcumPresion,(size_t)*NumMuestra);
 	float presionPromedio = AverageValue(AcumPresion,(size_t)*NumMuestra);
 
-	float TempInst = AcumTemp[1];
+	float TempInst = AcumTemp[0];
 	float TempMax = maxValue(AcumTemp,(size_t)*NumMuestra);
 	float TempMin = minValue(AcumTemp,(size_t)*NumMuestra);
 	float TempPromedio = AverageValue(AcumTemp,(size_t)*NumMuestra);
 
-	float nv_bateriaInst = NvBateria[1];
+	float nv_bateriaInst = NvBateria[0];
 	float nv_bateriaMax = maxValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaMin = minValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaPromedio = AverageValue(NvBateria,(size_t)*NumMuestra);
