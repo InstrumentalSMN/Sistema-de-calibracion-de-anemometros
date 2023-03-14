@@ -36,20 +36,28 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 }
 
 
-void opBufferRS485Reset(){
+void opBufferRS485Reset(uartMapAnemo2_t * data){
+
 	/*cuando la llamo reinicia la FIFO*/
 	//uartConfig( UART_USB, 115200 ); De Prueba
-	uartConfig( UART_485, 9600 );
+	uartMap_t uart2 = data->Uart;
+//	uart2 = data->Uart;
+//	dataUart_t * data;
+//	data->uartMio = &uart;
+	uartConfig( uart2, 9600 );
 	// Seteo un callback al evento de recepcion y habilito su interrupcion
-	uartCallbackSet(UART_485, UART_RECEIVE, opAdquirirDV, NULL);
+	uartCallbackSet(uart2, UART_RECEIVE, opAdquirirDV,(void*)data);
 	// Habilito todas las interrupciones de UART_USB
-	uartInterrupt(UART_485, true);
+	uartInterrupt(uart2, true);
 
 }
 
 void opAdquirirDV( void *noUsado ) //Esta se llama  en el callbackSet
 {
-	uint8_t receiveByte = uartRxRead( UART_485 );
+	uartMap_t miUart=((uartMapAnemo2_t*)noUsado)->Uart;
+
+//	uartMap_t miUart=((uartMapAnemo2_t *)noUsado)->Uart;
+	uint8_t receiveByte = uartRxRead( miUart);
 	//uartWriteByte( UART_USB, receiveByte);
 	//uartWriteString( UART_USB, "Entre  \r\n" );
 	*ptrBuffer = receiveByte;

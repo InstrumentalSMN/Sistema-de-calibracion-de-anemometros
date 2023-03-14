@@ -119,7 +119,7 @@ static void uartProcessIRQ( uartMap_t uart )
          (*rxIsrCallbackUART2)(0);
 
       if( ( uart == UART_232 )  && (rxIsrCallbackUART3 != 0) )
-         (*rxIsrCallbackUART3)(0);
+         (*rxIsrCallbackUART3)(rxIsrCallbackUART3);
    }
 
    // Tx Interrupt

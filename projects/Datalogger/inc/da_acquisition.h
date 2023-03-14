@@ -23,16 +23,11 @@ extern real32_t DataDeltaOhm[];
 static char uartBuffer[100]; //Buffer donde guardamos el string del DeltaOhm
 static char * ptrBuffer=uartBuffer; // un puntero global que apunta a Buffer
 
-
-
-
-
-
 /*Region Muestreo */
 extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 /*A futuro esta funcion puede ser un voltaje simple , mas generico, en ese caso puedo pasar el channel*/
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
-extern void opBufferRS485Reset();
+extern void opBufferRS485Reset(uartMapAnemo2_t * data);
 //extern void opAdquirirDV(real32_t* dataWind);
 //extern void opPreprocesoDeltaOHM(char* uartBuffer, real32_t* dataWind);
 //extern void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind);

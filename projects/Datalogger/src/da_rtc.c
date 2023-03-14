@@ -24,7 +24,7 @@ uint8_t time_zone_NTP = 18; //Hora de argentina UTC -3
 uint16_t ntp_retry_cnt_NTP=0; //counting the ntp retry number
 
 //client information
-uint16_t PortLocal_NTP = 30001;
+uint16_t PortLocal_NTP = 30003;
 uint8_t mac_NTP[6] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 uint8_t mac_NTP1[6];
 //uint8_t IPLocal_NTP[4] = {10,10,13,121};
@@ -38,9 +38,9 @@ uint8_t MASKSUB_NTP[4] = {255,255,255,0};
 uint8_t MASKSUB_NTP1[4];
 
 // Server NTP information
-uint8_t NTP_destIP[4] = {129,6,15,29};
+//uint8_t NTP_destIP[4] = {129,6,15,29};
 //uint8_t NTP_destIP[4] = {132,163,96,5};
-//uint8_t NTP_destIP[4] = {128,138,140,44};
+uint8_t NTP_destIP[4] = {128,138,140,44};
 //uint8_t NTP_destIP[4] = {128,138,141,172};
 
 uint16_t _NTP_destport = 13; //  puerto para NTP por medio de UPD

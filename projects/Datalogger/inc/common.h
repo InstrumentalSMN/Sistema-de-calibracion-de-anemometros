@@ -64,8 +64,14 @@ typedef float  real32_t;
 typedef uint64_t tick_t;
 
 
+//estructuras para  tranferir a la funcion de interrupcion de las uarts que reciben los datos de los anemometros
+// Especial atencion en como se carga en la maquina de estados estas variables
+typedef uartMap_t uartMapAnemo_t;
+typedef uartMapAnemo_t * ptruartMapAnemo_t;
 
+typedef struct{
 
-
-
+	uartMap_t Uart;
+}uartMapAnemo2_t;
+typedef uartMapAnemo2_t * ptruartMapAnemo2_t;
 #endif
