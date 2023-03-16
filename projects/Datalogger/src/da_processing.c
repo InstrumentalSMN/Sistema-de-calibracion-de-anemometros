@@ -1,5 +1,4 @@
 #include "../inc/da_processing.h"
-#include "../inc/da_acquisition.h"
 #include "../inc/da_rtc.h"
 #include "sapi_rtc.h"
 
@@ -9,15 +8,17 @@ uint32_t next = 0;
 
 /*Region Procesamiento */
 
-void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt ){
+void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t ibc, amenometerSerialParam_t pat){
 	static char auxiliarBuffer[100];
 //	printf("muestra numero: %04d",*NumMuestra);
 	rtcRead( &rtc );
 	printf( "%02d/%02d/%04d, %02d:%02d:%02d\r\n",rtc.mday, rtc.month, rtc.year,rtc.hour, rtc.min, rtc.sec );
-	AcumIntensidad[*NumMuestra] = DataDeltaOhm[0];
-	AcumDireccion[*NumMuestra] = DataDeltaOhm[1];
-	AcumPresion[*NumMuestra] = DataDeltaOhm[2];
-	AcumTemp[*NumMuestra] = DataDeltaOhm[3];
+	AcumIntensidadPat[*NumMuestra] = pat.DataAnemometer[0];
+	AcumDireccionPat[*NumMuestra] = pat.DataAnemometer[1];
+	AcumPresionPat[*NumMuestra] = pat.DataAnemometer[2];
+	AcumTempPat[*NumMuestra] = pat.DataAnemometer[3];
+	AcumIntensidadIBC[*NumMuestra] = ibc.DataAnemometer[0];
+	AcumDireccionIBC[*NumMuestra] = ibc.DataAnemometer[1];
 	NvBateria[*NumMuestra] = *MuestraVolt;
 
 //	uartWriteString( UART_USB, "Presion-------------------:" );
@@ -45,32 +46,44 @@ void opProceso(  uint16_t * NumMuestra){
 //	uartWriteString( UART_USB, "\r\n" );
 
 
-	float velocidadInst = AcumIntensidad[0];
-	float velocidadMax = maxValue(AcumIntensidad,(size_t)*NumMuestra);
-	float velocidadMin = minValue(AcumIntensidad,(size_t)*NumMuestra);
-	float velocidadPromedio = AverageValue(AcumIntensidad,(size_t)*NumMuestra);
+	float velocidadInst = AcumIntensidadPat[(*NumMuestra)-1];
+	float velocidadMax = maxValue(AcumIntensidadPat,(size_t)*NumMuestra);
+	float velocidadMin = minValue(AcumIntensidadPat,(size_t)*NumMuestra);
+	float velocidadPromedio = AverageValue(AcumIntensidadPat,(size_t)*NumMuestra);
 
-	float direccionInst = AcumDireccion[0];
-	float direccionMax = maxValue(AcumDireccion,(size_t)*NumMuestra);
-	float direccionMin = minValue(AcumDireccion,(size_t)*NumMuestra);
-	float direccionPromedio = AverageValue(AcumDireccion,(size_t)*NumMuestra);
+	float direccionInst = AcumDireccionPat[(*NumMuestra)-1];
+	float direccionMax = maxValue(AcumDireccionPat,(size_t)*NumMuestra);
+	float direccionMin = minValue(AcumDireccionPat,(size_t)*NumMuestra);
+	float direccionPromedio = AverageValue(AcumDireccionPat,(size_t)*NumMuestra);
 
-	float presionInst = AcumPresion[0];
-	float presionMax = maxValue(AcumPresion,(size_t)*NumMuestra);
-	float presionMin = minValue(AcumPresion,(size_t)*NumMuestra);
-	float presionPromedio = AverageValue(AcumPresion,(size_t)*NumMuestra);
+	float velocidadInstIBC = AcumIntensidadIBC[(*NumMuestra)-1];
+	float velocidadMaxIBC = maxValue(AcumIntensidadIBC,(size_t)*NumMuestra);
+	float velocidadMinIBC = minValue(AcumIntensidadIBC,(size_t)*NumMuestra);
+	float velocidadPromedioIBC = AverageValue(AcumIntensidadIBC,(size_t)*NumMuestra);
 
-	float TempInst = AcumTemp[0];
-	float TempMax = maxValue(AcumTemp,(size_t)*NumMuestra);
-	float TempMin = minValue(AcumTemp,(size_t)*NumMuestra);
-	float TempPromedio = AverageValue(AcumTemp,(size_t)*NumMuestra);
+	float direccionInstIBC = AcumDireccionIBC[(*NumMuestra)-1];
+	float direccionMaxIBC = maxValue(AcumDireccionIBC,(size_t)*NumMuestra);
+	float direccionMinIBC = minValue(AcumDireccionIBC,(size_t)*NumMuestra);
+	float direccionPromedioIBC = AverageValue(AcumDireccionIBC,(size_t)*NumMuestra);
 
-	float nv_bateriaInst = NvBateria[0];
+	float presionInst = AcumPresionPat[(*NumMuestra)-1];
+	float presionMax = maxValue(AcumPresionPat,(size_t)*NumMuestra);
+	float presionMin = minValue(AcumPresionPat,(size_t)*NumMuestra);
+	float presionPromedio = AverageValue(AcumPresionPat,(size_t)*NumMuestra);
+
+	float TempInst = AcumTempPat[(*NumMuestra)-1];
+	float TempMax = maxValue(AcumTempPat,(size_t)*NumMuestra);
+	float TempMin = minValue(AcumTempPat,(size_t)*NumMuestra);
+	float TempPromedio = AverageValue(AcumTempPat,(size_t)*NumMuestra);
+
+	float nv_bateriaInst = NvBateria[(*NumMuestra)-1];
 	float nv_bateriaMax = maxValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaMin = minValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaPromedio = AverageValue(NvBateria,(size_t)*NumMuestra);
 
-	real32_t Tabla_10min[20] ={	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
+	real32_t Tabla_10min[28] ={	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
+							velocidadInstIBC,velocidadMinIBC,velocidadMaxIBC,velocidadPromedioIBC,
+							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC,
 							direccionInst,direccionMin,direccionMax,direccionPromedio,
 							presionInst,presionMin,presionMax,presionPromedio,
 							TempInst,TempMin,TempMax,TempPromedio,

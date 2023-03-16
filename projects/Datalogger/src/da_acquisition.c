@@ -1,8 +1,8 @@
 #include "da_acquisition.h"
 
-real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
-
-
+//real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
+//char uartBuffer[100];
+//char * ptrBuffer=uartBuffer;
 
 /*Region Muestreo */
 
@@ -36,47 +36,52 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 }
 
 
-void opBufferRS485Reset(uartMapAnemo2_t * data){
-
+void opBufferRS485Reset(amenometerSerialParam_t * data){
+	data->ptrUartBuffer = data->Buffer;
+//	((amenometerSerialParam_t *)data)->Uart = 1;
+	uint16_t miUart = data->Uart;
+//	uint16_t miLed = ((amenometerSerialParam_t *)data)->LED;
 	/*cuando la llamo reinicia la FIFO*/
 	//uartConfig( UART_USB, 115200 ); De Prueba
-	uartMap_t uart2 = data->Uart;
-//	uart2 = data->Uart;
-//	dataUart_t * data;
-//	data->uartMio = &uart;
-	uartConfig( uart2, 9600 );
+	uartConfig((UART_GPIO+miUart),data->BaudRate );
 	// Seteo un callback al evento de recepcion y habilito su interrupcion
-	uartCallbackSet(uart2, UART_RECEIVE, opAdquirirDV,(void*)data);
+	uartCallbackSet( (UART_GPIO+miUart), UART_RECEIVE, opAdquirirDV,(void*)data);
 	// Habilito todas las interrupciones de UART_USB
-	uartInterrupt(uart2, true);
+	uartInterrupt( (UART_GPIO+miUart), true);
 
 }
 
-void opAdquirirDV( void *noUsado ) //Esta se llama  en el callbackSet
-{
-	uartMap_t miUart=((uartMapAnemo2_t*)noUsado)->Uart;
+void opAdquirirDV( void *data ){ //Esta se llama  en el callbackSet
+//	((amenometerSerialParam_t *)data)->Uart = 5;
+	uint16_t miUart = ((amenometerSerialParam_t *)data)->Uart;
+	uint16_t miLed = ((amenometerSerialParam_t *)data)->LED;
+//	if(miUart==1461){
+//		miUart=5;
+//	}
 
 //	uartMap_t miUart=((uartMapAnemo2_t *)noUsado)->Uart;
-	uint8_t receiveByte = uartRxRead( miUart);
+	uint8_t receiveByte = uartRxRead( (UART_GPIO+miUart));
 	//uartWriteByte( UART_USB, receiveByte);
 	//uartWriteString( UART_USB, "Entre  \r\n" );
-	*ptrBuffer = receiveByte;
-	ptrBuffer++;
-	gpioWrite( LED3, OFF );
+	*(((amenometerSerialParam_t *)data)->ptrUartBuffer) = receiveByte;
+	(((amenometerSerialParam_t *)data)->ptrUartBuffer)++;
+	gpioWrite((LEDR+((amenometerSerialParam_t *)data)->LED), OFF );
+//	gpioWrite(LEDR, OFF );
 	if(receiveByte =='\r'){
 //		uartWriteString( UART_USB, uartBuffer);
 
-		opPreprocesoDeltaOHM();/*acá parseo el String de datos*/
-		ptrBuffer=uartBuffer; //Reseteo el puntero para el siguiente string
-	gpioWrite( LED3, ON );
+		opPreprocesoDeltaOHM((amenometerSerialParam_t *)data);/*acá parseo el String de datos*/
+		(((amenometerSerialParam_t *)data)->ptrUartBuffer)=(((amenometerSerialParam_t *)data)->Buffer); //Reseteo el puntero para el siguiente string
+	gpioWrite( (LEDR+((amenometerSerialParam_t *)data)->LED), ON );
+//	gpioWrite( LEDR, ON );
 	}
 
 }
-void opPreprocesoDeltaOHM(){
+void opPreprocesoDeltaOHM(amenometerSerialParam_t * data){
 	//Primero parceo lo que hay en buffer (28.30 359.3 998.3<CR><LF>)
 	char *	delimitador = " ";
 	char* token;
-	char* rest = uartBuffer;
+	char* rest = data->Buffer;
     uint16_t i = 0;
     static char auxiliarBuffer[100];
     //Obtengo el largo del vector donde se guardan mis datos de interes en este caso 3. Intensidad, Direccion y Presion
@@ -84,10 +89,10 @@ void opPreprocesoDeltaOHM(){
     while ((token =  (char *)strtok_r(rest, delimitador, &rest)) !=NULL ){
     	//token es un string asi que puedo comparar contra NAN y no covertir
     	if((memcmp(NAN,token,strlen(NAN))) == 0){
-    		DataDeltaOhm[i] = NoDato;
+    		data->DataAnemometer[i] = NoDato;
     		i++;
     	}else{
-    		DataDeltaOhm[i] = (float)atof(token); //Convierto los datos parceados a numeros flotantes
+    		data->DataAnemometer[i] = (float)atof(token); //Convierto los datos parceados a numeros flotantes
     		i++;
 
     	}

@@ -84,7 +84,7 @@ bool_t opInitFTPSocketCtrl(){
 //	ret2 = getSn_PORT(CTRL_SOCK_FTP);
 	ret5 = getSn_SR(CTRL_SOCK_FTP);
 	if(ret5 != SOCK_INIT){
-		printf("\r\n Salgo error 1");
+		printf("Salgo error 1\r\n ");
 		DesconectarSocket(CTRL_SOCK_FTP);
 		return ERROR;
 	}
@@ -101,7 +101,7 @@ bool_t opInitFTPSocketCtrl(){
 //	ret2 = getSn_PORT(CTRL_SOCK_FTP);
 	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
 	if(ret5 != SOCK_INIT){
-		printf("\r\n Salgo error 1");
+		printf("Salgo error 1\r\n ");
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		return ERROR;
 	}
@@ -119,14 +119,14 @@ bool_t opSetParametersFTPSocket(){
 	//	delay(2000);
 	//	ret5 = getSn_SR(CTRL_SOCK_FTP);
 	if(ret5 != SOCK_ESTABLISHED){
-		printf("\r\n Salgo error 2");
+		printf("Salgo error 2\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP);
 		return ERROR;
 		//gpioWrite( LED2, ON );
 	}
 	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
 	if(ret5 != SOCK_ESTABLISHED){
-		printf("\r\n Salgo error 2recv");
+		printf("Salgo error 2recv\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		return ERROR;
 		//gpioWrite( LED2, ON );
@@ -165,7 +165,7 @@ bool_t opConnectSocketData(){
 //	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
 	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
 							//Despues probar de conectarme a ese port que me da y mandar datos
-		printf("\r\n Salgo error 3");
+		printf("Salgo error 3\r\n");
 		printf("Bad port syntax\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP);
 		return ERROR;
@@ -179,7 +179,7 @@ bool_t opConnectSocketData(){
 //	delay(5); // Necesario para recibir respuestas
 	ret3 = getSn_SR(DATA_SOCK_FTP);
 	if(ret3 != SOCK_INIT){
-		printf("\r\n Salgo error 4");
+		printf("Salgo error 4\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP);
 		DesconectarSocket(DATA_SOCK_FTP);
 		return ERROR;
@@ -201,7 +201,7 @@ bool_t opConnectSocketData(){
 //	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
 	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
 							//Despues probar de conectarme a ese port que me da y mandar datos
-		printf("\r\n Salgo error 3 recv");
+		printf("Salgo error 3 recv\r\n");
 		printf("Bad port syntax recv\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		return ERROR;
@@ -215,7 +215,7 @@ bool_t opConnectSocketData(){
 //	delay(5); // Necesario para recibir respuestas
 	ret3 = getSn_SR(DATA_SOCK_FTP_RECV);
 	if(ret3 != SOCK_INIT){
-		printf("\r\n Salgo error 4");
+		printf("Salgo error 4\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		DesconectarSocket(DATA_SOCK_FTP_RECV);
 		return ERROR;
@@ -235,7 +235,7 @@ bool_t opCheckSocketData(){
 //	ret4 = getSn_DPORT(DATA_SOCK_FTP);
 	ret5 = getSn_SR(DATA_SOCK_FTP);
 	if(ret5 != SOCK_ESTABLISHED){
-		printf("\r\n Salgo error 5");
+		printf("Salgo error 5\r\n");
 		DesconectarSocket(DATA_SOCK_FTP);
 		DesconectarSocket(CTRL_SOCK_FTP);
 		return ERROR;
@@ -243,7 +243,7 @@ bool_t opCheckSocketData(){
 	}
 	ret5 = getSn_SR(DATA_SOCK_FTP_RECV);
 	if(ret5 != SOCK_ESTABLISHED){
-		printf("\r\n Salgo error 5 recv");
+		printf("Salgo error 5 recv\r\n");
 		DesconectarSocket(DATA_SOCK_FTP_RECV);
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		return ERROR;
@@ -326,10 +326,9 @@ bool_t opCheckDataInServer(){
 	ret = recv(DATA_SOCK_FTP_RECV,dbuf,size);
 	dbuf[ret] = '\0';
 	if(size==0){
-		printf("\r\n Archivo mal enviado y vacio");
+		printf("\r\n Archivo mal enviado y vacio\r\n");
 		DesconectarSocket(CTRL_SOCK_FTP_RECV);
 		DesconectarSocket(DATA_SOCK_FTP_RECV);
-
 		return ERROR;
 	}
 	rtcRead( &rtc );
@@ -339,7 +338,7 @@ bool_t opCheckDataInServer(){
 	DesconectarSocket(CTRL_SOCK_FTP_RECV);
 	DesconectarSocket(DATA_SOCK_FTP_RECV);
 	//limpio la tabla
-	memset(TableToFTP, 0, size);
+	memset(TableToFTP, 0, strlen(TableToFTP));
 	next = 0;
 	return OK;
 
@@ -370,8 +369,6 @@ void backUpData(){
 	next = (uint32_t)strlen(TableToFTP);
 
 }
-
-
 
 //Se usa en transmision.c
 int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort)

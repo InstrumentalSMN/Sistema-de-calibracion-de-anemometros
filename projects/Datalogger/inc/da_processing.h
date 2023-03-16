@@ -12,14 +12,17 @@
 #include "sapi_boards.h"
 #include "sapi.h"
 #include "common.h"
+#include "../inc/da_acquisition.h"
 
 
 
 /*Buffer para las estadisticas del DeltaOHM*/
-static real32_t AcumIntensidad[100];
-static real32_t AcumDireccion[100];
-static real32_t AcumPresion[100];
-static real32_t AcumTemp[100];
+static real32_t AcumIntensidadPat[100];
+static real32_t AcumDireccionPat[100];
+static real32_t AcumIntensidadIBC[100];
+static real32_t AcumDireccionIBC[100];
+static real32_t AcumPresionPat[100];
+static real32_t AcumTempPat[100];
 static real32_t NvBateria[100];
 
 
@@ -32,7 +35,7 @@ extern uint32_t next;
 
 
 
-extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt);
+extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t ibc ,amenometerSerialParam_t pat);
 //extern void opProceso( uint32_t * size);
 extern void opProceso( uint16_t * NumMuestra);
 

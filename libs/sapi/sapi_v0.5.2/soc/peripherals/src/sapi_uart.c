@@ -119,7 +119,7 @@ static void uartProcessIRQ( uartMap_t uart )
          (*rxIsrCallbackUART2)(0);
 
       if( ( uart == UART_232 )  && (rxIsrCallbackUART3 != 0) )
-         (*rxIsrCallbackUART3)(rxIsrCallbackUART3);
+         (*rxIsrCallbackUART3)(rxIsrCallbackUART3Params);
    }
 
    // Tx Interrupt
@@ -134,7 +134,7 @@ static void uartProcessIRQ( uartMap_t uart )
          (*txIsrCallbackUART2)(0);
 
       if( ( uart == UART_232 )  && (txIsrCallbackUART3 != 0) )
-         (*txIsrCallbackUART3)(0);
+         (*txIsrCallbackUART3)(txIsrCallbackUART3);
    }
 }
 //#endif /* SAPI_USE_INTERRUPTS */
