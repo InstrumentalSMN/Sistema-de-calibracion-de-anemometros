@@ -103,7 +103,7 @@ bool_t opConfigNtpViaTCP(){
 	while(size == 0){
 		send(SOCK_NTP, "\n", strlen("\n"));
 		size = getSn_RX_RSR(SOCK_NTP);
-		printf("%d",size);
+//		printf("%d",size);
 	}
 	wiz_recv_data(SOCK_NTP, BufferDayTime,  size);
 //	disconnect(SOCK_NTP);
@@ -146,7 +146,7 @@ bool_t MyParserToDatetimeNTP(char * bufferRtc){
 	char* tok=0;
 	tok = strtok(bufferRtc," ");
 	if(tok == NULL){return ERROR;}
-	printf("1ero strk: %s\r\n", tok);
+//	printf("1ero strk: %s\r\n", tok);
 	for (i = 0; i < 2; i++){
 
 		tok = strtok(NULL,"-");

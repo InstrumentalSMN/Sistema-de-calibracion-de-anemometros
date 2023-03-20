@@ -24,8 +24,8 @@
 #define _MAX_SS		512
 #define USER "estaut"
 #define PASS "estacionesautomaticas17"
-#define PATH "EMA_LABO_CLI/SIM800L/AnemometroAeroparque"
-//#define PATH "/EMA_LABO_CLI/SIM800L/PruebaViaPutty"
+//#define PATH "EMA_LABO_CLI/SIM800L/AnemometroAeroparque"
+#define PATH "/EMA_LABO_CLI/SIM800L/PruebaViaPutty"
 //#define PATH "EMA_LABO_CLI/SIM800L/AnemometroPalomar"
 
 /*Region de config GPRS and FTP*/

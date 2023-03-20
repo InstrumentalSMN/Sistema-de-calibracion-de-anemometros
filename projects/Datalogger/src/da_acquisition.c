@@ -1,5 +1,11 @@
 #include "da_acquisition.h"
 
+
+// Diccionario de punteros a funcion para procesar en función del DeltaOHM elegido
+void (*opProcesoDatosViento[])(amenometerSerialParam_t * data)={
+							opPreprocesoDeltaOHM,
+							opPreprocesoWMT700};
+
 //real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
 //char uartBuffer[100];
 //char * ptrBuffer=uartBuffer;
@@ -52,31 +58,21 @@ void opBufferRS485Reset(amenometerSerialParam_t * data){
 }
 
 void opAdquirirDV( void *data ){ //Esta se llama  en el callbackSet
-//	((amenometerSerialParam_t *)data)->Uart = 5;
 	uint16_t miUart = ((amenometerSerialParam_t *)data)->Uart;
 	uint16_t miLed = ((amenometerSerialParam_t *)data)->LED;
-//	if(miUart==1461){
-//		miUart=5;
-//	}
-
-//	uartMap_t miUart=((uartMapAnemo2_t *)noUsado)->Uart;
 	uint8_t receiveByte = uartRxRead( (UART_GPIO+miUart));
-	//uartWriteByte( UART_USB, receiveByte);
-	//uartWriteString( UART_USB, "Entre  \r\n" );
 	*(((amenometerSerialParam_t *)data)->ptrUartBuffer) = receiveByte;
 	(((amenometerSerialParam_t *)data)->ptrUartBuffer)++;
 	gpioWrite((LEDR+((amenometerSerialParam_t *)data)->LED), OFF );
-//	gpioWrite(LEDR, OFF );
 	if(receiveByte =='\r'){
-//		uartWriteString( UART_USB, uartBuffer);
-
-		opPreprocesoDeltaOHM((amenometerSerialParam_t *)data);/*acá parseo el String de datos*/
+//		printf("%s",(((amenometerSerialParam_t *)data)->Buffer));
+		opProcesoDatosViento[(((amenometerSerialParam_t *)data)->Sensor)]((amenometerSerialParam_t *)data);
 		(((amenometerSerialParam_t *)data)->ptrUartBuffer)=(((amenometerSerialParam_t *)data)->Buffer); //Reseteo el puntero para el siguiente string
 	gpioWrite( (LEDR+((amenometerSerialParam_t *)data)->LED), ON );
-//	gpioWrite( LEDR, ON );
 	}
 
 }
+// Parser para anemometros
 void opPreprocesoDeltaOHM(amenometerSerialParam_t * data){
 	//Primero parceo lo que hay en buffer (28.30 359.3 998.3<CR><LF>)
 	char *	delimitador = " ";
@@ -100,6 +96,25 @@ void opPreprocesoDeltaOHM(amenometerSerialParam_t * data){
 //		uartWriteString( UART_USB, auxiliarBuffer );
 //		uartWriteString( UART_USB, "\r\n" );
     }
+
+}
+
+
+void opPreprocesoWMT700(amenometerSerialParam_t * data){
+	//Primero parceo lo que hay en buffer $--MWV,021,R,003.34,N,A*14
+	int i,j;
+	char* tok=0;
+	char* rest = data->Buffer;
+	tok = strtok(rest,",");
+//	if(tok == NULL){return ERROR;}
+//	printf("1ero strk: %s\r\n", tok);
+	tok = strtok(NULL,",");
+//	if(tok == NULL){return ERROR;}
+	data->DataAnemometer[1] = (float)atof(tok);
+	tok = strtok(NULL,",");
+	tok = strtok(NULL,",");
+	data->DataAnemometer[0] = (float)atof(tok);
+//	printf("Parcee los datos del WMT700");
 
 }
 

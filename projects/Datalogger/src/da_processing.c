@@ -65,12 +65,12 @@ void opProceso(  uint16_t * NumMuestra){
 	float direccionMaxIBC = maxValue(AcumDireccionIBC,(size_t)*NumMuestra);
 	float direccionMinIBC = minValue(AcumDireccionIBC,(size_t)*NumMuestra);
 	float direccionPromedioIBC = AverageValue(AcumDireccionIBC,(size_t)*NumMuestra);
-
+//Reemplazar esto con datos de un sensor de presion alterno
 	float presionInst = AcumPresionPat[(*NumMuestra)-1];
 	float presionMax = maxValue(AcumPresionPat,(size_t)*NumMuestra);
 	float presionMin = minValue(AcumPresionPat,(size_t)*NumMuestra);
 	float presionPromedio = AverageValue(AcumPresionPat,(size_t)*NumMuestra);
-
+//Reemplazar esto con datos de un sensor de temperatura alterno
 	float TempInst = AcumTempPat[(*NumMuestra)-1];
 	float TempMax = maxValue(AcumTempPat,(size_t)*NumMuestra);
 	float TempMin = minValue(AcumTempPat,(size_t)*NumMuestra);

@@ -17,6 +17,9 @@
 #define NoDato  -99999 // No hay dato tambien se usa en procesamiento.c!!!
 #define NAN "ND" // tambien se usa en procesamiento.c!!!
 
+
+typedef enum{DELTA_OHM,WMT700}sensor_t;
+
 typedef struct{
 	uint16_t Uart;
 	uint16_t LED;
@@ -25,7 +28,12 @@ typedef struct{
 	char * ptrUartBuffer;
 	real32_t DataAnemometer[7];
 	real32_t * ptrDataAnemometer;
+	sensor_t Sensor;
 }amenometerSerialParam_t;
+
+
+
+
 
 typedef amenometerSerialParam_t * ptrAmenometerSerialParam_t;
 
@@ -40,14 +48,25 @@ extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 /*A futuro esta funcion puede ser un voltaje simple , mas generico, en ese caso puedo pasar el channel*/
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
 extern void opBufferRS485Reset(amenometerSerialParam_t * data);
-//extern void opAdquirirDV(real32_t* dataWind);
-//extern void opPreprocesoDeltaOHM(char* uartBuffer, real32_t* dataWind);
-//extern void opGuardarMuestras(real32_t* muestraVoltNB, real32_t* dataWind);
-//extern void opMuestraDataWind(real32_t* dataWind);
+// Se puede pasar un typedef enum que seleccione un vector de puntero a funciones
 
 extern void opAdquirirDV( void *data );
+
+
+//Puntero a funcion para selecionar una funcion de procesamiento segun el anemometro conectado
+extern void (*opProcesoDatosViento[])(amenometerSerialParam_t * data);/* diccionario de punteros a funcion */
+
+
+
+//Funciones para procesar los distintos anemometros
 extern void opPreprocesoDeltaOHM(amenometerSerialParam_t * data);
+extern void opPreprocesoWMT700(amenometerSerialParam_t * data);
+
+
 extern void opGuardarMuestras(real32_t* muestraVoltNB);
+
+
+
 
 
 #endif
