@@ -56,6 +56,9 @@ dkms.conf
 .cproject
 .project
 
+# VS code files
+
+.vscode
 
 # Program output folders
 out/
