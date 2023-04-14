@@ -15,3 +15,5 @@
 - [More information in english](documentation/firmware/readme/readme-en.md).
 - [Más información en español](documentation/firmware/readme/readme-es.md).
 
+Se desarrollo para trabajar con FTP
+
