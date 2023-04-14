@@ -3,7 +3,7 @@ GeneratorModel for yakindu::c {
 	statechart application {
 
 		feature Outlet {
-			targetProject = "firmware_v3_Datalogger"
+			targetProject = "Sistema-de-calibracion-de-anemometros"
 			targetFolder = "examples/c/sapi/statecharts/5_application/gen"
 			libraryTargetFolder = "examples/c/sapi/statecharts/5_application/inc"
 		}
