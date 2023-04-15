@@ -27,11 +27,17 @@ uint8_t MASKSUB1[4];
 
 //Server information CONTROLSOCK
 //uint8_t _FTP_destip[4] = {129,6,15,29}; //NIST NTP
-uint8_t _FTP_destip_Local[4] = {192,168,5,5};
+//uint8_t _FTP_destip_Local[4] = {192,168,5,5};
+uint8_t _FTP_destip_Local[4] = {10,10,13,154};
 //uint8_t _FTP_destip[4] = {10,10,13,157};
 uint8_t _FTP_destip_Global[4] = {200,16,116,5};
 //uint16_t _FTP_destport = 37; //NTP port
-uint16_t _FTP_destport = 21;
+uint16_t server_port = 8000;
+
+
+
+
+
 //Server information DATASOCK
 uint8_t remoteIp[4];
 uint16_t  remotePort;
@@ -50,8 +56,8 @@ void opConfigSocket(){
 
 	DesconectarSocket(DATA_SOCK_FTP);
 	DesconectarSocket(CTRL_SOCK_FTP);
-	DesconectarSocket(CTRL_SOCK_FTP_RECV);
-	DesconectarSocket(DATA_SOCK_FTP_RECV);
+//	DesconectarSocket(CTRL_SOCK_FTP_RECV);
+//	DesconectarSocket(DATA_SOCK_FTP_RECV);
 	//	Configurar Cliente
 	uint8_t registroModo = getMR();
 	setMR(MR_RST);
@@ -89,25 +95,25 @@ bool_t opInitFTPSocketCtrl(){
 		return ERROR;
 	}
 	setSn_DIPR(CTRL_SOCK_FTP, _FTP_destip_Local);
-	setSn_DPORT(CTRL_SOCK_FTP, _FTP_destport);
+	setSn_DPORT(CTRL_SOCK_FTP, server_port);
 	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
 
 
-	setSn_MR(CTRL_SOCK_FTP_RECV, Sn_MR_TCP);
-	setSn_PORT(CTRL_SOCK_FTP_RECV,PortLocal);
-	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_OPEN);
-//	delay(5); // Necesario para recibir respuestas
-//	ret1 = getSn_MR(CTRL_SOCK_FTP);
-//	ret2 = getSn_PORT(CTRL_SOCK_FTP);
-	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
-	if(ret5 != SOCK_INIT){
-		printf("Salgo error 1\r\n ");
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		return ERROR;
-	}
-	setSn_DIPR(CTRL_SOCK_FTP_RECV, _FTP_destip_Local);
-	setSn_DPORT(CTRL_SOCK_FTP_RECV, _FTP_destport);
-	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_CONNECT);
+//	setSn_MR(CTRL_SOCK_FTP_RECV, Sn_MR_TCP);
+//	setSn_PORT(CTRL_SOCK_FTP_RECV,PortLocal);
+//	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_OPEN);
+////	delay(5); // Necesario para recibir respuestas
+////	ret1 = getSn_MR(CTRL_SOCK_FTP);
+////	ret2 = getSn_PORT(CTRL_SOCK_FTP);
+//	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
+//	if(ret5 != SOCK_INIT){
+//		printf("Salgo error 1\r\n ");
+//		DesconectarSocket(CTRL_SOCK_FTP_RECV);
+//		return ERROR;
+//	}
+//	setSn_DIPR(CTRL_SOCK_FTP_RECV, _FTP_destip_Local);
+//	setSn_DPORT(CTRL_SOCK_FTP_RECV, _FTP_destport);
+//	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_CONNECT);
 	return OK;
 
 }
@@ -124,35 +130,53 @@ bool_t opSetParametersFTPSocket(){
 		return ERROR;
 		//gpioWrite( LED2, ON );
 	}
-	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
-	if(ret5 != SOCK_ESTABLISHED){
-		printf("Salgo error 2recv\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		return ERROR;
-		//gpioWrite( LED2, ON );
-	}
-	char mystr[200];
-	sprintf(mystr,"USER %s\r\n",USER);
-	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-	sprintf(mystr,"PASS %s\r\n",PASS);
-	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-	sprintf(mystr,"PASV\r\n"); // Pasive mode
-	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-	sprintf(mystr,"TYPE A\r\n"); //Ascii mode
-	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-	sprintf(mystr,"CWD %s\r\n",PATH); //Eligo la ruta
-	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+//	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
+//	if(ret5 != SOCK_ESTABLISHED){
+//		printf("Salgo error 2recv\r\n");
+//		DesconectarSocket(CTRL_SOCK_FTP_RECV);
+//		return ERROR;
+//		//gpioWrite( LED2, ON );
+//	}
+//	char mystr[200];
+//	sprintf(mystr,"USER %s\r\n",USER);
+//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
+//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+//	sprintf(mystr,"PASS %s\r\n",PASS);
+//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
+//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+//	sprintf(mystr,"PASV\r\n"); // Pasive mode
+//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
+//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+//	sprintf(mystr,"TYPE A\r\n"); //Ascii mode
+//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
+//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+//	sprintf(mystr,"CWD %s\r\n",PATH); //Eligo la ruta
+//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
+//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
+	//Para armar el msj de conexión
+	char aux[200] = "{\'message\':\'hola\'}";
+	char host[] = "10.10.13.154";
+	char path[] = "/ws/socket-server/";
+	char key[] = "x3JJHMbDL1EzLkh9GBhXDw==";
+	char header[256];
+	sprintf(header,	"GET %s HTTP/1.1\r\n"
+					"Host: %s:%d\r\n"
+                    "Upgrade: websocket\r\n"
+                    "Connection: Upgrade\r\n"
+                    "Sec-WebSocket-Key: %s\r\n"
+                    "Sec-WebSocket-Version: 13\r\n"
+					"Custom-Message: %s\r\n"
+					"\r\n", path, host, server_port, key,"hola");
+	send(CTRL_SOCK_FTP, header, strlen(header));
+
 	return OK;
 }
 
 
 // Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
 bool_t opConnectSocketData(){
+
+
 	long ret = 0;
 	//	delay(10);//Necesario para recibir una respuesta del Server
 	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
@@ -162,7 +186,35 @@ bool_t opConnectSocketData(){
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(CTRL_SOCK_FTP,dbuf,size);
 	dbuf[ret] = '\0';
-//	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
+//	sprintf(sendline, "{\"message\": \"%s\"}", "hola");
+//	'messaje':'Estas conectado!'
+// automatizar esto para n mensajes
+	char aux[] = "ja";
+	char message[1024];
+	memset(message, 0, strlen(message));
+	message[0] = 0x81; // Opcode 0x1 y datos enmascarados
+	message[1] = ((uint8_t)strlen(aux)) | 0x80; // Longitud de los datos y seteo el bit de enmascaramiento
+	uint32_t mask_key = 0x12345678; // Clave de codificación
+	message[2] = 0x12;
+	message[3] = 0x34;
+	message[4] = 0x56;
+	message[5] = 0x78;
+//	memcpy(message + 2, &mask_key, sizeof(mask_key)); // Copiar la clave de codificación
+	memcpy(message + 6, aux, strlen(aux));
+	message[6] = message[6]^0x12;
+	message[7] = message[7]^0x34;
+//	// Copiar los datos sin enmascarar
+//	for (int i = 6; i < strlen(aux) + 6; i++) {
+//		uint8_t a = ((uint8_t*)&mask_key)[i % 4];
+//	    message[i] ^= ((uint8_t*)&mask_key)[i % 4]; // Aplicar XOR con la clave de codificación
+//	}
+	int32_t len = send(CTRL_SOCK_FTP, message, strlen(aux) + 6);
+
+	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(CTRL_SOCK_FTP,dbuf,size);
+	dbuf[ret] = '\0';
+
 	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
 							//Despues probar de conectarme a ese port que me da y mandar datos
 		printf("Salgo error 3\r\n");
@@ -227,7 +279,10 @@ bool_t opConnectSocketData(){
 
 
 	return OK;
-}
+    }
+
+
+
 // Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
 bool_t opCheckSocketData(){
 //	ret1 = getSn_MR(DATA_SOCK_FTP);

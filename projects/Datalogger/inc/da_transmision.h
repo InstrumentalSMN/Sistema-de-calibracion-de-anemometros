@@ -43,7 +43,7 @@ extern bool_t opInitFTPSocketCtrl();
 extern bool_t opSetParametersFTPSocket();
 extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort);
 
-
+extern void xor_data(uint8_t *key, uint8_t *data, int len, uint8_t *output);
 extern bool_t opConfigSocketData();
 extern bool_t opConnectSocketData();
 extern bool_t opCheckSocketData();
