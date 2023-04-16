@@ -52,12 +52,11 @@ char dbuf[550];
 
 
 
+
 void opConfigSocket(){
 
 	DesconectarSocket(DATA_SOCK_FTP);
-	DesconectarSocket(CTRL_SOCK_FTP);
-//	DesconectarSocket(CTRL_SOCK_FTP_RECV);
-//	DesconectarSocket(DATA_SOCK_FTP_RECV);
+	DesconectarSocket(WEB_SOCK);
 	//	Configurar Cliente
 	uint8_t registroModo = getMR();
 	setMR(MR_RST);
@@ -74,86 +73,34 @@ void opConfigSocket(){
 
 }
 
-bool_t opInitFTPSocketCtrl(){
-	//Conecto al FTP
-	//Configurar Socket de control para el FTP
-//	ftpc_init(IPLocal);
-//	ftpc_run(auxiliarBuffer);
+bool_t opInitWebSocket(){
 
-
-
-	setSn_MR(CTRL_SOCK_FTP, Sn_MR_TCP);
-	setSn_PORT(CTRL_SOCK_FTP,PortLocal2);
-	setSn_CR(CTRL_SOCK_FTP,Sn_CR_OPEN);
-//	delay(5); // Necesario para recibir respuestas
-//	ret1 = getSn_MR(CTRL_SOCK_FTP);
-//	ret2 = getSn_PORT(CTRL_SOCK_FTP);
-	ret5 = getSn_SR(CTRL_SOCK_FTP);
+	setSn_MR(WEB_SOCK, Sn_MR_TCP);
+	setSn_PORT(WEB_SOCK,PortLocal2);
+	setSn_CR(WEB_SOCK,Sn_CR_OPEN);
+	ret5 = getSn_SR(WEB_SOCK);
 	if(ret5 != SOCK_INIT){
 		printf("Salgo error 1\r\n ");
-		DesconectarSocket(CTRL_SOCK_FTP);
+		DesconectarSocket(WEB_SOCK);
 		return ERROR;
 	}
-	setSn_DIPR(CTRL_SOCK_FTP, _FTP_destip_Local);
-	setSn_DPORT(CTRL_SOCK_FTP, server_port);
-	setSn_CR(CTRL_SOCK_FTP,Sn_CR_CONNECT);
-
-
-//	setSn_MR(CTRL_SOCK_FTP_RECV, Sn_MR_TCP);
-//	setSn_PORT(CTRL_SOCK_FTP_RECV,PortLocal);
-//	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_OPEN);
-////	delay(5); // Necesario para recibir respuestas
-////	ret1 = getSn_MR(CTRL_SOCK_FTP);
-////	ret2 = getSn_PORT(CTRL_SOCK_FTP);
-//	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
-//	if(ret5 != SOCK_INIT){
-//		printf("Salgo error 1\r\n ");
-//		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-//		return ERROR;
-//	}
-//	setSn_DIPR(CTRL_SOCK_FTP_RECV, _FTP_destip_Local);
-//	setSn_DPORT(CTRL_SOCK_FTP_RECV, _FTP_destport);
-//	setSn_CR(CTRL_SOCK_FTP_RECV,Sn_CR_CONNECT);
+	setSn_DIPR(WEB_SOCK, _FTP_destip_Local);
+	setSn_DPORT(WEB_SOCK, server_port);
+	setSn_CR(WEB_SOCK,Sn_CR_CONNECT);
 	return OK;
 
 }
 // Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
-bool_t opSetParametersFTPSocket(){
+bool_t opConnectToWebSocket(){
 
-
-	ret5 = getSn_SR(CTRL_SOCK_FTP);
-	//	delay(2000);
-	//	ret5 = getSn_SR(CTRL_SOCK_FTP);
+	ret5 = getSn_SR(WEB_SOCK);
 	if(ret5 != SOCK_ESTABLISHED){
 		printf("Salgo error 2\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP);
+		DesconectarSocket(WEB_SOCK);
 		return ERROR;
 		//gpioWrite( LED2, ON );
 	}
-//	ret5 = getSn_SR(CTRL_SOCK_FTP_RECV);
-//	if(ret5 != SOCK_ESTABLISHED){
-//		printf("Salgo error 2recv\r\n");
-//		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-//		return ERROR;
-//		//gpioWrite( LED2, ON );
-//	}
-//	char mystr[200];
-//	sprintf(mystr,"USER %s\r\n",USER);
-//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-//	sprintf(mystr,"PASS %s\r\n",PASS);
-//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-//	sprintf(mystr,"PASV\r\n"); // Pasive mode
-//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-//	sprintf(mystr,"TYPE A\r\n"); //Ascii mode
-//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-//	sprintf(mystr,"CWD %s\r\n",PATH); //Eligo la ruta
-//	send(CTRL_SOCK_FTP, mystr, strlen(mystr));
-//	send(CTRL_SOCK_FTP_RECV, mystr, strlen(mystr));
-	//Para armar el msj de conexión
+	//msj de conexión
 	char aux[200] = "{\'message\':\'hola\'}";
 	char host[] = "10.10.13.154";
 	char path[] = "/ws/socket-server/";
@@ -165,239 +112,80 @@ bool_t opSetParametersFTPSocket(){
                     "Connection: Upgrade\r\n"
                     "Sec-WebSocket-Key: %s\r\n"
                     "Sec-WebSocket-Version: 13\r\n"
-					"Custom-Message: %s\r\n"
-					"\r\n", path, host, server_port, key,"hola");
-	send(CTRL_SOCK_FTP, header, strlen(header));
-
+					"\r\n", path, host, server_port, key);
+	int32_t a = strlen(header);
+	int32_t len = send(WEB_SOCK, header, strlen(header));
+	if (a != len){ //valido que se envie correctamente
+		printf("Mensaje no enviado\r\n");
+		return ERROR;
+	}
 	return OK;
 }
 
+bool_t KeepAlive(){
 
-// Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
-bool_t opConnectSocketData(){
+	char aux[] ="SigoAqui";
+	char message[140];
+	encodeMessage125(aux,message);
 
+	uint32_t len = send(WEB_SOCK, message, strlen(aux) + 6);
+	if (len != strlen(aux) + 6){
+		printf("No envio bien los datos\r\n");
+		return ERROR;
+	}
+	return OK;
+}
 
+bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare){
+
+//Recibo mensaje de handShake
 	long ret = 0;
-	//	delay(10);//Necesario para recibir una respuesta del Server
-	uint16_t size = getSn_RX_RSR(CTRL_SOCK_FTP);
-
-	//Recibo MSJ del socket de control e imprimo
+	uint16_t size = getSn_RX_RSR(WEB_SOCK);
 	memset(dbuf, 0, _MAX_SS);
 	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(CTRL_SOCK_FTP,dbuf,size);
+	ret = recv(WEB_SOCK,dbuf,size);
 	dbuf[ret] = '\0';
-//	sprintf(sendline, "{\"message\": \"%s\"}", "hola");
-//	'messaje':'Estas conectado!'
-// automatizar esto para n mensajes
-	char aux[] = "ja";
-	char message[1024];
-	memset(message, 0, strlen(message));
-	message[0] = 0x81; // Opcode 0x1 y datos enmascarados
-	message[1] = ((uint8_t)strlen(aux)) | 0x80; // Longitud de los datos y seteo el bit de enmascaramiento
-	uint32_t mask_key = 0x12345678; // Clave de codificación
-	message[2] = 0x12;
-	message[3] = 0x34;
-	message[4] = 0x56;
-	message[5] = 0x78;
-//	memcpy(message + 2, &mask_key, sizeof(mask_key)); // Copiar la clave de codificación
-	memcpy(message + 6, aux, strlen(aux));
-	message[6] = message[6]^0x12;
-	message[7] = message[7]^0x34;
-//	// Copiar los datos sin enmascarar
-//	for (int i = 6; i < strlen(aux) + 6; i++) {
-//		uint8_t a = ((uint8_t*)&mask_key)[i % 4];
-//	    message[i] ^= ((uint8_t*)&mask_key)[i % 4]; // Aplicar XOR con la clave de codificación
+//	char prueba[]="holamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholab6";
+//	uint32_t len = (uint32_t)strlen(prueba);
+	uint32_t len = (uint32_t)strlen(TableToFTP);
+
+	char message[600];
+	if(len > 125){
+		encodeMessage126(TableToFTP,message);
+		len = send(WEB_SOCK, message, strlen(TableToFTP) + 8);
+		if (len != strlen(TableToFTP) + 8){
+			printf("No envio bien los datos\r\n");
+			return ERROR;
+		}
+	}else{
+
+		encodeMessage125(TableToFTP,message);
+		len = send(WEB_SOCK, message, strlen(TableToFTP) + 6);
+		if (len != strlen(TableToFTP) + 6){
+			printf("No envio bien los datos\r\n");
+			return ERROR;
+		}
+	}
+
+	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(WEB_SOCK,dbuf,size);
+	dbuf[ret] = '\0';
+/////////////////////////////////////////////////////
+//	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
+//							//Despues probar de conectarme a ese port que me da y mandar datos
+//		printf("Salgo error 3\r\n");
+//		printf("Bad port syntax\r\n");
+//		DesconectarSocket(WEB_SOCK);
+//		return ERROR;
 //	}
-	int32_t len = send(CTRL_SOCK_FTP, message, strlen(aux) + 6);
-
-	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(CTRL_SOCK_FTP,dbuf,size);
-	dbuf[ret] = '\0';
-
-	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
-							//Despues probar de conectarme a ese port que me da y mandar datos
-		printf("Salgo error 3\r\n");
-		printf("Bad port syntax\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP);
-		return ERROR;
-	}
-
-	//Configurar Socket de control para el FTP
-
-	setSn_MR(DATA_SOCK_FTP, Sn_MR_TCP);
-	setSn_PORT(DATA_SOCK_FTP,PortLocal);
-	setSn_CR(DATA_SOCK_FTP,Sn_CR_OPEN);
-//	delay(5); // Necesario para recibir respuestas
-	ret3 = getSn_SR(DATA_SOCK_FTP);
-	if(ret3 != SOCK_INIT){
-		printf("Salgo error 4\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP);
-		DesconectarSocket(DATA_SOCK_FTP);
-		return ERROR;
-	}
-//	//Conecto al FTP
-	setSn_DIPR(DATA_SOCK_FTP, remoteIp);
-	setSn_DPORT(DATA_SOCK_FTP, remotePort);
-	setSn_CR(DATA_SOCK_FTP,Sn_CR_CONNECT);
-/*********************************************************/
-
-//	delay(10);//Necesario para recibir una respuesta del Server
-	size = getSn_RX_RSR(CTRL_SOCK_FTP_RECV);
-
-	//Recibo MSJ del socket de control e imprimo
-	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(CTRL_SOCK_FTP_RECV,dbuf,size);
-	dbuf[ret] = '\0';
-//	printf("Rcvd Command fot Control Sock: %s\r\n", dbuf);
-	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
-							//Despues probar de conectarme a ese port que me da y mandar datos
-		printf("Salgo error 3 recv\r\n");
-		printf("Bad port syntax recv\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		return ERROR;
-	}
-
-	//Configurar Socket de control para el FTP
-
-	setSn_MR(DATA_SOCK_FTP_RECV, Sn_MR_TCP);
-	setSn_PORT(DATA_SOCK_FTP_RECV,PortLocal);
-	setSn_CR(DATA_SOCK_FTP_RECV,Sn_CR_OPEN);
-//	delay(5); // Necesario para recibir respuestas
-	ret3 = getSn_SR(DATA_SOCK_FTP_RECV);
-	if(ret3 != SOCK_INIT){
-		printf("Salgo error 4\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		DesconectarSocket(DATA_SOCK_FTP_RECV);
-		return ERROR;
-	}
-//	//Conecto al FTP
-	setSn_DIPR(DATA_SOCK_FTP_RECV, remoteIp);
-	setSn_DPORT(DATA_SOCK_FTP_RECV, remotePort);
-	setSn_CR(DATA_SOCK_FTP_RECV,Sn_CR_CONNECT);
-
-
-	return OK;
-    }
-
-
-
-// Hay un delay no bloqueante de 50 ms para pasar a la funcion de abajo
-bool_t opCheckSocketData(){
-//	ret1 = getSn_MR(DATA_SOCK_FTP);
-//	ret2 = getSn_PORT(DATA_SOCK_FTP);
-//	ret4 = getSn_DPORT(DATA_SOCK_FTP);
-	ret5 = getSn_SR(DATA_SOCK_FTP);
-	if(ret5 != SOCK_ESTABLISHED){
-		printf("Salgo error 5\r\n");
-		DesconectarSocket(DATA_SOCK_FTP);
-		DesconectarSocket(CTRL_SOCK_FTP);
-		return ERROR;
-		//gpioWrite( LED2, ON );
-	}
-	ret5 = getSn_SR(DATA_SOCK_FTP_RECV);
-	if(ret5 != SOCK_ESTABLISHED){
-		printf("Salgo error 5 recv\r\n");
-		DesconectarSocket(DATA_SOCK_FTP_RECV);
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		return ERROR;
-		//gpioWrite( LED2, ON );
-	}
-	return OK;
-}
-
-
-void opOpenFileFTP( int32_t * NumberMesuare){
-
-
-
-
-	char mystr[200];
-	char aux[200];
-	sprintf(mystr, "ST%d", *NumberMesuare);
-//	rtcRead( &rtc );
-//	sprintf( mystr,"%02d-%02d-%04d,%02d:%02d:%02d",
-//	              rtc.mday, rtc.month, rtc.year,
-//	              rtc.hour, rtc.min, rtc.sec);
-	//Agrego el numero de medicion A futuro se debera agregar el RTC
-	sprintf(aux,"%s-%s", mystr,"DeltaOHM_022274.txt");
-	sprintf(mystr,"STOR %s\r\n", aux);
-	send(CTRL_SOCK_FTP,mystr, strlen(mystr));
-
-
-//	setSn_CR(CTRL_SOCK_FTP,Sn_CR_SEND);
-//	while(getSn_CR(CTRL_SOCK_FTP));
-
-	// en la variable de estructura rtc te queda la fecha/hora actual
-
-	      // Envio por UART de forma humanamente legible
-	      // %02d == %d y ademas completa con 2 0 a izquierda
-
-
-//	uartWriteString( UART_USB, TableToFTP );
-//	uartWriteString( UART_USB, "\r \n" );
-
-}
-void opTransmitFTPViaEthernet(int32_t * NumberMesuare){
-
-//	char ParaEnviar[*size];
-
-//	sprintf(ParaEnviar, "%s", TableToFTP);
-	//Lo deberia hacer en transmision
-
-//	sprintf(dat,"%s",ParaEnviar); //Eligo la ruta
-
-	uint32_t size = (uint32_t)strlen(TableToFTP);
-//	delay(100);
-	send(DATA_SOCK_FTP, TableToFTP, size);
-
-	DesconectarSocket(DATA_SOCK_FTP);
-	DesconectarSocket(CTRL_SOCK_FTP);
-
-	char mystr[200];
-	char aux[200];
-	sprintf(mystr, "ST%d", *NumberMesuare);
-	//	rtcRead( &rtc );
-	//	sprintf( mystr,"%02d-%02d-%04d,%02d:%02d:%02d",
-	//	              rtc.mday, rtc.month, rtc.year,
-	//	              rtc.hour, rtc.min, rtc.sec);
-		//Agrego el numero de medicion A futuro se debera agregar el RTC
-	sprintf(aux,"%s-%s", mystr,"DeltaOHM_022274.txt");
-	sprintf(mystr,"RETR %s\r\n", aux);
-	send(CTRL_SOCK_FTP_RECV,mystr, strlen(mystr));
-
-
-}
-
-bool_t opCheckDataInServer(){
-	long ret = 0;
-	//	delay(10);//Necesario para recibir una respuesta del Server
-	uint32_t size = getSn_RX_RSR(DATA_SOCK_FTP_RECV);
-
-	//Recibo MSJ del socket de control e imprimo
-	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(DATA_SOCK_FTP_RECV,dbuf,size);
-	dbuf[ret] = '\0';
-	if(size==0){
-		printf("\r\n Archivo mal enviado y vacio\r\n");
-		DesconectarSocket(CTRL_SOCK_FTP_RECV);
-		DesconectarSocket(DATA_SOCK_FTP_RECV);
-		return ERROR;
-	}
-	rtcRead( &rtc );
-	printf( "\r \n Hora de transmision: %02d/%02d/%04d, %02d:%02d:%02d\r\n",
-			              rtc.mday, rtc.month, rtc.year,
-			              rtc.hour, rtc.min, rtc.sec );
-	DesconectarSocket(CTRL_SOCK_FTP_RECV);
-	DesconectarSocket(DATA_SOCK_FTP_RECV);
 	//limpio la tabla
 	memset(TableToFTP, 0, strlen(TableToFTP));
 	next = 0;
 	return OK;
 
 }
+
 
 int8_t DesconectarSocket(uint8_t sn){
 //	CHECK_SOCKNUM();
@@ -416,6 +204,73 @@ int8_t DesconectarSocket(uint8_t sn){
 }
 
 
+void encodeMessage126(uint8_t * buf, uint8_t * message){
+
+	memset(message, 0, sizeof(message));
+	message[0] = 0x81; // Opcode 0x1 y datos enmascarados
+	//	uint16_taux = ((uint16_t)strlen(aux)) | 0x8000;
+	message[1] = 0xFE;
+	uint16_t largo = ((uint16_t)strlen(buf));
+	message[2] = (largo & 0xFF00)>>8;
+	message[3] = (largo & 0x00FF)>>0;
+	uint32_t mask_key = 0x12345678; // Clave de codificación
+	//Copio la clave
+	message[4] = (mask_key & 0xFF000000)>>24;	//0x12
+	message[5] = (mask_key & 0x00FF0000)>>16;	//0x34
+	message[6] = (mask_key & 0x0000FF00)>>8;	//0x56
+	message[7] = (mask_key & 0x000000FF)>>0;	//0x78
+	//	uint32_t mask_key_aux = (mask_key & 0x00FF0000)>>16;
+	memcpy(message + 8, buf, strlen(buf));
+	//	message[6] = message[6]^0x12;
+	//	message[7] = message[7]^0x34;
+	//	// Copiar los datos sin enmascarar
+	int value = 4;
+	for (int i = 8; i < strlen(buf) + 8; i++) {
+	//		uint8_t a = ((uint8_t*)&mask_key)[i % 4];
+	//	    message[i] ^= ((uint8_t*)&mask_key)[i % 4]; // Aplicar XOR con la clave de codificación
+		message[i] ^= message[value];
+		value++;
+		if(value > 7){
+			value = 4;
+		}
+	}
+
+
+
+
+}
+
+
+void encodeMessage125(uint8_t * buf, uint8_t * message){
+
+		memset(message, 0, sizeof(message));
+		message[0] = 0x81; // Opcode 0x1 y datos enmascarados
+		//	uint16_taux = ((uint16_t)strlen(aux)) | 0x8000;
+		message[1] = ((uint8_t)strlen(buf)) | 0x80; // Longitud de los datos y seteo el bit de enmascaramiento
+		uint32_t mask_key = 0x12345678; // Clave de codificación
+		//Copio la clave
+		message[2] = (mask_key & 0xFF000000)>>24;	//0x12
+		message[3] = (mask_key & 0x00FF0000)>>16;	//0x34
+		message[4] = (mask_key & 0x0000FF00)>>8;	//0x56
+		message[5] = (mask_key & 0x000000FF)>>0;	//0x78
+	//	uint32_t mask_key_aux = (mask_key & 0x00FF0000)>>16;
+		memcpy(message + 6, buf, strlen(buf));
+	//	message[6] = message[6]^0x12;
+	//	message[7] = message[7]^0x34;
+	//	// Copiar los datos sin enmascarar
+		int value = 2;
+		for (int i = 6; i < strlen(buf) + 6; i++) {
+	//		uint8_t a = ((uint8_t*)&mask_key)[i % 4];
+	//	    message[i] ^= ((uint8_t*)&mask_key)[i % 4]; // Aplicar XOR con la clave de codificación
+			message[i] ^= message[value];
+			value++;
+			if(value > 5){
+				value = 2;
+			}
+		}
+
+
+}
 
 void backUpData(){
 	uint32_t size = (uint32_t)strlen(TableToFTP);
@@ -455,420 +310,6 @@ int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remote
 	return 0;
 }
 
-
-
-
-/* Region Config GPRS and FTP*/
-
-// Reinicio GRPS
-
-void resetGRPS(){
-
-	gpioWrite( GPIO2, OFF );
-	//	printf("\r\n entro");
-	delay(2000);
-	gpioWrite( GPIO2, ON );
-//	delay(1000);
-	gpioWrite( LED1, OFF );
-	gpioWrite( LED2, OFF );
-
-}
-
-
-
-
-bool_t opConfigGPRS(){
-
-	uartWriteString( UART_USB, "ConfiguroGPRS\r\n");
-//	uartConfig( UART_232, 115200 );
-//	uartWriteString( UART_232, "AT+FTPPUT=2,0");
-	uartConfig( UART_232, 115200 );
-	uint8_t dato = 1;
-	uartWriteString( UART_232, "AT");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-
-
-	uartWriteString( UART_232, "AT+SAPBR=3,1,\"Contype\",\"GPRS\"");/*Los comandos AT van con \n */
-	uartWriteString( UART_232, "\r\n");
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-//Poner APN en el inicio
-
-	uartWriteString( UART_232, "AT+SAPBR=3,1,\"APN\",\"igprs.claro.com.ar\"");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-
-	uartWriteString( UART_232, "AT+SAPBR=1,1");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(1000);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		uartWriteString( UART_232, "AT+SAPBR=0,1");
-		uartWriteString( UART_232, "\r\n");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-
-	uartWriteString( UART_232, "AT+SAPBR=2,1");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-	gpioWrite( LED1, ON );/*GPRS Config OK*/
-//	return OK;
-	return ERROR;
-}
-
-
-
-bool_t opConfigFTP(){
-
-	uartWriteString( UART_USB, "ConfiguroFTP\r\n");
-//	uartConfig( UART_232, 115200 );
-	uint8_t dato = 1;
-	char aux[200];
-	char aux1[200];
-//	uartWriteString( UART_232, "AT");
-//	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-//		delay(300);
-//		uartReadByte( UART_232, &dato );
-//		uartWriteByte( UART_USB, dato);
-//		uartWriteString( UART_USB, "\r\n");
-//
-//		if(dato != '0'){
-//			//gpioWrite( LED3, ON );
-//			uartWriteString( UART_USB, "Respuesta de AT\r\n");
-//			uartWriteByte( UART_USB, dato);
-//			uartWriteString( UART_USB, "\r\n");
-//			//uartWriteString( UART_232, "AT+SAPBR=0,1");
-//			return ERROR;
-//		}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-
-	uartWriteString( UART_232, "AT+FTPCID=1");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	//Convierto la IP a un string
-	floatToString(_FTP_destip_Global[0],aux1,0);
-	sprintf(aux, "AT+FTPSERV=\"%s", aux1);
-	floatToString(_FTP_destip_Global[1],aux1,0);
-	sprintf(aux, "%s.%s",aux, aux1);
-	floatToString(_FTP_destip_Global[2],aux1,0);
-	sprintf(aux, "%s.%s",aux, aux1);
-	floatToString(_FTP_destip_Global[3],aux1,0);
-	sprintf(aux, "%s.%s\"",aux, aux1);
-	printf("Esta es la IP: %s\r\n",aux);
-
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-//	uartWriteString( UART_232, "AT+FTPSERV=\"200.16.116.5\"");
-	uartWriteString( UART_232, aux);
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	sprintf(aux, "AT+FTPUN=\"%s\"", USER);
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-//	uartWriteString( UART_232, "AT+FTPUN=\"estaut\"");
-	uartWriteString( UART_232,aux);
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	sprintf(aux, "AT+FTPPW=\"%s\"", PASS);
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-//	uartWriteString( UART_232, "AT+FTPPW=\"estacionesautomaticas17\"");
-	uartWriteString( UART_232, aux);
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	sprintf(aux, "AT+FTPPUTPATH=\"%s/\"", PATH);
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-//	uartWriteString( UART_232,"AT+FTPPUTPATH=\"/EMA_LABO_CLI/SIM800L/AnemometroAeroparque/\"");
-	uartWriteString( UART_232,aux);
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-
-
-	gpioWrite( LED2, ON );/*FTP Config ok*/
-//	return ERROR;
-	return OK;
-}
-
-
-
-
-
-
-
-bool_t TransmitirFTPViaGPRS( uint32_t * size, int32_t * NumberMesuare){
-
-	char mystr[20];
-	char aux[200];
-//
-
-	uartConfig( UART_232, 115200 );
-	uint8_t dato = 1;
-
-	uartWriteString( UART_232, "AT");
-	uartWriteString( UART_232, "\r\n");/*Los comandos AT van con \n */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");
-
-	}
-	sprintf(mystr, "%d", *NumberMesuare);
-	sprintf(aux,"%s%s-%s","AT+FTPPUTNAME=\"", mystr,"DeltaOHM_022274.txt\"");
-	uartWriteString( UART_USB, aux );
-	uartWriteString( UART_USB, "\r\n");
-	uartWriteString( UART_USB, "TransmitoMediciones\r\n");
-
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-	//Configuramos el nombre del archivos
-	uartWriteString( UART_232, aux);/*Nombre del archivo */
-	uartWriteString( UART_232, "\r\n");
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-	//Configuramos el nombre del archivos
-	uartWriteString( UART_232, "AT+FTPPUT =1");/*Abro Sesion */
-	uartWriteString( UART_232, "\r\n");
-	delay(11000);//Importante esperara acá
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato == '4'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "Respuesta de AT+FTPPUT =1\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	sprintf(mystr, "%d", *size);
-	sprintf(aux,"%s%s","AT+FTPPUT=2,",mystr);
-	//uartWriteString( UART_USB, aux ); /*Pido enviar *size elementos*/
-	uartWriteString( UART_USB, aux );
-	uartWriteString( UART_USB, "\r\n");
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-	uartWriteString( UART_232, aux );/*Pido enviar *size elementos*/
-	uartWriteString( UART_232, "\n");
-	delay(11000);//Importante esperara acá
-	if(dato == '4'){
-		//gpioWrite( LED2, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_232, "AT+FTPPUT=2,0");
-		uartWriteString( UART_232, "\n");
-		uartWriteString( UART_USB, "Respuesta de AT+FTPPUT=size\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	uartWriteString( UART_USB, "\r \n Mi tabla por GPRS:-------" );
-	uartWriteString( UART_USB, TableToFTP );
-	uartWriteString( UART_USB, "\r \n" );
-	char ParaEnviar[*size];
-	sprintf(ParaEnviar, "%s", TableToFTP);
-	uartWriteString( UART_USB, ParaEnviar);
-//	uartWriteString( UART_USB, "\r\n");
-//	uartWriteString( UART_232, ParaEnviar );
-	/*envio*/
-//	uartWriteString( UART_232, "12345");
-//	uartWriteString( UART_232, "\n");
-	uartWriteString( UART_232, ParaEnviar);
-	uartWriteString( UART_232, "\n");
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-
-	delay(500);
-	uartConfig( UART_232, 115200 );
-	uartWriteString( UART_USB, "AT+FTPPUT=2,0" );
-	uartWriteString( UART_USB, "\r\n");
-	uartWriteString( UART_232, "AT+FTPPUT=2,0");
-	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
-	delay(2000);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-	if(dato != '0'){
-		//gpioWrite( LED3, ON );
-		//uartWriteByte( UART_USB, dato);
-		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-		uartWriteString( UART_USB, "No pude cerrarRespuesta de AT\r\n");
-		uartWriteByte( UART_USB, dato);
-		uartWriteString( UART_USB, "\r\n");
-		resetGRPS();
-		return ERROR;
-	}
-	delay(300);
-	uartConfig( UART_232, 115200 ); //Limpio la Uart FIFOS
-	uartWriteString( UART_USB, "AT+SAPBR=0,1 respuesta" );
-	uartWriteString( UART_USB, "\r\n");
-	uartWriteString( UART_232, "AT+SAPBR=0,1");
-	uartWriteString( UART_232, "\r\n");/*(No mas datos cierro) */
-	delay(300);
-	uartReadByte( UART_232, &dato );
-	uartWriteByte( UART_USB, dato);
-	uartWriteString( UART_USB, "\r\n");
-
-//	if(dato != '+' || dato != '0' ){
-//		//gpioWrite( LED3, ON );
-//		//uartWriteByte( UART_USB, dato);
-//		//uartWriteString( UART_232, "AT+SAPBR=0,1");//Cierro portadora y salgo
-//		uartWriteString( UART_USB, "No pude cerrarRespuesta de AT\r\n");
-//		uartWriteByte( UART_USB, dato);
-//		uartWriteString( UART_USB, "\r\n");
-//		return ERROR;
-//	}
-	gpioWrite( LEDB, ON );
-	delay(1000);
-	gpioWrite( LEDB, OFF );
-	return OK;
-
-}
 
 
 

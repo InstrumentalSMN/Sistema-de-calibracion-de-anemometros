@@ -28,7 +28,7 @@ void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialPa
 }
 
 
-void opProceso(  uint16_t * NumMuestra){
+void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 
 	uint32_t i = 0;
 	//char aux[150];
@@ -81,13 +81,11 @@ void opProceso(  uint16_t * NumMuestra){
 	float nv_bateriaMin = minValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaPromedio = AverageValue(NvBateria,(size_t)*NumMuestra);
 
-	real32_t Tabla_10min[28] ={	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
+	real32_t Tabla_Mediciones[16] = {	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
 							velocidadInstIBC,velocidadMinIBC,velocidadMaxIBC,velocidadPromedioIBC,
 							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC,
-							direccionInst,direccionMin,direccionMax,direccionPromedio,
-							presionInst,presionMin,presionMax,presionPromedio,
-							TempInst,TempMin,TempMax,TempPromedio,
-							nv_bateriaInst,nv_bateriaMin,nv_bateriaMax,nv_bateriaPromedio};
+							direccionInst,direccionMin,direccionMax,direccionPromedio
+							};
 
 //	real32_t Tabla[4] ={	velocidadPromedio,
 //							direccionPromedio,
@@ -98,19 +96,20 @@ void opProceso(  uint16_t * NumMuestra){
 
 	//Armo el string con los datos medidos
 	char * auxi = TableToFTP+next; //Reinicializo el apunte a la posicion 0
-	rtcRead( &rtc );
+	sprintf(auxi, "M;%d;", *NumMedicion);
+	auxi = auxi + strlen(auxi);
 	sprintf( auxi,"%02d-%02d-%04d,%02d:%02d:%02d,",
 	              rtc.mday, rtc.month, rtc.year,
 	              rtc.hour, rtc.min, rtc.sec);
 	printf("%f",strlen(auxi));
 	auxi = auxi + strlen(auxi);
 	//Armo el string con los datos medidos
-	for (i = 0; i<sizeof(Tabla_10min)/sizeof(Tabla_10min[0]);i++){
+	for (i = 0; i<sizeof(Tabla_Mediciones)/sizeof(Tabla_Mediciones[0]);i++){
 
-		if (Tabla_10min[i] == NoDato ){
+		if (Tabla_Mediciones[i] == NoDato ){
 				sprintf(miBuffer1,"%s","NAN");
 			}else{
-				floatToString(Tabla_10min[i],miBuffer1,2);
+				floatToString(Tabla_Mediciones[i],miBuffer1,2);
 
 			}
 //		printf("\r\ncantidad de bytes %d\r\n",strlen(miBuffer1));

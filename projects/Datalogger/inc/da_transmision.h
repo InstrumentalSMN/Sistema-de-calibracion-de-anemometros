@@ -17,7 +17,7 @@
 #include "socket.h"
 #include "w5100.h"
 
-#define CTRL_SOCK_FTP	0
+#define WEB_SOCK	0
 #define DATA_SOCK_FTP	3
 #define CTRL_SOCK_FTP_RECV	1
 #define DATA_SOCK_FTP_RECV	2
@@ -30,33 +30,23 @@
 
 /*Region de config GPRS and FTP*/
 
-extern void resetGRPS();
-extern bool_t opConfigGPRS();
-extern bool_t opConfigFTP();
-//extern void KeepAlive();
+extern bool_t KeepAlive();
 
-/*Region de config Socket and FTP*/
-
+/*Region de config WebSocket*/
 
 extern void opConfigSocket();
-extern bool_t opInitFTPSocketCtrl();
-extern bool_t opSetParametersFTPSocket();
+extern bool_t opInitWebSocket();
+extern bool_t opConnectToWebSocket();
 extern int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort);
 
-extern void xor_data(uint8_t *key, uint8_t *data, int len, uint8_t *output);
-extern bool_t opConfigSocketData();
-extern bool_t opConnectSocketData();
-extern bool_t opCheckSocketData();
 
 /*Region de Transmision*/
 
-extern void opOpenFileFTP( int32_t * NumberMesuare);
-extern void opTransmitFTPViaEthernet(int32_t * NumberMesuare);
-extern bool_t opCheckDataInServer();
+extern bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare);
 extern int8_t DesconectarSocket(uint8_t sn);
 extern void backUpData();
-
-extern bool_t TransmitirFTPViaGPRS(uint32_t * size, int32_t * NumberMesuare);
+extern void encodeMessage126(uint8_t * buf, uint8_t * message);
+extern void encodeMessage125(uint8_t * buf, uint8_t * message);
 #endif
 
 
