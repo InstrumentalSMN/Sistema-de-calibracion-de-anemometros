@@ -171,6 +171,10 @@ bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare){
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(WEB_SOCK,dbuf,size);
 	dbuf[ret] = '\0';
+
+//implementar un codigo que extraiga message con strok (JSON) y luego
+//trabajar con las interrupciones de recepcion del SPI
+//para recibir los mensajes de aplicaiones de forma asincronida
 /////////////////////////////////////////////////////
 //	if (MyParserToDATASockeyFTP(dbuf,remoteIp,&remotePort) == -1){  //pasar esta funcion a socket.h o daregion.h
 //							//Despues probar de conectarme a ese port que me da y mandar datos

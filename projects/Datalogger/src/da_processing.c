@@ -96,7 +96,7 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 
 	//Armo el string con los datos medidos
 	char * auxi = TableToFTP+next; //Reinicializo el apunte a la posicion 0
-	sprintf(auxi, "M;%d;", *NumMedicion);
+	sprintf(auxi, "{\"message\":\"M;%d;", *NumMedicion);
 	auxi = auxi + strlen(auxi);
 	sprintf( auxi,"%02d-%02d-%04d,%02d:%02d:%02d,",
 	              rtc.mday, rtc.month, rtc.year,
@@ -113,7 +113,7 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 
 			}
 //		printf("\r\ncantidad de bytes %d\r\n",strlen(miBuffer1));
-		sprintf(auxi, "%s;", miBuffer1);
+		sprintf(auxi, "%s;\"}", miBuffer1);
 		auxi = auxi + strlen(miBuffer1)+1;//hacia falta el + 1 por \0
 
 	}
