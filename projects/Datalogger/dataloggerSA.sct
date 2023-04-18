@@ -25,6 +25,41 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_7f3jLD88Ee2oZKn9Vo89Lw" specification="" name="IDLE" incomingTransitions="_tyYesD6oEe2oZKn9Vo89Lw _tZZdID6LEe2oZKn9Vo89Lw"/>
     </regions>
+    <regions xmi:id="_xFc2oNwUEe2MN_HdDFe69w" name="ConexionWebSocket">
+      <vertices xsi:type="sgraph:Entry" xmi:id="_y2f9gNwUEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_5eBrINwUEe2MN_HdDFe69w" specification="" target="_1NMIENwUEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_1NMIENwUEe2MN_HdDFe69w" name="IDLE" incomingTransitions="_5eBrINwUEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_7i1bgNwUEe2MN_HdDFe69w" specification="siStartMeasure" target="_1yo-gNwUEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_1yo-gNwUEe2MN_HdDFe69w" specification="entry/opConfigSocket()" name="CONFIG_SOCKET" incomingTransitions="_7i1bgNwUEe2MN_HdDFe69w _L8NdsNwVEe2MN_HdDFe69w _zgjxsNwVEe2MN_HdDFe69w _TaV0cNwbEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_A8qm8NwVEe2MN_HdDFe69w" specification="always" target="_2LDegNwUEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_2LDegNwUEe2MN_HdDFe69w" specification="entry/ redSocketConnect = opInitWebSocket()" name="INI_WEB_SOCKET" incomingTransitions="_A8qm8NwVEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_DkdIkNwVEe2MN_HdDFe69w" specification="after 50 ms [redSocketConnect == StatusTrue]" target="_2lafQNwUEe2MN_HdDFe69w"/>
+        <outgoingTransitions xmi:id="_L8NdsNwVEe2MN_HdDFe69w" specification="after 100 ms [redSocketConnect == StatusFalse]" target="_1yo-gNwUEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_2lafQNwUEe2MN_HdDFe69w" specification="entry/ConfigFtpSocket =opConnectToWebSocket();&#xD;&#xA;raise siKeepAlive" name="CONNECT_WEBSOCKET" incomingTransitions="_DkdIkNwVEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_zgjxsNwVEe2MN_HdDFe69w" specification="siFalloTx" target="_1yo-gNwUEe2MN_HdDFe69w"/>
+        <outgoingTransitions xmi:id="_TaV0cNwbEe2MN_HdDFe69w" specification="after 100 ms [ConfigFtpSocket == StatusFalse]" target="_1yo-gNwUEe2MN_HdDFe69w"/>
+      </vertices>
+    </regions>
+    <regions xmi:id="_5aK6UNweEe2MN_HdDFe69w" name="KeepAlive_lecturaBuffer">
+      <vertices xsi:type="sgraph:State" xmi:id="_5aK6UdweEe2MN_HdDFe69w" name="IDLE" incomingTransitions="_5aSPFNweEe2MN_HdDFe69w _5aSPENweEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_5aMIcdweEe2MN_HdDFe69w" specification="siKeepAlive[ConfigFtpSocket == StatusTrue]" target="_5aN9p9weEe2MN_HdDFe69w"/>
+        <outgoingTransitions xmi:id="_5aNWl9weEe2MN_HdDFe69w" specification="siKeepAlive[ConfigFtpSocket == StatusFalse]" target="_5aRA9dweEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_5aN9p9weEe2MN_HdDFe69w" specification="entry/ txKeep = KeepAlive()" name="TX_MESSAGE" incomingTransitions="_5aMIcdweEe2MN_HdDFe69w _5aPLytweEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_5aPLytweEe2MN_HdDFe69w" specification="after 500 ms [txKeep == StatusTrue]" target="_5aN9p9weEe2MN_HdDFe69w"/>
+        <outgoingTransitions xmi:id="_5aQZ6tweEe2MN_HdDFe69w" specification="[txKeep == StatusFalse]" target="_5aRA9dweEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:State" xmi:id="_5aRA9dweEe2MN_HdDFe69w" specification="exit/ raise siFalloTx" name="BACK_UP" incomingTransitions="_5aQZ6tweEe2MN_HdDFe69w _5aNWl9weEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_5aSPENweEe2MN_HdDFe69w" specification="always" target="_5aK6UdweEe2MN_HdDFe69w"/>
+      </vertices>
+      <vertices xsi:type="sgraph:Entry" xmi:id="_5aSPE9weEe2MN_HdDFe69w">
+        <outgoingTransitions xmi:id="_5aSPFNweEe2MN_HdDFe69w" specification="" target="_5aK6UdweEe2MN_HdDFe69w"/>
+      </vertices>
+    </regions>
     <regions xmi:id="_W39uUNt0EeyHZqpmACSfBQ" name="Muestreo Bateria">
       <vertices xsi:type="sgraph:Entry" xmi:id="_ERMlgPGDEeykSvcSIt4NWw">
         <outgoingTransitions xmi:id="_yVqGwPTUEeykSvcSIt4NWw" specification="" target="_Zq6Y0S1SEe2qbKDsg3u9kQ"/>
@@ -60,7 +95,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_R-Mw0fjFEeyAn9hEHKDPZg" specification="entry /AnemoIBC.Uart=UartRS485;&#xD;&#xA;AnemoIBC.LED=LED3;&#xD;&#xA;AnemoIBC.BaudRate=9600;&#xD;&#xA;AnemoIBC.Sensor = sensor_t.WMT700;&#xD;&#xA;ptrAnemoIBC=AnemoIBC.pointer;&#xD;&#xA;opBufferRS485Reset(ptrAnemoIBC)&#xD;&#xA;" name="SENSOR_IBC" incomingTransitions="_4NjfAfiJEeyAn9hEHKDPZg"/>
     </regions>
-    <regions xmi:id="_-xBDEPNGEeykSvcSIt4NWw" name="SA">
+    <regions xmi:id="_-xBDEPNGEeykSvcSIt4NWw" name="Procesamiento">
       <vertices xsi:type="sgraph:State" xmi:id="_AlDMmPNHEeykSvcSIt4NWw" specification="entry/ ptrNumMuestra =  NumMuestra.pointer;&#xD;&#xA;opAcumular(ptrNumMuestra,ptrVoltajeMuestra,AnemoIBC, AnemoPat);&#xD;&#xA;NumMuestra +=1&#xD;&#xA;//Acá armar una tabla  acumule 60 muestras &#xD;&#xA;//de 1 segundo Separados \r\n utilizar modelo de OpProceso" name="ACUMULO_MUESTRAS" incomingTransitions="_eRBXEPNQEeykSvcSIt4NWw">
         <outgoingTransitions xmi:id="_AlDMm_NHEeykSvcSIt4NWw" specification="[NumMuestra==(IntervaloTabla/IntervaloMuestra)]&#xD;&#xA;" target="_AlIFAPNHEeykSvcSIt4NWw"/>
         <outgoingTransitions xmi:id="_V5gaEL4VEe2ro9T1giJzXQ" specification="always" target="_cP2wkPNQEeykSvcSIt4NWw"/>
@@ -86,7 +121,7 @@
         <outgoingTransitions xmi:id="_Jib0_xpwEe2NDqO2Wx_vaw" specification="[buffertempLleno == StatusTrue]/raise siDatosListosParaFTP" target="_AzGQgPQAEeyzR7iz7i6iZQ"/>
       </vertices>
     </regions>
-    <regions xmi:id="__a2kANwWEe2MN_HdDFe69w" name="TXto">
+    <regions xmi:id="__a2kANwWEe2MN_HdDFe69w" name="TransmisionAlServer">
       <vertices xsi:type="sgraph:State" xmi:id="_AdeeoNwXEe2MN_HdDFe69w" name="IDLE" incomingTransitions="_DZpU0NwXEe2MN_HdDFe69w _If9uYNwXEe2MN_HdDFe69w _OIZWgNwXEe2MN_HdDFe69w">
         <outgoingTransitions xmi:id="_HFJWMNwXEe2MN_HdDFe69w" specification="siDatosListosParaFTP[ConfigFtpSocket == StatusTrue]" target="_A4CTsNwXEe2MN_HdDFe69w"/>
         <outgoingTransitions xmi:id="_M22PENwXEe2MN_HdDFe69w" specification="siDatosListosParaFTP[ConfigFtpSocket == StatusFalse]" target="_BMYMANwXEe2MN_HdDFe69w"/>
@@ -100,41 +135,6 @@
       </vertices>
       <vertices xsi:type="sgraph:Entry" xmi:id="_C1KHsNwXEe2MN_HdDFe69w">
         <outgoingTransitions xmi:id="_DZpU0NwXEe2MN_HdDFe69w" specification="" target="_AdeeoNwXEe2MN_HdDFe69w"/>
-      </vertices>
-    </regions>
-    <regions xmi:id="_xFc2oNwUEe2MN_HdDFe69w" name="S">
-      <vertices xsi:type="sgraph:Entry" xmi:id="_y2f9gNwUEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5eBrINwUEe2MN_HdDFe69w" specification="" target="_1NMIENwUEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_1NMIENwUEe2MN_HdDFe69w" name="IDLE" incomingTransitions="_5eBrINwUEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_7i1bgNwUEe2MN_HdDFe69w" specification="siStartMeasure" target="_1yo-gNwUEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_1yo-gNwUEe2MN_HdDFe69w" specification="entry/opConfigSocket()" name="CONFIG_SOCKET" incomingTransitions="_7i1bgNwUEe2MN_HdDFe69w _L8NdsNwVEe2MN_HdDFe69w _zgjxsNwVEe2MN_HdDFe69w _TaV0cNwbEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_A8qm8NwVEe2MN_HdDFe69w" specification="always" target="_2LDegNwUEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_2LDegNwUEe2MN_HdDFe69w" specification="entry/ redSocketConnect = opInitWebSocket()" name="INI_WEB_SOCKET" incomingTransitions="_A8qm8NwVEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_DkdIkNwVEe2MN_HdDFe69w" specification="after 50 ms [redSocketConnect == StatusTrue]" target="_2lafQNwUEe2MN_HdDFe69w"/>
-        <outgoingTransitions xmi:id="_L8NdsNwVEe2MN_HdDFe69w" specification="after 100 ms [redSocketConnect == StatusFalse]" target="_1yo-gNwUEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_2lafQNwUEe2MN_HdDFe69w" specification="entry/ConfigFtpSocket =opConnectToWebSocket();&#xD;&#xA;raise siKeepAlive" name="CONNECT_WEBSOCKET" incomingTransitions="_DkdIkNwVEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_zgjxsNwVEe2MN_HdDFe69w" specification="siFalloTx" target="_1yo-gNwUEe2MN_HdDFe69w"/>
-        <outgoingTransitions xmi:id="_TaV0cNwbEe2MN_HdDFe69w" specification="after 100 ms [ConfigFtpSocket == StatusFalse]" target="_1yo-gNwUEe2MN_HdDFe69w"/>
-      </vertices>
-    </regions>
-    <regions xmi:id="_5aK6UNweEe2MN_HdDFe69w" name="Copy_1_TXto">
-      <vertices xsi:type="sgraph:State" xmi:id="_5aK6UdweEe2MN_HdDFe69w" name="IDLE" incomingTransitions="_5aSPFNweEe2MN_HdDFe69w _5aSPENweEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5aMIcdweEe2MN_HdDFe69w" specification="siKeepAlive[ConfigFtpSocket == StatusTrue &amp;&amp;  IntervaloTabla >40]" target="_5aN9p9weEe2MN_HdDFe69w"/>
-        <outgoingTransitions xmi:id="_5aNWl9weEe2MN_HdDFe69w" specification="siKeepAlive[ConfigFtpSocket == StatusFalse]" target="_5aRA9dweEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_5aN9p9weEe2MN_HdDFe69w" specification="entry/ txKeep = KeepAlive()" name="TX_MESSAGE" incomingTransitions="_5aMIcdweEe2MN_HdDFe69w _5aPLytweEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5aPLytweEe2MN_HdDFe69w" specification="after 30 s [txKeep == StatusTrue]" target="_5aN9p9weEe2MN_HdDFe69w"/>
-        <outgoingTransitions xmi:id="_5aQZ6tweEe2MN_HdDFe69w" specification="[txKeep == StatusFalse]" target="_5aRA9dweEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_5aRA9dweEe2MN_HdDFe69w" specification="exit/ raise siFalloTx" name="BACK_UP" incomingTransitions="_5aQZ6tweEe2MN_HdDFe69w _5aNWl9weEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5aSPENweEe2MN_HdDFe69w" specification="always" target="_5aK6UdweEe2MN_HdDFe69w"/>
-      </vertices>
-      <vertices xsi:type="sgraph:Entry" xmi:id="_5aSPE9weEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5aSPFNweEe2MN_HdDFe69w" specification="" target="_5aK6UdweEe2MN_HdDFe69w"/>
       </vertices>
     </regions>
   </sgraph:Statechart>

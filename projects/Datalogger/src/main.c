@@ -17,6 +17,8 @@
 #include "..\gen\DataloggerSA.h"
 #include "TimerTicks.h"
 #include "my_spi.h"
+#include "../inc/da_transmision.h"
+
 
 /*==================Yo defino[macros and definitions]=================================*/
 
@@ -135,6 +137,8 @@ uint32_t Buttons_GetStatus_(void) {
 	gpioWrite( GPIO2, ON );
 //	init SPI0
 	MySpi_Wiz_Init(SPI0);
+//	spiCallbackSet(SPI0,SPP_RECEIVE, opReceptionMessage, NULL );
+//	spiInterrupt(SPI0, true);
 
 	//uartConfig( UART_485, 9600 );
 	uartConfig( UART_USB, 9600 );

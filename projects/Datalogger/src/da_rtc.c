@@ -201,10 +201,10 @@ void opSetRtcDefault(){
 
 	// Completar estructura RTC
 	rtc.year = 2023;
-	rtc.month = 2;
-	rtc.mday = 17;
-	rtc.wday = 3;
-	rtc.hour = 17;
+	rtc.month = 4;
+	rtc.mday = 18;
+	rtc.wday = 4;
+	rtc.hour = 9;
 	rtc.min = 7;
 	rtc.sec= 0;
 

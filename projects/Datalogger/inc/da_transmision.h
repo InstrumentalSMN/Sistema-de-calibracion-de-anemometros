@@ -16,23 +16,26 @@
 #include "../inc/da_processing.h"
 #include "socket.h"
 #include "w5100.h"
+#include "../inc/my_spi.h"
 
 #define WEB_SOCK	0
 #define DATA_SOCK_FTP	3
 #define CTRL_SOCK_FTP_RECV	1
 #define DATA_SOCK_FTP_RECV	2
-#define _MAX_SS		512
+#define _MAX_SS		550
 #define USER "estaut"
 #define PASS "estacionesautomaticas17"
 //#define PATH "EMA_LABO_CLI/SIM800L/AnemometroAeroparque"
 #define PATH "/EMA_LABO_CLI/SIM800L/PruebaViaPutty"
 //#define PATH "EMA_LABO_CLI/SIM800L/AnemometroPalomar"
 
-/*Region de config GPRS and FTP*/
 
 extern bool_t KeepAlive();
 
 /*Region de config WebSocket*/
+
+extern void opEnableRxWebSocket();
+extern void opReceptionMessage( void *data );
 
 extern void opConfigSocket();
 extern bool_t opInitWebSocket();

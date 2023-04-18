@@ -25,30 +25,32 @@ uint8_t MASKSUB[4] = {255,255,255,0};
 uint8_t MASKSUB1[4];
 
 
-//Server information CONTROLSOCK
-//uint8_t _FTP_destip[4] = {129,6,15,29}; //NIST NTP
-//uint8_t _FTP_destip_Local[4] = {192,168,5,5};
-uint8_t _FTP_destip_Local[4] = {10,10,13,154};
-//uint8_t _FTP_destip[4] = {10,10,13,157};
-uint8_t _FTP_destip_Global[4] = {200,16,116,5};
+//Server information WEBSOCK
+uint8_t ipServer[4] = {10,10,13,154};
 //uint16_t _FTP_destport = 37; //NTP port
 uint16_t server_port = 8000;
-
-
-
-
 
 //Server information DATASOCK
 uint8_t remoteIp[4];
 uint16_t  remotePort;
-char auxiliarBuffer[50];
-uint8_t ret1;
-uint8_t ret2;
-uint8_t ret3;
-uint8_t ret4;
 uint8_t ret5;
-//uint8_t dat[500];
 char dbuf[550];
+
+//Recepción de mensajes del server WEBSOCKET
+
+void opEnableRxWebSocket(){
+////	MySpi_Wiz_Init(SPI0);
+//	spiCallbackSet(SPI0,SPP_RECEIVE, opReceptionMessage, NULL );
+//	spiInterrupt(SPI0, true);
+
+}
+
+void opReceptionMessage( void *data ){ //Esta se llama  en el callbackSet
+	printf("\r\n Llego un mensaje del server");
+	printf("\r\n Llego un mensaje del server");
+
+}
+
 
 
 
@@ -84,7 +86,7 @@ bool_t opInitWebSocket(){
 		DesconectarSocket(WEB_SOCK);
 		return ERROR;
 	}
-	setSn_DIPR(WEB_SOCK, _FTP_destip_Local);
+	setSn_DIPR(WEB_SOCK, ipServer);
 	setSn_DPORT(WEB_SOCK, server_port);
 	setSn_CR(WEB_SOCK,Sn_CR_CONNECT);
 	return OK;
@@ -119,12 +121,21 @@ bool_t opConnectToWebSocket(){
 		printf("Mensaje no enviado\r\n");
 		return ERROR;
 	}
+	//Recibo mensaje de handShake si no espero uno ms se rompe, pero con interrupciones ya no tendre ese problema
+	long ret = 0;
+	uint16_t size = getSn_RX_RSR(WEB_SOCK);
+//	memset(dbuf, 0, _MAX_SS);
+	if(size > _MAX_SS) size = _MAX_SS - 1;
+	ret = recv(WEB_SOCK,dbuf,size);
+	dbuf[ret] = '\0';
+	printf("\r\n%s",dbuf);
+	memset(dbuf, 0, _MAX_SS);
 	return OK;
 }
 
 bool_t KeepAlive(){
 
-	char aux[] ="SigoAqui";
+	char aux[] = "{\"message\":\"\"}";;
 	char message[140];
 	encodeMessage125(aux,message);
 
@@ -133,18 +144,20 @@ bool_t KeepAlive(){
 		printf("No envio bien los datos\r\n");
 		return ERROR;
 	}
-	return OK;
-}
-
-bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare){
-
-//Recibo mensaje de handShake
+	//Rutina de recepcion de mensajes por polling
 	long ret = 0;
 	uint16_t size = getSn_RX_RSR(WEB_SOCK);
 	memset(dbuf, 0, _MAX_SS);
 	if(size > _MAX_SS) size = _MAX_SS - 1;
 	ret = recv(WEB_SOCK,dbuf,size);
 	dbuf[ret] = '\0';
+	printf("\r\n%s\r\n",dbuf);
+ 	return OK;
+}
+
+bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare){
+
+
 //	char prueba[]="holamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholamundobuenasholab6";
 //	uint32_t len = (uint32_t)strlen(prueba);
 	uint32_t len = (uint32_t)strlen(TableToFTP);
@@ -167,10 +180,6 @@ bool_t opTransmitWebSocketEthernet(int32_t * NumberMesuare){
 		}
 	}
 
-	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(WEB_SOCK,dbuf,size);
-	dbuf[ret] = '\0';
 
 //implementar un codigo que extraiga message con strok (JSON) y luego
 //trabajar con las interrupciones de recepcion del SPI
@@ -277,6 +286,7 @@ void encodeMessage125(uint8_t * buf, uint8_t * message){
 }
 
 void backUpData(){
+	//Backupear los datos en JSON
 	uint32_t size = (uint32_t)strlen(TableToFTP);
 	TableToFTP[size]='\r';
 	TableToFTP[size+1]='\n';

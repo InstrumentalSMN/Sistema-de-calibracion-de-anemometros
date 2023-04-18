@@ -46,7 +46,6 @@ void opBufferRS485Reset(amenometerSerialParam_t * data){
 	data->ptrUartBuffer = data->Buffer;
 //	((amenometerSerialParam_t *)data)->Uart = 1;
 	uint16_t miUart = data->Uart;
-//	uint16_t miLed = ((amenometerSerialParam_t *)data)->LED;
 	/*cuando la llamo reinicia la FIFO*/
 	//uartConfig( UART_USB, 115200 ); De Prueba
 	uartConfig((UART_GPIO+miUart),data->BaudRate );

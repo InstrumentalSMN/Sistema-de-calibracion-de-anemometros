@@ -47,6 +47,11 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
+/*==================[typedef]================================================*/
+typedef enum{
+   SPP_RECEIVE,
+   SPP_TRANSMITER
+} spiEvents_t;
 
 /*==================[external functions definition]==========================*/
 
@@ -58,11 +63,47 @@ bool_t MySpiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize );
 
 bool_t MySpiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize);
 
-//int8_t  socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag);
+
+//-------------------------------------------------------------
+// Interrupts
+//-------------------------------------------------------------
+
+// SPI Global Interrupt Enable/Disable
+void spiInterrupt( spiMap_t ssp, bool_t enable );
+
+// SPI Interrupt event Enable and set a callback
+void spiCallbackSet( spiMap_t ssp, spiEvents_t event, callBackFuncPtr_t callbackFunc, void* callbackParam );
+
+// SPI Interrupt event Disable
+void spiCallbackClr( spiMap_t ssp, spiEvents_t event );
+
+//// UART Set Pending Interrupt. Useful to force first character in tx transmission
+//void spiSetPendingInterrupt(uartMap_t uart);
+//
+//// UART Clear Pending Interrupt.
+//void spiClearPendingInterrupt(uartMap_t uart);
+
+/*==================[ISR external functions declaration]======================*/
+
+/* 0x28 0x000000A0 - Handler for ISR SSP1 (IRQ 24) */
+void SSP1_IRQHandler(void);
+
+
+//#endif /* SAPI_USE_INTERRUPTS */
+
+
+
+
+
 /*==================[c++]====================================================*/
 #ifdef __cplusplus
 }
 #endif
+
+
+
+
+
 
 /*==================[end of file]============================================*/
 #endif /* _MY_SPI_H_ */

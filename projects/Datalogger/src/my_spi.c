@@ -48,14 +48,66 @@
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
+//#ifdef SAPI_USE_INTERRUPTS
+static callBackFuncPtr_t rxIsrCallbackSSP1 = 0;
+static void* rxIsrCallbackSSP1Params = NULL;
 
+//static callBackFuncPtr_t txIsrCallbackUART0 = 0;
+//static void* txIsrCallbackUART0Params = NULL;
+//static callBackFuncPtr_t txIsrCallbackUART2 = 0;
+//static void* txIsrCallbackUART2Params = NULL;
+//static callBackFuncPtr_t txIsrCallbackUART3 = 0;
+//static void* txIsrCallbackUART3Params = NULL;
+//#endif /* SAPI_USE_INTERRUPTS */
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
 
+/*==================[internal functions declaration]=========================*/
+//#ifdef SAPI_USE_INTERRUPTS
+static void sspProcessIRQ(spiMap_t spi );
+
 /*==================[internal functions definition]==========================*/
+static void sspProcessIRQ( spiMap_t spi )
+{
+//   uint8_t status = Chip_UART_ReadLineStatus( lpcUarts[uart].uartAddr );
+//   SSP_STATUS_T Stat;
+//   Chip_SSP_GetStatus(LPC_SSP1,Stat);
+	// Rx Interrupt
+	if(spi == SPI0){
+		(*rxIsrCallbackSSP1)(rxIsrCallbackSSP1Params);
+	}
+//
+//   if(status & UART_LSR_RDR) { // uartRxReady
+//      // Execute callback
+//      if( ( spi == SPI0 ) && (rxIsrCallbackUART0 != 0) )
+//         (*rxIsrCallbackUART0)(rxIsrCallbackUART0Params); //Cambie esto en teoria ahora puedo enviar argumentos !!
+//
+//      if( ( uart == UART_USB )  && (rxIsrCallbackUART2 != 0) )
+//         (*rxIsrCallbackUART2)(0);
+//
+//      if( ( uart == UART_232 )  && (rxIsrCallbackUART3 != 0) )
+//         (*rxIsrCallbackUART3)(rxIsrCallbackUART3Params);
+//   }
+
+//   // Tx Interrupt
+//   if( ( status & UART_LSR_THRE ) && // uartTxReady
+//       ( Chip_UART_GetIntsEnabled( lpcUarts[uart].uartAddr ) & UART_IER_THREINT ) ) {
+//
+//      // Execute callback
+//      if( ( uart == UART_GPIO ) && (txIsrCallbackUART0 != 0) )
+//         (*txIsrCallbackUART0)(0);
+//
+//      if( ( uart == UART_USB )  && (txIsrCallbackUART2 != 0) )
+//         (*txIsrCallbackUART2)(0);
+//
+//      if( ( uart == UART_232 )  && (txIsrCallbackUART3 != 0) )
+//         (*txIsrCallbackUART3)(txIsrCallbackUART3);
+//   }
+}
+//#endif /* SAPI_USE_INTERRUPTS */
 
 /*==================[external functions definition]==========================*/
 
@@ -167,7 +219,8 @@ bool_t MySpiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize )
    xferConfig.length  = bufferSize;
 
    if( spi == SPI0 ) {
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+     Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+//     Chip_SSP_Int_RWFrames8Bits( LPC_SSP1, &xferConfig );
    } else {
       retVal = FALSE;
    }
@@ -190,7 +243,8 @@ bool_t MySpiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize)
    xferConfig.length  = bufferSize;
 
    if( spi == SPI0 ) {
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+	   Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+//	   Chip_SSP_Int_RWFrames8Bits( LPC_SSP1, &xferConfig );
    } else {
       retVal = FALSE;
    }
@@ -198,101 +252,145 @@ bool_t MySpiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize)
    return retVal;
 }
 
-//int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
-//{
-//	CHECK_SOCKNUM();
-//	switch(protocol)
-//	{
-//      case Sn_MR_TCP :
-//         {
-//            //M20150601 : Fixed the warning - taddr will never be NULL
-//		    /*
-//            uint8_t taddr[4];
-//            getSIPR(taddr);
-//            */
-//            uint32_t taddr;
-//            getSIPR((uint8_t*)&taddr);
-//            if(taddr == 0) return SOCKERR_SOCKINIT;
-//	    break;
+
+// SPI Global Interrupt Enable/Disable
+void spiInterrupt( spiMap_t ssp, bool_t enable )
+{
+//	las funcones NVIC estan en core_cm4.h
+   if( enable ) {
+      // Interrupt Priority for SSP channel
+//	  SSP1_IRQn esta en cmsis_43xx.h
+      NVIC_SetPriority( SSP1_IRQn, 6 ); // FreeRTOS Requiere prioridad >= 5 (numero mas alto, mas baja prioridad)
+      // Enable Interrupt for SSP channel
+      NVIC_EnableIRQ( SSP1_IRQn );
+   } else {
+      // Disable Interrupt for UART channel
+      NVIC_DisableIRQ( SSP1_IRQn);
+   }
+}
+
+// SPI Interrupt event Enable and set a callback
+void spiCallbackSet( spiMap_t spi, spiEvents_t event, callBackFuncPtr_t callbackFunc, void* callbackParam )
+{
+   switch(event){
+
+      case SPP_RECEIVE:
+         // Enable UART Receiver Buffer Register Interrupt
+         //intMask = UART_IER_RBRINT;
+
+         // Enable UART Receiver Buffer Register Interrupt and Enable UART line
+         //status interrupt. LPC43xx User manual page 1118
+//         intMask = UART_IER_RBRINT | UART_IER_RLSINT;
+
+         if( callbackFunc != 0 ) {
+            // Set callback
+        	 if( spi == SPI0 ){
+               rxIsrCallbackSSP1 = callbackFunc;
+               rxIsrCallbackSSP1Params = callbackParam;
+            }
+         } else{
+            return;
+         }
+      break;
+
+      case SPP_TRANSMITER:
+         // Enable THRE irq (TX)
+//         intMask = UART_IER_THREINT;
+
+//         if( callbackFunc != 0 ) {
+//
+//            // Set callback
+//            if( (uart == UART_GPIO) || (uart == UART_485) ){
+//               txIsrCallbackUART0 = callbackFunc;
+//               txIsrCallbackUART0Params = callbackParam;
+//            }
+//            if( (uart == UART_USB) || (uart == UART_ENET) ){
+//               txIsrCallbackUART2 = callbackFunc;
+//               txIsrCallbackUART2Params = callbackParam;
+//            }
+//            if( uart == UART_232 ){
+//               txIsrCallbackUART3 = callbackFunc;
+//               txIsrCallbackUART3Params = callbackParam;
+//            }
+//         } else{
+//            return;
 //         }
-//      case Sn_MR_UDP :
-//      case Sn_MR_MACRAW :
-//	  case Sn_MR_IPRAW :
-//         break;
-//   #if ( _WIZCHIP_ < 5200 )
-//      case Sn_MR_PPPoE :
-//         break;
-//   #endif
-//      default :
-//         return SOCKERR_SOCKMODE;
-//	}
-//	//M20150601 : For SF_TCP_ALIGN & W5300
-//	//if((flag & 0x06) != 0) return SOCKERR_SOCKFLAG;
-//	if((flag & 0x04) != 0) return SOCKERR_SOCKFLAG;
-//#if _WIZCHIP_ == 5200
-//   if(flag & 0x10) return SOCKERR_SOCKFLAG;
-//#endif
+      break;
+
+      default:
+         return;
+   }
+
+   // Enable UART Interrupt
+   Chip_SSP_Int_Enable(LPC_SSP1);
+}
+
+// SPI Interrupt event Disable
+void spiCallbackClr( spiMap_t ssp, spiEvents_t event )
+{
+//   uint32_t intMask;
 //
-//	if(flag != 0)
-//	{
-//   	switch(protocol)
-//   	{
-//   	   case Sn_MR_TCP:
-//   		  //M20150601 :  For SF_TCP_ALIGN & W5300
-//          #if _WIZCHIP_ == 5300
-//   		     if((flag & (SF_TCP_NODELAY|SF_IO_NONBLOCK|SF_TCP_ALIGN))==0) return SOCKERR_SOCKFLAG;
-//          #else
-//   		     if((flag & (SF_TCP_NODELAY|SF_IO_NONBLOCK))==0) return SOCKERR_SOCKFLAG;
-//          #endif
+//   switch(event){
 //
-//   	      break;
-//   	   case Sn_MR_UDP:
-//   	      if(flag & SF_IGMP_VER2)
-//   	      {
-//   	         if((flag & SF_MULTI_ENABLE)==0) return SOCKERR_SOCKFLAG;
-//   	      }
-//   	      #if _WIZCHIP_ == 5500
-//      	      if(flag & SF_UNI_BLOCK)
-//      	      {
-//      	         if((flag & SF_MULTI_ENABLE) == 0) return SOCKERR_SOCKFLAG;
-//      	      }
-//   	      #endif
-//   	      break;
-//   	   default:
-//   	      break;
-//   	}
+//      case UART_RECEIVE:
+//         // Enable UART Receiver Buffer Register Interrupt
+//         //intMask = UART_IER_RBRINT;
+//
+//         // Enable UART Receiver Buffer Register Interrupt and Enable UART line
+//         //status interrupt. LPC43xx User manual page 1118
+//         intMask = UART_IER_RBRINT | UART_IER_RLSINT;
+//      break;
+//
+//      case UART_TRANSMITER_FREE:
+//         // Enable THRE irq (TX)
+//         intMask = UART_IER_THREINT;
+//      break;
+//
+//      default:
+//         return;
 //   }
-//	close(sn);
-//	//M20150601
-//	#if _WIZCHIP_ == 5300
-//	   setSn_MR(sn, ((uint16_t)(protocol | (flag & 0xF0))) | (((uint16_t)(flag & 0x02)) << 7) );
-//    #else
-//	   setSn_MR(sn, (protocol | (flag & 0xF0)));
-//    #endif
-//	if(!port)
-//	{
-//	   port = sock_any_port++;
-//	   if(sock_any_port == 0xFFF0) sock_any_port = SOCK_ANY_PORT_NUM;
-//	}
-//   setSn_PORT(sn,port);
-//   setSn_CR(sn,Sn_CR_OPEN);
-//   while(getSn_CR(sn));
-//   //A20150401 : For release the previous sock_io_mode
-//   sock_io_mode &= ~(1 <<sn);
-//   //
-//	sock_io_mode |= ((flag & SF_IO_NONBLOCK) << sn);
-//   sock_is_sending &= ~(1<<sn);
-//   sock_remained_size[sn] = 0;
-//   //M20150601 : repalce 0 with PACK_COMPLETED
-//   //sock_pack_info[sn] = 0;
-//   sock_pack_info[sn] = PACK_COMPLETED;
-//   //
-//   while(getSn_SR(sn) == SOCK_CLOSED);
-//   return (int8_t)sn;
+//
+//   // Disable UART Interrupt
+//   Chip_UART_IntDisable(lpcUarts[uart].uartAddr, intMask);
+}
+
+//// UART Set Pending Interrupt. Useful to force first character in tx transmission
+//void uartSetPendingInterrupt(uartMap_t uart) {
+//   NVIC_SetPendingIRQ(lpcUarts[uart].uartIrqAddr);
+//}
+//
+//// UART Clear Pending Interrupt.
+//void uartClearPendingInterrupt(uartMap_t uart) {
+//   NVIC_ClearPendingIRQ(lpcUarts[uart].uartIrqAddr);
 //}
 
-/*==================[ISR external functions definition]======================*/
 
+/*==================[ISR external functions definition]======================*/
+//#ifdef SAPI_USE_INTERRUPTS
+
+__attribute__ ((section(".after_vectors")))
+
+// UART0 (GPIO1 y GPIO2 or RS485/Profibus)
+// 0x28 0x000000A0 - Handler for ISR UART0 (IRQ 24)
+void SSP1_IRQHandler(void)
+{
+	uint8_t status = Chip_SSP_GetIntStatus(LPC_SSP1);
+
+    if (status & (1 << 0)) { // Verificar si la interrupción es por transmisión (TX)
+        // Realizar acciones de transmisión
+        printf("\r\n tranmiti algo");
+    }
+    if (status & (1 << 1)) { // Verificar si la interrupción es por recepción (RX)
+    	uint16_t data = Chip_SSP_ReceiveFrame(LPC_SSP1); // Leer dato recibido del registro de datos del SSP1
+    	printf("\r\n recibi algo");
+    	        // Realizar acciones con el dato recibido
+    	        // ...
+    }
+	sspProcessIRQ( SPI0 );
+
+}
+
+//#endif /* SAPI_USE_INTERRUPTS */
 
 
 /** @} doxygen end group definition */

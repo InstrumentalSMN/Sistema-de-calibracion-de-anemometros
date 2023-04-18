@@ -83,8 +83,8 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 
 	real32_t Tabla_Mediciones[16] = {	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
 							velocidadInstIBC,velocidadMinIBC,velocidadMaxIBC,velocidadPromedioIBC,
-							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC,
-							direccionInst,direccionMin,direccionMax,direccionPromedio
+							direccionInst,direccionMin,direccionMax,direccionPromedio,
+							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC
 							};
 
 //	real32_t Tabla[4] ={	velocidadPromedio,
@@ -98,7 +98,7 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 	char * auxi = TableToFTP+next; //Reinicializo el apunte a la posicion 0
 	sprintf(auxi, "{\"message\":\"M;%d;", *NumMedicion);
 	auxi = auxi + strlen(auxi);
-	sprintf( auxi,"%02d-%02d-%04d,%02d:%02d:%02d,",
+	sprintf( auxi,"%02d-%02d-%04d;%02d:%02d:%02d;",
 	              rtc.mday, rtc.month, rtc.year,
 	              rtc.hour, rtc.min, rtc.sec);
 	printf("%f",strlen(auxi));
