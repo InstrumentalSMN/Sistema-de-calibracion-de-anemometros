@@ -35,7 +35,7 @@ extern uint32_t next;
 
 
 
-extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t ibc ,amenometerSerialParam_t pat);
+extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat);
 //extern void opProceso( uint32_t * size);
 extern void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion);
 

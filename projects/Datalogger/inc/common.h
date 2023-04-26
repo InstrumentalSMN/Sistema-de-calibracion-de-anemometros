@@ -46,6 +46,7 @@ typedef  int* ptrInt;
 typedef char* ptrChar;
 typedef float* ptrfFloat;
 typedef char* StringData;
+typedef uint8_t * ptrUnt8_t;
 typedef uint16_t* ptrUnt16_t;
 typedef float* ptrReal32_t;
 typedef uint32_t* ptrUint32_t;

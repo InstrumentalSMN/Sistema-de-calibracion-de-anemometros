@@ -28,9 +28,9 @@
 //#define PATH "EMA_LABO_CLI/SIM800L/AnemometroAeroparque"
 #define PATH "/EMA_LABO_CLI/SIM800L/PruebaViaPutty"
 //#define PATH "EMA_LABO_CLI/SIM800L/AnemometroPalomar"
+extern char dbuf[550];
 
-
-extern bool_t KeepAlive();
+extern bool_t KeepAlive(uint16_t * sizeBuffServer);
 
 /*Region de config WebSocket*/
 

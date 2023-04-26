@@ -14,7 +14,7 @@ volatile bool Uart_Rs232_Mjs_Flag = false;
 
 
 #define NTP_PACKET_SIZE		48
-#define SOCK_NTP			0
+#define SOCK_NTP			2
 //ntpformat NTPformat;
 datetime Nowdatetime;
 uint8_t ntpmessage[48];

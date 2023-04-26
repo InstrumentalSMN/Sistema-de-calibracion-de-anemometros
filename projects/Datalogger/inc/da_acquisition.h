@@ -32,9 +32,6 @@ typedef struct{
 }amenometerSerialParam_t;
 
 
-
-
-
 typedef amenometerSerialParam_t * ptrAmenometerSerialParam_t;
 
 /*Array de floats para el DeltaOhm*//*Si hay mas anemometros ver la forma de hacer general esta estructura*/

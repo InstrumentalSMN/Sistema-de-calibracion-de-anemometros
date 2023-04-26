@@ -3,8 +3,8 @@
 
 // Diccionario de punteros a funcion para procesar en función del DeltaOHM elegido
 void (*opProcesoDatosViento[])(amenometerSerialParam_t * data)={
-							opPreprocesoDeltaOHM,
-							opPreprocesoWMT700};
+								opPreprocesoDeltaOHM,
+								opPreprocesoWMT700};
 
 //real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
 //char uartBuffer[100];

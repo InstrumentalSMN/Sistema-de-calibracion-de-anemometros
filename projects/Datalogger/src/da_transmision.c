@@ -121,19 +121,20 @@ bool_t opConnectToWebSocket(){
 		printf("Mensaje no enviado\r\n");
 		return ERROR;
 	}
-	//Recibo mensaje de handShake si no espero uno ms se rompe, pero con interrupciones ya no tendre ese problema
-	long ret = 0;
-	uint16_t size = getSn_RX_RSR(WEB_SOCK);
+//	//Recibo mensaje de handShake si no espero uno ms se rompe, pero con interrupciones ya no tendre ese problema
+//	delay(100);
+//	long ret = 0;
+//	uint16_t size = getSn_RX_RSR(WEB_SOCK);
+////	memset(dbuf, 0, _MAX_SS);
+//	if(size > _MAX_SS) size = _MAX_SS - 1;
+//	ret = recv(WEB_SOCK,dbuf,size);
+//	dbuf[ret] = '\0';
+//	printf("\r\n%s",dbuf);
 //	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(WEB_SOCK,dbuf,size);
-	dbuf[ret] = '\0';
-	printf("\r\n%s",dbuf);
-	memset(dbuf, 0, _MAX_SS);
 	return OK;
 }
 
-bool_t KeepAlive(){
+bool_t KeepAlive(uint16_t * sizeBuffServer){
 
 	char aux[] = "{\"message\":\"\"}";;
 	char message[140];
@@ -146,12 +147,12 @@ bool_t KeepAlive(){
 	}
 	//Rutina de recepcion de mensajes por polling
 	long ret = 0;
-	uint16_t size = getSn_RX_RSR(WEB_SOCK);
+	*sizeBuffServer = getSn_RX_RSR(WEB_SOCK);
 	memset(dbuf, 0, _MAX_SS);
-	if(size > _MAX_SS) size = _MAX_SS - 1;
-	ret = recv(WEB_SOCK,dbuf,size);
+	if(*sizeBuffServer > _MAX_SS) *sizeBuffServer = _MAX_SS - 1;
+	ret = recv(WEB_SOCK,dbuf,*sizeBuffServer);
 	dbuf[ret] = '\0';
-	printf("\r\n%s\r\n",dbuf);
+//	printf("\r\n%s\r\n",dbuf);
  	return OK;
 }
 

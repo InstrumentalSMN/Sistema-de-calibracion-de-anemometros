@@ -8,17 +8,17 @@ uint32_t next = 0;
 
 /*Region Procesamiento */
 
-void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t ibc, amenometerSerialParam_t pat){
+void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t * ibc, amenometerSerialParam_t * pat){
 	static char auxiliarBuffer[100];
 //	printf("muestra numero: %04d",*NumMuestra);
 	rtcRead( &rtc );
 	printf( "%02d/%02d/%04d, %02d:%02d:%02d\r\n",rtc.mday, rtc.month, rtc.year,rtc.hour, rtc.min, rtc.sec );
-	AcumIntensidadPat[*NumMuestra] = pat.DataAnemometer[0];
-	AcumDireccionPat[*NumMuestra] = pat.DataAnemometer[1];
-	AcumPresionPat[*NumMuestra] = pat.DataAnemometer[2];
-	AcumTempPat[*NumMuestra] = pat.DataAnemometer[3];
-	AcumIntensidadIBC[*NumMuestra] = ibc.DataAnemometer[0];
-	AcumDireccionIBC[*NumMuestra] = ibc.DataAnemometer[1];
+	AcumIntensidadPat[*NumMuestra] = pat->DataAnemometer[0];
+	AcumDireccionPat[*NumMuestra] = pat->DataAnemometer[1];
+	AcumPresionPat[*NumMuestra] = ibc->DataAnemometer[2];
+	AcumTempPat[*NumMuestra] = ibc->DataAnemometer[3];
+	AcumIntensidadIBC[*NumMuestra] = ibc->DataAnemometer[0];
+	AcumDireccionIBC[*NumMuestra] = ibc->DataAnemometer[1];
 	NvBateria[*NumMuestra] = *MuestraVolt;
 
 //	uartWriteString( UART_USB, "Presion-------------------:" );
