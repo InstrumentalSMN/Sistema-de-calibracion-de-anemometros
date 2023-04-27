@@ -2,7 +2,7 @@
 #include "../inc/da_rtc.h"
 #include "sapi_rtc.h"
 
-char TableToFTP[10000];
+char TableToFTP[500];
 uint32_t next = 0;
 //char TableToFTP2[10000];
 

@@ -85,16 +85,16 @@ bool_t setTimes(config_t * commandConfig){
 //	printf("\r\n%s",commandConfig->command);
 
 
-//	printf("\r\n%s",commandConfig->command);
-//	char* tok=0;
-//	tok = strtok(commandConfig->command,";");
-//	if(tok == NULL){return ERROR;}
-//	tok = strtok(NULL,";");
-//	if(tok == NULL){return ERROR;}
-//	commandConfig->IntervaloMuestra = atoi(tok);
-//	tok = strtok(NULL,";");
-//	if(tok == NULL){return ERROR;}
-//	commandConfig->IntervaloTabla = atoi(tok);
+	printf("\r\n%s",commandConfig->command);
+	char* tok=0;
+	tok = strtok(commandConfig->command,";");
+	if(tok == NULL){return ERROR;}
+	tok = strtok(NULL,";");
+	if(tok == NULL){return ERROR;}
+	commandConfig->IntervaloMuestra = atoi(tok);
+	tok = strtok(NULL,";");
+	if(tok == NULL){return ERROR;}
+	commandConfig->IntervaloTabla = atoi(tok);
 	return OK;
 }
 

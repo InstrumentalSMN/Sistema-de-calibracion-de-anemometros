@@ -26,8 +26,8 @@ typedef struct{
 	uint8_t startMesuare;
 	amenometerSerialParam_t AnemoIBC;
 	amenometerSerialParam_t AnemoPAT;
-	//uint16_t IntervaloTabla;
-	//uint16_t IntervaloMuestra;
+	uint16_t IntervaloTabla;
+	uint16_t IntervaloMuestra;
 }config_t;
 
 

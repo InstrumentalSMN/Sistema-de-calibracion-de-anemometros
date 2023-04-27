@@ -17,18 +17,18 @@
 
 
 /*Buffer para las estadisticas del DeltaOHM*/
-static real32_t AcumIntensidadPat[100];
-static real32_t AcumDireccionPat[100];
-static real32_t AcumIntensidadIBC[100];
-static real32_t AcumDireccionIBC[100];
-static real32_t AcumPresionPat[100];
-static real32_t AcumTempPat[100];
-static real32_t NvBateria[100];
+ real32_t AcumIntensidadPat[100];
+ real32_t AcumDireccionPat[100];
+ real32_t AcumIntensidadIBC[100];
+ real32_t AcumDireccionIBC[100];
+ real32_t AcumPresionPat[100];
+ real32_t AcumTempPat[100];
+ real32_t NvBateria[100];
 
 
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
-extern char TableToFTP[10000];
+extern char TableToFTP[500];
 extern uint32_t next;
 
 /*Region Procesamiento */

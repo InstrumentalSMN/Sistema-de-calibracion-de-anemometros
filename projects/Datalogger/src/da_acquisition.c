@@ -41,7 +41,6 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 	adcConfig( ADC_DISABLE );
 }
 
-
 void opBufferRS485Reset(amenometerSerialParam_t * data){
 	data->ptrUartBuffer = data->Buffer;
 //	((amenometerSerialParam_t *)data)->Uart = 1;
