@@ -27,7 +27,7 @@ int main( void )
    while( TRUE ) {
 
       /* Retardo bloqueante durante 100ms */
-      
+	  printf("Hola\r\n");
       delay( 100 );
       
       /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
@@ -38,7 +38,7 @@ int main( void )
       if( timeCount == 100 ){ // 100ms * 100 = 10s
          
          while( TRUE ) {
-            
+
             /* Si se presiona CIAA_BOARD_BUTTON, enciende el CIAA_BOARD_LED */
 
             // Leer pin conectado al boton.

@@ -85,7 +85,7 @@ bool_t setTimes(config_t * commandConfig){
 //	printf("\r\n%s",commandConfig->command);
 
 
-	printf("\r\n%s",commandConfig->command);
+//	printf("\r\n%s",commandConfig->command);
 	char* tok=0;
 	tok = strtok(commandConfig->command,";");
 	if(tok == NULL){return ERROR;}
@@ -104,29 +104,13 @@ bool_t setTimes(config_t * commandConfig){
 bool_t opProccessMessageFromServer(uint16_t * sizeBuffServer,config_t * commandConfig ){
 
 //	setIBC;5;3;9600;0 (232,LED1,BAUD9600,DELTA_OHM)
-//	char command[25];
 	memset(commandConfig->command, 0, strlen(commandConfig->command));
 	funcion_t procesoCommand;
-	printf("\r\n%s\r\n",dbuf);
 	if(!myParserDataFromWebSocket(dbuf, sizeBuffServer,commandConfig)) return FALSE;//me devuelve el comando y atributos
-//	myParserDataFromWebSocket(dbuf, sizeBuffServer,command);//me devuelve el comando y atributos
-	printf("\r\n%s\r\n",commandConfig->command);
-	//busco el comando
-//	la t y el buffer pueden ir en la estructura
-
+//	printf("\r\n%s\r\n",commandConfig->command);
 	procesoCommand = diccProcesos[commandConfig->indexCommand]; //inicializo el puntero a función.
 	procesoCommand(commandConfig);
-
-
 	return OK;
-//	if(dbuf){
-//
-//	}
-	/*validar el json*/
-	/*si recibo "start" pongo startMesuare e true*/
-
-
-
 }
 
 
@@ -177,7 +161,7 @@ bool_t myParserDataFromWebSocket(char * dbuf, uint16_t * sizeBuffServer, config_
 //	uint16_t sizeDic = (uint16_t)(sizeof(diccCommands)/sizeof(diccCommands[0]));
 //	printf("02%d",b);
 	for(commandConfig->indexCommand=0;memcmp(diccCommands[commandConfig->indexCommand],tok,strlen(tok));commandConfig->indexCommand++);
-	printf("%d",commandConfig->indexCommand);
+//	printf("%d",commandConfig->indexCommand);
 
 	return OK;
 }

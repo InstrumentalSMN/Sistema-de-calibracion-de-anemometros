@@ -27,7 +27,6 @@ uint8_t MASKSUB1[4];
 
 //Server information WEBSOCK
 uint8_t ipServer[4] = {10,10,13,154};
-//uint16_t _FTP_destport = 37; //NTP port
 uint16_t server_port = 8000;
 
 //Server information DATASOCK
@@ -295,35 +294,35 @@ void backUpData(){
 
 }
 
-//Se usa en transmision.c
-int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort)
-{
-	int i;
-	char* tok=0;
-	strtok(arg,"(");
-	for (i = 0; i < 4; i++)
-	{
-		if(i==0) tok = strtok(NULL,",\r\n");
-		else	 tok = strtok(NULL,",");
-		remoteIp[i] = (uint8_t)atoi(tok);
-		if (!tok){
-			printf("bad pport : %s\r\n", arg);
-			return -1;
-		}
-	}
-	*remotePort = 0;
-	for (i = 0; i < 2; i++){
-		tok = strtok(NULL,",\r\n");
-		*remotePort <<= 8;
-		*remotePort += atoi(tok);
-		if (!tok){
-			printf("bad pport : %s\r\n", arg);
-			return -1;
-		}
-	}
-//	printf("ip : %d.%d.%d.%d, port : %d\r\n", remoteIp[0], remoteIp[1], remoteIp[2], remoteIp[3], *remotePort);
-	return 0;
-}
+////Se usa en transmision.c
+//int MyParserToDATASockeyFTP(char * arg, uint8_t  * remoteIp ,  uint16_t * remotePort)
+//{
+//	int i;
+//	char* tok=0;
+//	strtok(arg,"(");
+//	for (i = 0; i < 4; i++)
+//	{
+//		if(i==0) tok = strtok(NULL,",\r\n");
+//		else	 tok = strtok(NULL,",");
+//		remoteIp[i] = (uint8_t)atoi(tok);
+//		if (!tok){
+//			printf("bad pport : %s\r\n", arg);
+//			return -1;
+//		}
+//	}
+//	*remotePort = 0;
+//	for (i = 0; i < 2; i++){
+//		tok = strtok(NULL,",\r\n");
+//		*remotePort <<= 8;
+//		*remotePort += atoi(tok);
+//		if (!tok){
+//			printf("bad pport : %s\r\n", arg);
+//			return -1;
+//		}
+//	}
+////	printf("ip : %d.%d.%d.%d, port : %d\r\n", remoteIp[0], remoteIp[1], remoteIp[2], remoteIp[3], *remotePort);
+//	return 0;
+//}
 
 
 
