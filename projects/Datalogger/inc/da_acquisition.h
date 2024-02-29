@@ -18,7 +18,7 @@
 #define NAN "ND" // tambien se usa en procesamiento.c!!!
 
 
-typedef enum{DELTA_OHM,WMT700}sensor_t;
+typedef enum{HDS500,WMT700}sensor_t;
 
 typedef struct{
 	uint16_t Uart;

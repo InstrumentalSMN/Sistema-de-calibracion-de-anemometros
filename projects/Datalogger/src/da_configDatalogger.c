@@ -17,6 +17,12 @@ char *diccCommands[]={
 				"NAN"};
 
 
+char *diccSensoresDeViento[]={
+				"HDS500",
+				"WMT700",
+				"VENTUS"};
+
+
 bool_t (*diccProcesos[])(config_t * commandConfig)={
 							start,
 							stop,
@@ -53,7 +59,16 @@ bool_t setIBC(config_t * commandConfig){
 	commandConfig->AnemoIBC.BaudRate = atoi(tok);
 	tok = strtok(NULL,";");
 	if(tok == NULL){return ERROR;}
-	commandConfig->AnemoIBC.Sensor = atoi(tok);
+	int j;
+    for (j = 0; diccSensoresDeViento[j] != NULL; j++) {
+        if (strcmp(diccSensoresDeViento[j], tok) == 0) {
+            break;
+        }
+    }
+    printf("\r\nValor del sensor IBC %d",j);
+//	deberia agregar un paso extra donde a traves del string WMT700 me de en tipo enumerativo
+//	commandConfig->AnemoIBC.Sensor = atoi(tok);
+	commandConfig->AnemoIBC.Sensor = j;
 //	setIBC;5;3;9600;0 (232,LED1,BAUD9600,DELTA_OHM)
 	return OK;
 }
@@ -75,7 +90,15 @@ bool_t setPAT(config_t * commandConfig){
 	commandConfig->AnemoPAT.BaudRate = atoi(tok);
 	tok = strtok(NULL,";");
 	if(tok == NULL){return ERROR;}
-	commandConfig->AnemoPAT.Sensor = atoi(tok);
+	int j;
+	for (j = 0; diccSensoresDeViento[j] != NULL; j++) {
+		if (strcmp(diccSensoresDeViento[j], tok) == 0) {
+			break;
+		}
+	}
+	printf("\r\nValor del sensor PAT %d",j);
+	commandConfig->AnemoPAT.Sensor = j;
+//	commandConfig->AnemoPAT.Sensor = atoi(tok);
 	return OK;
 }
 
