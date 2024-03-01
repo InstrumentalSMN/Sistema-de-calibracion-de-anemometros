@@ -290,6 +290,7 @@ void backUpData(){
 	uint32_t size = (uint32_t)strlen(TableToFTP);
 	TableToFTP[size]='\r';
 	TableToFTP[size+1]='\n';
+	printf("\r\n Estoy haciendo backup, revisa conexion con el WebSocket");
 	next = (uint32_t)strlen(TableToFTP);
 
 }
