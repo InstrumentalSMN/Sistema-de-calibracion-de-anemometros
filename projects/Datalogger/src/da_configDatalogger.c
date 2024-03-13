@@ -181,6 +181,9 @@ bool_t myParserDataFromWebSocket(char * dbuf, uint16_t * sizeBuffServer, config_
 	tok=0;
 	tok = strtok(aux,";");
 	if(tok == NULL){return ERROR;}
+//	Los comandos que se envian del BackEnd al Frond En van con un C al inicio del comando, La EDU-CIAA tiene que rechazar
+//	estos mensajes ya que no son de interes para configurar el datalogger
+	if(!memcmp(tok,"C",strlen("C"))) return ERROR;
 //	uint16_t sizeDic = (uint16_t)(sizeof(diccCommands)/sizeof(diccCommands[0]));
 //	printf("02%d",b);
 	for(commandConfig->indexCommand=0;memcmp(diccCommands[commandConfig->indexCommand],tok,strlen(tok));commandConfig->indexCommand++);
