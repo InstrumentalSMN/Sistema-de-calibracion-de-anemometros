@@ -4,7 +4,8 @@
 // Diccionario de punteros a funcion para procesar en función del DeltaOHM elegido
 void (*opProcesoDatosViento[])(amenometerSerialParam_t * data)={
 								opPreprocesoDeltaOHM,
-								opPreprocesoWMT700};
+								opPreprocesoWMT700,
+								opPreprocesoVentus};
 
 //real32_t DataDeltaOhm[] = {NoDato,NoDato,NoDato,NoDato,NoDato,NoDato,NoDato};
 //char uartBuffer[100];
@@ -40,6 +41,14 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 	*muestraVoltNB = muestra*(MaxVoltajeBatery/MaxADCValue);
 	adcConfig( ADC_DISABLE );
 }
+
+void opBufferRS485Off(amenometerSerialParam_t * data){
+
+	// Dehabilito todas las interrupciones de UART_USB
+		uint16_t miUart = data->Uart;
+		uartInterrupt( (UART_GPIO+miUart), false);
+}
+
 
 void opBufferRS485Reset(amenometerSerialParam_t * data){
 	data->ptrUartBuffer = data->Buffer;
@@ -94,6 +103,7 @@ void opPreprocesoDeltaOHM(amenometerSerialParam_t * data){
 //		uartWriteString( UART_USB, auxiliarBuffer );
 //		uartWriteString( UART_USB, "\r\n" );
     }
+//    printf("Parcee los datos del DeltaOHM");
 
 }
 
@@ -113,6 +123,18 @@ void opPreprocesoWMT700(amenometerSerialParam_t * data){
 	tok = strtok(NULL,",");
 	data->DataAnemometer[0] = (float)atof(tok);
 //	printf("Parcee los datos del WMT700");
+
+}
+void opPreprocesoVentus(amenometerSerialParam_t * data){
+//	Agregar en :
+//	char *diccSensoresDeViento[]
+//   typedef enum{HDS500,WMT700,VENTUS}sensor_t;
+//   *opProcesoDatosViento[])(amenometerSerialParam_t * data)={
+//   								opPreprocesoDeltaOHM,
+//   								opPreprocesoWMT700};
+
+
+	printf("\r\n Desarrollar el Parcer para ventus");
 
 }
 

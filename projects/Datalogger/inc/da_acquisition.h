@@ -18,7 +18,7 @@
 #define NAN "ND" // tambien se usa en procesamiento.c!!!
 
 
-typedef enum{HDS500,WMT700}sensor_t;
+typedef enum{HDS500,WMT700,VENTUS}sensor_t;
 
 typedef struct{
 	uint16_t Uart;
@@ -45,6 +45,9 @@ extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 /*A futuro esta funcion puede ser un voltaje simple , mas generico, en ese caso puedo pasar el channel*/
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
 extern void opBufferRS485Reset(amenometerSerialParam_t * data);
+extern void opBufferRS485Off(amenometerSerialParam_t * data);
+
+
 // Se puede pasar un typedef enum que seleccione un vector de puntero a funciones
 
 extern void opAdquirirDV( void *data );
@@ -58,7 +61,7 @@ extern void (*opProcesoDatosViento[])(amenometerSerialParam_t * data);/* diccion
 //Funciones para procesar los distintos anemometros
 extern void opPreprocesoDeltaOHM(amenometerSerialParam_t * data);
 extern void opPreprocesoWMT700(amenometerSerialParam_t * data);
-
+extern void opPreprocesoVentus(amenometerSerialParam_t * data);
 
 extern void opGuardarMuestras(real32_t* muestraVoltNB);
 
