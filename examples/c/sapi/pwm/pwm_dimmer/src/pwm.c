@@ -82,7 +82,17 @@ int main(void){
 
    /* Configurar PWM */
    valor = pwmConfig( 0, PWM_ENABLE );
-
+//   /* PWM0 */  CTOUT1,  /* T_FIL1 */
+//   /* PWM1 */  CTOUT12, /* T_COL2 */
+//   /* PWM2 */  CTOUT10, /* T_COL0 */
+//   /* PWM3 */  CTOUT0,  /* T_FIL2 */
+//   /* PWM4 */  CTOUT3,  /* T_FIL3 */
+//   /* PWM5 */  CTOUT13, /* T_COL1 */
+//   /* PWM6 */  CTOUT7,  /* GPIO8  */
+//   /* PWM7 */  CTOUT2,  /* LED1   */
+//   /* PWM8 */  CTOUT5,  /* LED2   */
+//   /* PWM9 */  CTOUT4,  /* LED3   */
+//   /* PWM10 */ CTOUT6   /* GPIO2  */
    valor = pwmConfig( PWM7, PWM_ENABLE_OUTPUT );
    valor = pwmConfig( PWM8, PWM_ENABLE_OUTPUT );
    valor = pwmConfig( PWM9, PWM_ENABLE_OUTPUT );

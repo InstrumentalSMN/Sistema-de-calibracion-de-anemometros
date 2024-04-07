@@ -68,7 +68,7 @@ void Chip_SCTPWM_SetRate(LPC_SCT_T *pSCT, uint32_t freq)
 {
 	uint32_t rate;
 
-	rate = Chip_Clock_GetRate(CLK_MX_SCT) / freq;;
+	rate = Chip_Clock_GetRate(CLK_MX_SCT) / freq;
 
 	/* Stop the SCT before configuration */
 	Chip_SCTPWM_Stop(pSCT);
