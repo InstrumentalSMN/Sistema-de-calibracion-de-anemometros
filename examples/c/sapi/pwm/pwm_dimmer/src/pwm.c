@@ -54,6 +54,86 @@
 /*==================[external functions definition]==========================*/
 
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
+//int main(void){
+//
+//   /* ------------- INICIALIZACIONES ------------- */
+//
+//   /* Inicializar la placa */
+//   boardConfig();
+//
+//   /* Variables de Retardos no bloqueantes */
+//   delay_t delayBase1;
+//   delay_t delayBase2;
+//   delay_t delayBase3;
+//
+//   /* Inicializar Retardo no bloqueante con tiempo en milisegundos
+//      (500ms = 0,5s) */
+//   delayConfig( &delayBase1, 50 );
+//   delayConfig( &delayBase2, 200 );
+//   delayConfig( &delayBase3, 1000 );
+//
+//   bool_t valor = 0;
+//
+//   uint8_t  dutyCycle1 = 0; /* 0 a 255 */
+//   uint16_t dutyCycle2 = 0;
+//   uint16_t dutyCycle3 = 0;
+//
+//   uint8_t pwmVal = 0; /* 0 a 255 */
+//
+//   /* Configurar PWM */
+//   valor = pwmConfig( 0, PWM_ENABLE );
+////   /* PWM0 */  CTOUT1,  /* T_FIL1 */
+////   /* PWM1 */  CTOUT12, /* T_COL2 */
+////   /* PWM2 */  CTOUT10, /* T_COL0 */
+////   /* PWM3 */  CTOUT0,  /* T_FIL2 */
+////   /* PWM4 */  CTOUT3,  /* T_FIL3 */
+////   /* PWM5 */  CTOUT13, /* T_COL1 */
+////   /* PWM6 */  CTOUT7,  /* GPIO8  */
+////   /* PWM7 */  CTOUT2,  /* LED1   */
+////   /* PWM8 */  CTOUT5,  /* LED2   */
+////   /* PWM9 */  CTOUT4,  /* LED3   */
+////   /* PWM10 */ CTOUT6   /* GPIO2  */
+//   valor = pwmConfig( PWM7, PWM_ENABLE_OUTPUT );
+//   valor = pwmConfig( PWM8, PWM_ENABLE_OUTPUT );
+//   valor = pwmConfig( PWM9, PWM_ENABLE_OUTPUT );
+//
+//   /* Usar PWM */
+//   valor = pwmWrite( PWM7, dutyCycle1 );
+//   pwmVal = pwmRead( PWM7 );
+//   pwmWrite( PWM7, pwmVal );
+//
+//   /* ------------- REPETIR POR SIEMPRE ------------- */
+//   while(1) {
+//
+//      valor = !gpioRead( TEC1 );
+//      gpioWrite( LEDB, valor );
+//
+//      if( delayRead(&delayBase1) )
+//         dutyCycle1++;
+//      if( dutyCycle1>255 )
+//         dutyCycle1 = 0;
+//      pwmWrite( PWM7, dutyCycle1 );
+//
+//      if( delayRead(&delayBase2) )
+//          dutyCycle2 += 25;
+//      if( dutyCycle2>255 )
+//         dutyCycle2 = 0;
+//      pwmWrite( PWM8, (uint8_t)dutyCycle2 );
+//
+//      if( delayRead(&delayBase3) )
+//          dutyCycle3 += 50;
+//      if( dutyCycle3>255 )
+//         dutyCycle3 = 0;
+//      pwmWrite( PWM9, (uint8_t)dutyCycle3 );
+//
+//   }
+//
+//   /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
+//      por ningun S.O. */
+//   return 0 ;
+//}
+
+
 int main(void){
 
    /* ------------- INICIALIZACIONES ------------- */
@@ -74,7 +154,7 @@ int main(void){
 
    bool_t valor = 0;
 
-   uint8_t  dutyCycle1 = 0; /* 0 a 255 */
+   uint8_t  dutyCycle1 = 1; /* 0 a 255 */
    uint16_t dutyCycle2 = 0;
    uint16_t dutyCycle3 = 0;
 
@@ -93,44 +173,30 @@ int main(void){
 //   /* PWM8 */  CTOUT5,  /* LED2   */
 //   /* PWM9 */  CTOUT4,  /* LED3   */
 //   /* PWM10 */ CTOUT6   /* GPIO2  */
-   valor = pwmConfig( PWM7, PWM_ENABLE_OUTPUT );
-   valor = pwmConfig( PWM8, PWM_ENABLE_OUTPUT );
-   valor = pwmConfig( PWM9, PWM_ENABLE_OUTPUT );
+   valor = pwmConfig( PWM3, PWM_ENABLE_OUTPUT );
+//   valor = pwmConfig( PWM8, PWM_ENABLE_OUTPUT );
+//   valor = pwmConfig( PWM9, PWM_ENABLE_OUTPUT );
 
    /* Usar PWM */
-   valor = pwmWrite( PWM7, dutyCycle1 );
-   pwmVal = pwmRead( PWM7 );
-   pwmWrite( PWM7, pwmVal );
+   valor = pwmWrite( PWM3, dutyCycle1 );
+   pwmVal = pwmRead( PWM3 );
+   pwmWrite( PWM3, pwmVal );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 
       valor = !gpioRead( TEC1 );
-      gpioWrite( LEDB, valor );
-
-      if( delayRead(&delayBase1) )
-         dutyCycle1++;
-      if( dutyCycle1>255 )
-         dutyCycle1 = 0;
-      pwmWrite( PWM7, dutyCycle1 );
-
-      if( delayRead(&delayBase2) )
-          dutyCycle2 += 25;
-      if( dutyCycle2>255 )
-         dutyCycle2 = 0;
-      pwmWrite( PWM8, (uint8_t)dutyCycle2 );
-
-      if( delayRead(&delayBase3) )
-          dutyCycle3 += 50;
-      if( dutyCycle3>255 )
-         dutyCycle3 = 0;
-      pwmWrite( PWM9, (uint8_t)dutyCycle3 );
-
+      if(valor != 0){
+    	  dutyCycle1 +=2;
+      }
+      pwmWrite( PWM3, 15 );
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
       por ningun S.O. */
    return 0 ;
 }
+
+
 
 /*==================[end of file]============================================*/

@@ -50,8 +50,10 @@
 
 #define PWM_TOTALNUMBER   11   /* From PWM0 to PWM10 */
 
-#define PWM_FREC          1000 /* 1Khz */
-#define PWM_PERIOD        1000 /* 1000uS = 1ms*/
+//#define PWM_FREC          1000 /* 1Khz */
+#define PWM_FREC          10000 /* 10Khz */
+//#define PWM_PERIOD        1000 /* 1000uS = 1ms*/
+#define PWM_PERIOD        100 /* 1000uS = 1ms*/
 
 /*==================[internal data declaration]==============================*/
 
