@@ -47,12 +47,12 @@ int main( void )
             // presionado y 1 (ON) al liberarla.
             buttonValue = !buttonValue;
             // Escribir el valor leido en el LED correspondiente.
-            gpioWrite( LEDR, buttonValue );
+            gpioWrite( DO7, buttonValue );
 
             /* Enviar a la salida estandar (UART_DEBUG) el estado del LED */
             
             // Leer el estado del pin conectado al led
-            ledValue = gpioRead( LEDR );
+            ledValue = gpioRead( DO7 );
             // Chequear si el valor leido es encedido
             if( ledValue == ON ) {
                // Si esta encendido mostrar por UART_USB con un BAUD RATE = 115200 "LED encendido."
@@ -66,7 +66,7 @@ int main( void )
          }
       } else {
          // Intercambiar el valor de CIAA_BOARD_LED
-         gpioToggle(LEDR);
+         gpioToggle(DO7);
       }
    }
 
