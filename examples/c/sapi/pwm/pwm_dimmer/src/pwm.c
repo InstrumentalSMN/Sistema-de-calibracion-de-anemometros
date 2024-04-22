@@ -148,9 +148,9 @@ int main(void){
 
    /* Inicializar Retardo no bloqueante con tiempo en milisegundos
       (500ms = 0,5s) */
-   delayConfig( &delayBase1, 50 );
-   delayConfig( &delayBase2, 200 );
-   delayConfig( &delayBase3, 1000 );
+   delayConfig( &delayBase1, 2000 );
+   delayConfig( &delayBase2, 4000 );
+   delayConfig( &delayBase3, 6000 );
 
    bool_t valor = 0;
 
@@ -188,8 +188,16 @@ int main(void){
       valor = !gpioRead( TEC1 );
       if(valor != 0){
     	  dutyCycle1 +=2;
+    	  pwmWrite( PWM3, dutyCycle1);
       }
+
       pwmWrite( PWM3, 63 );
+
+
+
+
+
+
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
