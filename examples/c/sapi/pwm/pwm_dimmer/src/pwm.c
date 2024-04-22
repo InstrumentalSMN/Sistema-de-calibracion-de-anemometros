@@ -191,7 +191,7 @@ int main(void){
     	  pwmWrite( PWM3, dutyCycle1);
       }
 
-      pwmWrite( PWM3, 63 );
+      pwmWrite( PWM3, 127);
 
 
 
