@@ -189,7 +189,7 @@ int main(void){
       if(valor != 0){
     	  dutyCycle1 +=2;
       }
-      pwmWrite( PWM3, 15 );
+      pwmWrite( PWM3, 63 );
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
