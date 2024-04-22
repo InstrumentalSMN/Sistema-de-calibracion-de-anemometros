@@ -24,18 +24,18 @@
  real32_t AcumPresionPat[100];
  real32_t AcumTempPat[100];
  real32_t NvBateria[100];
-
+ real32_t NvAdcTunel[100];
 
 /*Tabla de un elemento por ahora para transmitir al FTP*/
 
-extern char TableToFTP[500];
+extern char TableToFTP[900];
 extern uint32_t next;
 
 /*Region Procesamiento */
 
 
 
-extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat);
+extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt,real32_t * MuestraAdcTunel, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat);
 //extern void opProceso( uint32_t * size);
 extern void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion);
 

@@ -2,13 +2,13 @@
 #include "../inc/da_rtc.h"
 #include "sapi_rtc.h"
 
-char TableToFTP[500];
+char TableToFTP[900];
 uint32_t next = 0;
 //char TableToFTP2[10000];
 
 /*Region Procesamiento */
 
-void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialParam_t * ibc, amenometerSerialParam_t * pat){
+void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt,real32_t * MuestraAdcTunel,amenometerSerialParam_t * ibc, amenometerSerialParam_t * pat){
 	static char auxiliarBuffer[100];
 //	printf("muestra numero: %04d",*NumMuestra);
 	rtcRead( &rtc );
@@ -20,6 +20,7 @@ void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt, amenometerSerialPa
 	AcumIntensidadIBC[*NumMuestra] = ibc->DataAnemometer[0];
 	AcumDireccionIBC[*NumMuestra] = ibc->DataAnemometer[1];
 	NvBateria[*NumMuestra] = *MuestraVolt;
+	NvAdcTunel[*NumMuestra] = *MuestraAdcTunel;
 
 //	uartWriteString( UART_USB, "Presion-------------------:" );
 //	floatToString(AcumDireccion[*NumMuestra],auxiliarBuffer,2);
@@ -33,10 +34,6 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 	uint32_t i = 0;
 	//char aux[150];
 	char miBuffer1[7];
-	char miBuffer2[7];
-	char miBuffer3[7];
-	char miBuffer4[7];
-	char miBuffer5[7];
 	//TableToFTP = aux;
 	//real32_t Tabla[16];
 
@@ -81,10 +78,18 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 	float nv_bateriaMin = minValue(NvBateria,(size_t)*NumMuestra);
 	float nv_bateriaPromedio = AverageValue(NvBateria,(size_t)*NumMuestra);
 
-	real32_t Tabla_Mediciones[16] = {	velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
+	float nv_adcTunelInst = NvAdcTunel[(*NumMuestra)-1];
+	float nv_adcTunelMax = maxValue(NvAdcTunel,(size_t)*NumMuestra);
+	float nv_adcTunelMin = minValue(NvAdcTunel,(size_t)*NumMuestra);
+	float nv_adcTunelPromedio = AverageValue(NvAdcTunel,(size_t)*NumMuestra);
+
+	real32_t Tabla_Mediciones[24] = {
+							velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
 							velocidadInstIBC,velocidadMinIBC,velocidadMaxIBC,velocidadPromedioIBC,
 							direccionInst,direccionMin,direccionMax,direccionPromedio,
-							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC
+							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC,
+							nv_bateriaInst,nv_bateriaMin,nv_bateriaMax,nv_bateriaPromedio,
+							nv_adcTunelInst,nv_adcTunelMin,nv_adcTunelMax,nv_adcTunelPromedio
 							};
 
 //	real32_t Tabla[4] ={	velocidadPromedio,

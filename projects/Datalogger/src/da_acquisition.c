@@ -42,6 +42,17 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 	adcConfig( ADC_DISABLE );
 }
 
+void opAdquirirAdcTunel(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateria
+
+	adcConfig( ADC_ENABLE );
+	/* Variable para almacenar el valor leido del ADC CH1 */
+	uint16_t muestra = 0;
+	*muestraVoltNB = 0;
+	muestra = adcRead( CH2 );
+	*muestraVoltNB = muestra*(MaxVoltajeAdcTunel/MaxADCValueTunel);
+	adcConfig( ADC_DISABLE );
+}
+
 void opBufferRS485Off(amenometerSerialParam_t * data){
 
 	// Dehabilito todas las interrupciones de UART_USB

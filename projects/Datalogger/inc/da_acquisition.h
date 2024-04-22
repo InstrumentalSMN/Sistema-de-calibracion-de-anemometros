@@ -14,6 +14,10 @@
 
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
+
+#define MaxVoltajeAdcTunel	3.3//12.23
+#define MaxADCValueTunel			200//997
+
 #define NoDato  -99999 // No hay dato tambien se usa en procesamiento.c!!!
 #define NAN "ND" // tambien se usa en procesamiento.c!!!
 
@@ -44,6 +48,7 @@ extern char uartBuffer[100]; //Buffer donde guardamos el string del DeltaOhm
 extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 /*A futuro esta funcion puede ser un voltaje simple , mas generico, en ese caso puedo pasar el channel*/
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
+extern void opAdquirirAdcTunel(real32_t* muestraVoltNB);
 extern void opBufferRS485Reset(amenometerSerialParam_t * data);
 extern void opBufferRS485Off(amenometerSerialParam_t * data);
 

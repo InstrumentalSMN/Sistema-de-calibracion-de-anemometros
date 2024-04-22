@@ -135,9 +135,9 @@ bool_t MySpi_Wiz_Init( spiMap_t spi )
          // Initialize SSP Peripheral
          Chip_SSP_Init( LPC_SSP1 );
          Chip_SSP_Enable( LPC_SSP1 );
-         Chip_SCU_PinMuxSet( 0x6, 1, (SCU_MODE_PULLUP | SCU_MODE_FUNC0)); // Pin for SPI SS configured as GPIO output with pull-up
-         Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 3, 0);
-         gpioWrite( GPIO0, ON );
+         Chip_SCU_PinMuxSet( 0x6, 4, (SCU_MODE_PULLUP | SCU_MODE_FUNC0)); // Pin for SPI SS configured as GPIO output with pull-up
+         Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 3, 3);
+         gpioWrite( GPIO1, ON );
       #endif
 
 //      #if BOARD==ciaa_nxp
