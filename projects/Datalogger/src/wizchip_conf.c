@@ -82,7 +82,7 @@ void 	  wizchip_cris_exit(void)          {}
  */
 //void 	wizchip_cs_select(void)            {};
 void 	wizchip_cs_select(void)            {
-	gpioWrite( GPIO0, OFF );
+	gpioWrite( GPIO1, OFF );
 }
 
 /**
@@ -93,7 +93,7 @@ void 	wizchip_cs_select(void)            {
 //void 	wizchip_cs_deselect(void)          {};
 void 	wizchip_cs_deselect(void)          {
 
-	gpioWrite( GPIO0, ON );
+	gpioWrite( GPIO1, ON );
 }
 
 /**

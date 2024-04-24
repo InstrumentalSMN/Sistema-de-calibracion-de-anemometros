@@ -15,8 +15,8 @@
 #define MaxVoltajeBatery	12.43//12.23
 #define MaxADCValue			540//997
 
-#define MaxVoltajeAdcTunel	3.3//12.23
-#define MaxADCValueTunel			200//997
+#define MaxVoltajeAdcTunel	3.552
+#define MaxADCValueTunel	1024
 
 #define NoDato  -99999 // No hay dato tambien se usa en procesamiento.c!!!
 #define NAN "ND" // tambien se usa en procesamiento.c!!!

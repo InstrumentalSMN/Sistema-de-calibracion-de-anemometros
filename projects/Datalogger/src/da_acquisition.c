@@ -38,7 +38,7 @@ void opAdquirirDNB(real32_t* muestraVoltNB ){//puntero a muestra nivel de bateri
 	uint16_t muestra = 0;
 	*muestraVoltNB = 0;
 	muestra = adcRead( CH1 );
-	*muestraVoltNB = muestra*(MaxVoltajeBatery/MaxADCValue);
+	*muestraVoltNB = muestra;//*(MaxVoltajeBatery/MaxADCValue);
 	adcConfig( ADC_DISABLE );
 }
 
@@ -49,7 +49,7 @@ void opAdquirirAdcTunel(real32_t* muestraVoltNB ){//puntero a muestra nivel de b
 	uint16_t muestra = 0;
 	*muestraVoltNB = 0;
 	muestra = adcRead( CH2 );
-	*muestraVoltNB = muestra*(MaxVoltajeAdcTunel/MaxADCValueTunel);
+	*muestraVoltNB = muestra*0.003410156+0.0654101;
 	adcConfig( ADC_DISABLE );
 }
 

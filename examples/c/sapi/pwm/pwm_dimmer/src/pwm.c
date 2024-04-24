@@ -180,7 +180,7 @@ int main(void){
    /* Usar PWM */
    valor = pwmWrite( PWM3, dutyCycle1 );
    pwmVal = pwmRead( PWM3 );
-   pwmWrite( PWM3, pwmVal );
+   pwmWrite( PWM3, 63 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
@@ -188,10 +188,10 @@ int main(void){
       valor = !gpioRead( TEC1 );
       if(valor != 0){
     	  dutyCycle1 +=2;
-    	  pwmWrite( PWM3, dutyCycle1);
+//    	  pwmWrite( PWM3, dutyCycle1);
       }
 
-      pwmWrite( PWM3, 127);
+//      pwmWrite( PWM3, 255);
 
 
 

@@ -13,6 +13,6 @@ void opConfigPWM(){
 
 //opGeneratePWM(uint16_t * NumMuestra, real32_t * MuestraAdcTunel, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat){
 void opGeneratePWM(){
-	pwmWrite( PWM3, 127);
+	pwmWrite( PWM3, 63);
 }
 
