@@ -8,11 +8,12 @@ void opConfigPWM(){
 	int valor;
 	valor = pwmConfig( 0, PWM_ENABLE );
 	valor = pwmConfig( PWM3, PWM_ENABLE_OUTPUT );
+	pwmWrite( PWM3, 255);
 
 }
 
 //opGeneratePWM(uint16_t * NumMuestra, real32_t * MuestraAdcTunel, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat){
 void opGeneratePWM(){
-	pwmWrite( PWM3, 63);
+	pwmWrite( PWM3, 0);
 }
 

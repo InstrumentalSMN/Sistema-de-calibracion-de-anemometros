@@ -98,8 +98,10 @@ bool_t opConnectToWebSocket(){
 	if(ret5 != SOCK_ESTABLISHED){
 		printf("Salgo error 2\r\n");
 		DesconectarSocket(WEB_SOCK);
+		gpioWrite( GPIO8, ON );
+		gpioWrite( GPIO7, OFF );
 		return ERROR;
-		//gpioWrite( LED2, ON );
+
 	}
 	//msj de conexión
 	char aux[200] = "{\'message\':\'hola\'}";
@@ -118,6 +120,8 @@ bool_t opConnectToWebSocket(){
 	int32_t len = send(WEB_SOCK, header, strlen(header));
 	if (a != len){ //valido que se envie correctamente
 		printf("Mensaje no enviado\r\n");
+		gpioWrite( GPIO8, ON );
+		gpioWrite( GPIO7, OFF );
 		return ERROR;
 	}
 //	//Recibo mensaje de handShake si no espero uno ms se rompe, pero con interrupciones ya no tendre ese problema
@@ -130,6 +134,8 @@ bool_t opConnectToWebSocket(){
 //	dbuf[ret] = '\0';
 //	printf("\r\n%s",dbuf);
 //	memset(dbuf, 0, _MAX_SS);
+	gpioWrite( GPIO8, OFF );
+	gpioWrite( GPIO7, ON );
 	return OK;
 }
 

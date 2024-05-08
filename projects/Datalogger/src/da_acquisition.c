@@ -61,7 +61,7 @@ void opBufferRS485Off(amenometerSerialParam_t * data){
 }
 
 
-void opBufferRS485Reset(amenometerSerialParam_t * data){
+void opBufferRS485_On(amenometerSerialParam_t * data){
 	data->ptrUartBuffer = data->Buffer;
 //	((amenometerSerialParam_t *)data)->Uart = 1;
 	uint16_t miUart = data->Uart;
@@ -81,12 +81,12 @@ void opAdquirirDV( void *data ){ //Esta se llama  en el callbackSet
 	uint8_t receiveByte = uartRxRead( (UART_GPIO+miUart));
 	*(((amenometerSerialParam_t *)data)->ptrUartBuffer) = receiveByte;
 	(((amenometerSerialParam_t *)data)->ptrUartBuffer)++;
-	gpioWrite((LEDR+((amenometerSerialParam_t *)data)->LED), OFF );
+	gpioWrite(((amenometerSerialParam_t *)data)->LED, OFF );
 	if(receiveByte =='\r'){
 //		printf("%s",(((amenometerSerialParam_t *)data)->Buffer));
 		opProcesoDatosViento[(((amenometerSerialParam_t *)data)->Sensor)]((amenometerSerialParam_t *)data);
 		(((amenometerSerialParam_t *)data)->ptrUartBuffer)=(((amenometerSerialParam_t *)data)->Buffer); //Reseteo el puntero para el siguiente string
-	gpioWrite( (LEDR+((amenometerSerialParam_t *)data)->LED), ON );
+	gpioWrite( ((amenometerSerialParam_t *)data)->LED, ON );
 	}
 
 }

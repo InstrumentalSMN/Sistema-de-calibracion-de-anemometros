@@ -49,7 +49,7 @@ extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 /*A futuro esta funcion puede ser un voltaje simple , mas generico, en ese caso puedo pasar el channel*/
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
 extern void opAdquirirAdcTunel(real32_t* muestraVoltNB);
-extern void opBufferRS485Reset(amenometerSerialParam_t * data);
+extern void opBufferRS485_On(amenometerSerialParam_t * data);
 extern void opBufferRS485Off(amenometerSerialParam_t * data);
 
 

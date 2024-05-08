@@ -69,7 +69,7 @@
       </vertices>
     </regions>
     <regions xmi:id="_B6LgQADaEe-XDcLrKo1Gow" name="ControllerTunnelWind">
-      <vertices xsi:type="sgraph:State" xmi:id="_B6MuaADaEe-XDcLrKo1Gow" specification="entry/opConfigPWM();&#xD;&#xA;opGeneratePWM()" name="CONFIG_PWM" incomingTransitions="_8Adm4AG1Ee-HYIJbron26w"/>
+      <vertices xsi:type="sgraph:State" xmi:id="_B6MuaADaEe-XDcLrKo1Gow" specification="entry/opConfigPWM()//;&#xD;&#xA;//opGeneratePWM()" name="CONFIG_PWM" incomingTransitions="_8Adm4AG1Ee-HYIJbron26w"/>
       <vertices xsi:type="sgraph:State" xmi:id="_9nl90ADmEe-XDcLrKo1Gow" specification="" name="INICIO" incomingTransitions="_DoB2QADnEe-XDcLrKo1Gow">
         <outgoingTransitions xmi:id="_8Adm4AG1Ee-HYIJbron26w" specification="always" target="_B6MuaADaEe-XDcLrKo1Gow"/>
       </vertices>
@@ -118,7 +118,7 @@
       <vertices xsi:type="sgraph:Entry" xmi:id="_U1HEq8T2Ee2v9pZjTED34g">
         <outgoingTransitions xmi:id="_U1HErMT2Ee2v9pZjTED34g" specification="" target="_U1HEwcT2Ee2v9pZjTED34g"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_U1A-FMT2Ee2v9pZjTED34g" specification="entry /&#xD;&#xA;//AnemoPat.Uart=UartRS232;&#xD;&#xA;//AnemoPat.LED=LED1;&#xD;&#xA;//AnemoPat.BaudRate=9600;&#xD;&#xA;//AnemoPat.Sensor = sensor_t.DELTA_OHM;&#xD;&#xA;opBufferRS485Reset(ptrAnemoIBC)&#xD;&#xA;" name="SENSOR_IBC" incomingTransitions="_U1HEzcT2Ee2v9pZjTED34g">
+      <vertices xsi:type="sgraph:State" xmi:id="_U1A-FMT2Ee2v9pZjTED34g" specification="entry /&#xD;&#xA;//AnemoPat.Uart=UartRS232;&#xD;&#xA;//AnemoPat.LED=LED1;&#xD;&#xA;//AnemoPat.BaudRate=9600;&#xD;&#xA;//AnemoPat.Sensor = sensor_t.DELTA_OHM;&#xD;&#xA;opBufferRS485_On(ptrAnemoIBC)&#xD;&#xA;" name="SENSOR_IBC" incomingTransitions="_U1HEzcT2Ee2v9pZjTED34g">
         <outgoingTransitions xmi:id="_HC0GwOIJEe68h5GUlZEkSg" specification="[configCommand.startMesuare == StatusFalse ]" target="_s_NLMOIZEe68h5GUlZEkSg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_s_NLMOIZEe68h5GUlZEkSg" specification="entry /&#xD;&#xA;//Apago las interrupciones&#xD;&#xA;opBufferRS485Off(ptrAnemoIBC)&#xD;&#xA;" name="OFF_SENSOR_IBC" incomingTransitions="_HC0GwOIJEe68h5GUlZEkSg">
@@ -132,7 +132,7 @@
       <vertices xsi:type="sgraph:Entry" xmi:id="_4NkGEviJEeyAn9hEHKDPZg">
         <outgoingTransitions xmi:id="_4NkGE_iJEeyAn9hEHKDPZg" specification="" target="_4Ni38fiJEeyAn9hEHKDPZg"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_R-Mw0fjFEeyAn9hEHKDPZg" specification="entry /&#xD;&#xA;//AnemoIBC.Uart=UartRS485;&#xD;&#xA;//AnemoIBC.LED=LED3;&#xD;&#xA;//AnemoIBC.BaudRate=9600;&#xD;&#xA;//AnemoIBC.Sensor = sensor_t.WMT700;&#xD;&#xA;&#xD;&#xA;opBufferRS485Reset(ptrAnemoPat)&#xD;&#xA;" name="SENSOR_PAT" incomingTransitions="_4NjfAfiJEeyAn9hEHKDPZg">
+      <vertices xsi:type="sgraph:State" xmi:id="_R-Mw0fjFEeyAn9hEHKDPZg" specification="entry /&#xD;&#xA;//AnemoIBC.Uart=UartRS485;&#xD;&#xA;//AnemoIBC.LED=LED3;&#xD;&#xA;//AnemoIBC.BaudRate=9600;&#xD;&#xA;//AnemoIBC.Sensor = sensor_t.WMT700;&#xD;&#xA;&#xD;&#xA;opBufferRS485_On(ptrAnemoPat)&#xD;&#xA;" name="SENSOR_PAT" incomingTransitions="_4NjfAfiJEeyAn9hEHKDPZg">
         <outgoingTransitions xmi:id="_Q56uwOIJEe68h5GUlZEkSg" specification="[configCommand.startMesuare == StatusFalse ]" target="_CLuMQOIaEe68h5GUlZEkSg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_CLuMQOIaEe68h5GUlZEkSg" specification="entry /&#xD;&#xA;opBufferRS485Off(ptrAnemoPat)&#xD;&#xA;" name="OFF_SENSOR_PAT" incomingTransitions="_Q56uwOIJEe68h5GUlZEkSg">
@@ -312,7 +312,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBNtyEeyHZqpmACSfBQ"/>
       </children>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_Qj6rcPPgEeyzR7iz7i6iZQ" name="featureToShow" stringValue="specification"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBdtyEeyHZqpmACSfBQ" x="3661" y="-456" width="572" height="1808"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_2s-qBdtyEeyHZqpmACSfBQ" x="3136" y="-456" width="575" height="1808"/>
     </children>
     <children xmi:id="_-xCRMPNGEeykSvcSIt4NWw" type="Region" element="_-xBDEPNGEeykSvcSIt4NWw">
       <children xsi:type="notation:DecorationNode" xmi:id="_-xC4QPNGEeykSvcSIt4NWw" type="RegionName">
@@ -759,7 +759,7 @@
           <styles xsi:type="notation:ShapeStyle" xmi:id="_s_MkJuIZEe68h5GUlZEkSg" fontName="Verdana" fillColor="15981773" lineColor="12632256"/>
           <styles xsi:type="notation:FontStyle" xmi:id="_s_MkJ-IZEe68h5GUlZEkSg"/>
           <styles xsi:type="notation:BooleanValueStyle" xmi:id="_s_MkKOIZEe68h5GUlZEkSg" name="isHorizontal" booleanValue="true"/>
-          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_s_MkKeIZEe68h5GUlZEkSg" x="312" y="137" width="234" height="91"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_s_MkKeIZEe68h5GUlZEkSg" x="314" y="153" width="234" height="91"/>
         </children>
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_U1A-A8T2Ee2v9pZjTED34g"/>
       </children>
@@ -924,7 +924,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="__a_t9NwWEe2MN_HdDFe69w"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="__a_G4dwWEe2MN_HdDFe69w" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="__a_G4twWEe2MN_HdDFe69w" x="2015" y="765" width="984" height="838"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="__a_G4twWEe2MN_HdDFe69w" x="2222" y="764" width="985" height="840"/>
     </children>
     <children xmi:id="_5aJFINweEe2MN_HdDFe69w" type="Region" element="_5aK6UNweEe2MN_HdDFe69w">
       <children xsi:type="notation:DecorationNode" xmi:id="_5aJFIdweEe2MN_HdDFe69w" type="RegionName">
@@ -980,7 +980,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_5aJFU9weEe2MN_HdDFe69w"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_5aJFVNweEe2MN_HdDFe69w" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_5aJFVdweEe2MN_HdDFe69w" x="2125" y="-435" width="840" height="712"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_5aJFVdweEe2MN_HdDFe69w" x="2085" y="-440" width="841" height="714"/>
     </children>
     <children xmi:id="_dpXLcN4DEe2MN_HdDFe69w" type="Region" element="_dpUIIN4DEe2MN_HdDFe69w">
       <children xsi:type="notation:DecorationNode" xmi:id="_dpXygN4DEe2MN_HdDFe69w" type="RegionName">
@@ -1036,7 +1036,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dpXyhN4DEe2MN_HdDFe69w"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_dpXLcd4DEe2MN_HdDFe69w" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dpXLct4DEe2MN_HdDFe69w" x="1970" y="360" width="788" height="366"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_dpXLct4DEe2MN_HdDFe69w" x="2177" y="360" width="789" height="366"/>
     </children>
     <children xmi:id="_RRaJ8ADPEe-E-IkMMA4Mbw" type="Region" element="_RRdNQADPEe-E-IkMMA4Mbw">
       <children xsi:type="notation:DecorationNode" xmi:id="_RRaJ8QDPEe-E-IkMMA4Mbw" type="RegionName">
@@ -1219,7 +1219,7 @@
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_B6JEWQDaEe-XDcLrKo1Gow" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_B6JEWgDaEe-XDcLrKo1Gow" name="featureToShow" stringValue="specification"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_B6JEWwDaEe-XDcLrKo1Gow" x="1580" y="1645" width="1006" height="444"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_B6JEWwDaEe-XDcLrKo1Gow" x="1730" y="1660" width="1104" height="608"/>
     </children>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_2s7mt9tyEeyHZqpmACSfBQ" name="inlineDefinitionSection"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_2s7muNtyEeyHZqpmACSfBQ"/>

@@ -115,7 +115,11 @@ void boardInit(void)
       gpioInit( LED2, GPIO_OUTPUT );
       gpioInit( LED3, GPIO_OUTPUT );
       gpioInit( GPIO2, GPIO_OUTPUT );
-
+      //LED's para los estados de la conectivdad y la recepcion de datos
+      gpioInit( GPIO3, GPIO_OUTPUT );
+      gpioInit( GPIO5, GPIO_OUTPUT );
+      gpioInit( GPIO7, GPIO_OUTPUT );
+      gpioInit( GPIO8, GPIO_OUTPUT );
       //#error EDU-CIAA-NXP
 
    #elif BOARD==ciaa_z3r0
