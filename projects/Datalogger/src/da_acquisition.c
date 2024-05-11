@@ -58,6 +58,8 @@ void opBufferRS485Off(amenometerSerialParam_t * data){
 	// Dehabilito todas las interrupciones de UART_USB
 		uint16_t miUart = data->Uart;
 		uartInterrupt( (UART_GPIO+miUart), false);
+//		Apago el LED correspondiente si es que borre mediciones o pause el sistema desde la App Web
+		gpioWrite(((amenometerSerialParam_t *)data)->LED, OFF );
 }
 
 

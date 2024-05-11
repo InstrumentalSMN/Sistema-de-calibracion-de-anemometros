@@ -1219,7 +1219,7 @@
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_B6JEWQDaEe-XDcLrKo1Gow" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
       <styles xsi:type="notation:StringValueStyle" xmi:id="_B6JEWgDaEe-XDcLrKo1Gow" name="featureToShow" stringValue="specification"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_B6JEWwDaEe-XDcLrKo1Gow" x="1730" y="1660" width="1104" height="608"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_B6JEWwDaEe-XDcLrKo1Gow" x="1780" y="1495" width="1104" height="608"/>
     </children>
     <styles xsi:type="notation:BooleanValueStyle" xmi:id="_2s7mt9tyEeyHZqpmACSfBQ" name="inlineDefinitionSection"/>
     <styles xsi:type="notation:DiagramStyle" xmi:id="_2s7muNtyEeyHZqpmACSfBQ"/>

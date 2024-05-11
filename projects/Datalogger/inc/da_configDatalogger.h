@@ -44,6 +44,7 @@ bool_t stop( config_t * commandConfig);
 bool_t setIBC(config_t * commandConfig);
 bool_t setPAT(config_t * commandConfig);
 bool_t setTimes(config_t * commandConfig);
+bool_t refWindVel(config_t * commandConfig);
 
 /*=======================================================================================================*/
 

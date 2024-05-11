@@ -136,7 +136,7 @@ uint32_t Buttons_GetStatus_(void) {
 	boardConfig();
 //	gpioWrite( GPIO3, OFF );
 //	gpioWrite( GPIO5, ON );
-//	gpioWrite( GPIO8, ON );
+//	gpioWrite( GPIO7, ON );
 
 //	init SPI0
 	MySpi_Wiz_Init(SPI0);

@@ -14,6 +14,7 @@ char *diccCommands[]={
 				"setIBC",
 				"setPAT",
 				"setTimes",
+				"refWindVel",
 				"NAN"};
 
 
@@ -28,7 +29,8 @@ bool_t (*diccProcesos[])(config_t * commandConfig)={
 							stop,
 							setIBC,
 							setPAT,
-							setTimes};
+							setTimes,
+							refWindVel};
 
 
 /*implementacion de funciones*/
@@ -122,7 +124,12 @@ bool_t setTimes(config_t * commandConfig){
 }
 
 
-
+bool_t refWindVel(config_t * commandConfig){
+	printf("\r\n%s\r\n",commandConfig->command);
+//	printf("\r\n recibi algo");
+//	Con estos valores los paso al controlador
+	return OK;
+}
 
 bool_t opProccessMessageFromServer(uint16_t * sizeBuffServer,config_t * commandConfig ){
 
