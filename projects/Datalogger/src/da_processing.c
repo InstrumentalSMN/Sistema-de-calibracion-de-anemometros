@@ -29,7 +29,7 @@ void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt,real32_t * MuestraA
 }
 
 
-void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
+void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion, int32_t * pwmValue){
 
 	uint32_t i = 0;
 	//char aux[150];
@@ -43,20 +43,20 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 //	uartWriteString( UART_USB, "\r\n" );
 
 
-	float velocidadInst = AcumIntensidadPat[(*NumMuestra)-1];
-	float velocidadMax = maxValue(AcumIntensidadPat,(size_t)*NumMuestra);
-	float velocidadMin = minValue(AcumIntensidadPat,(size_t)*NumMuestra);
-	float velocidadPromedio = AverageValue(AcumIntensidadPat,(size_t)*NumMuestra);
+	float velocidadInst = AcumIntensidadPat[(*NumMuestra)-1] * NUDO2MS;
+	float velocidadMax = maxValue(AcumIntensidadPat,(size_t)*NumMuestra) * NUDO2MS;
+	float velocidadMin = minValue(AcumIntensidadPat,(size_t)*NumMuestra) * NUDO2MS;
+	float velocidadPromedio = AverageValue(AcumIntensidadPat,(size_t)*NumMuestra) * NUDO2MS;
 
 	float direccionInst = AcumDireccionPat[(*NumMuestra)-1];
 	float direccionMax = maxValue(AcumDireccionPat,(size_t)*NumMuestra);
 	float direccionMin = minValue(AcumDireccionPat,(size_t)*NumMuestra);
 	float direccionPromedio = AverageValue(AcumDireccionPat,(size_t)*NumMuestra);
 
-	float velocidadInstIBC = AcumIntensidadIBC[(*NumMuestra)-1];
-	float velocidadMaxIBC = maxValue(AcumIntensidadIBC,(size_t)*NumMuestra);
-	float velocidadMinIBC = minValue(AcumIntensidadIBC,(size_t)*NumMuestra);
-	float velocidadPromedioIBC = AverageValue(AcumIntensidadIBC,(size_t)*NumMuestra);
+	float velocidadInstIBC = AcumIntensidadIBC[(*NumMuestra)-1] * NUDO2MS;
+	float velocidadMaxIBC = maxValue(AcumIntensidadIBC,(size_t)*NumMuestra) * NUDO2MS;
+	float velocidadMinIBC = minValue(AcumIntensidadIBC,(size_t)*NumMuestra) * NUDO2MS;
+	float velocidadPromedioIBC = AverageValue(AcumIntensidadIBC,(size_t)*NumMuestra) * NUDO2MS;
 
 	float direccionInstIBC = AcumDireccionIBC[(*NumMuestra)-1];
 	float direccionMaxIBC = maxValue(AcumDireccionIBC,(size_t)*NumMuestra);
@@ -82,14 +82,17 @@ void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion){
 	float nv_adcTunelMax = maxValue(NvAdcTunel,(size_t)*NumMuestra);
 	float nv_adcTunelMin = minValue(NvAdcTunel,(size_t)*NumMuestra);
 	float nv_adcTunelPromedio = AverageValue(NvAdcTunel,(size_t)*NumMuestra);
+	float nv_pwmControlTunelInst = *pwmValue;
 
-	real32_t Tabla_Mediciones[24] = {
+
+	real32_t Tabla_Mediciones[25] = {
 							velocidadInst,velocidadMin,velocidadMax,velocidadPromedio,
 							velocidadInstIBC,velocidadMinIBC,velocidadMaxIBC,velocidadPromedioIBC,
 							direccionInst,direccionMin,direccionMax,direccionPromedio,
 							direccionInstIBC,direccionMinIBC,direccionMaxIBC,direccionPromedioIBC,
 							nv_bateriaInst,nv_bateriaMin,nv_bateriaMax,nv_bateriaPromedio,
-							nv_adcTunelInst,nv_adcTunelMin,nv_adcTunelMax,nv_adcTunelPromedio
+							nv_adcTunelInst,nv_adcTunelMin,nv_adcTunelMax,nv_adcTunelPromedio,
+							nv_pwmControlTunelInst
 							};
 
 //	real32_t Tabla[4] ={	velocidadPromedio,

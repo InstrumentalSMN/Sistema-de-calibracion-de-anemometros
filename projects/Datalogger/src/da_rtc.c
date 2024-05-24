@@ -40,8 +40,8 @@ uint8_t MASKSUB_NTP1[4];
 // Server NTP information
 //uint8_t NTP_destIP[4] = {129,6,15,29};
 //uint8_t NTP_destIP[4] = {132,163,96,5};
-uint8_t NTP_destIP[4] = {128,138,140,44};
-//uint8_t NTP_destIP[4] = {128,138,141,172};
+//uint8_t NTP_destIP[4] = {128,138,140,44};
+uint8_t NTP_destIP[4] = {128,138,141,172};
 
 uint16_t _NTP_destport = 13; //  puerto para NTP por medio de UPD
 char BufferDayTime[100];

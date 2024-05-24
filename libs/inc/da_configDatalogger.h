@@ -18,6 +18,7 @@
 #include "socket.h"
 #include "w5100.h"
 #include "../inc/my_spi.h"
+#include "../inc/controlTunnel.h"
 
 
 typedef struct{

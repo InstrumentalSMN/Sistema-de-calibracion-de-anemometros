@@ -5,6 +5,7 @@
 
 
 
+
 //Este diccionario tiene los comandos que enviar la aplicacione WEB, se obtiene el numero y se lo manda al diccionario de
 //punteros a funcion para establecer la operacion seteada
 
@@ -126,6 +127,16 @@ bool_t setTimes(config_t * commandConfig){
 
 bool_t refWindVel(config_t * commandConfig){
 	printf("\r\n%s\r\n",commandConfig->command);
+//	refWindVel;1.004
+	char* tok=0;
+	tok = strtok(commandConfig->command,";");
+	if(tok == NULL){return ERROR;}
+	tok = strtok(NULL,";");
+	if(tok == NULL){return ERROR;}
+	referenceVelocity_ts = (float)atof(tok);
+
+
+
 //	printf("\r\n recibi algo");
 //	Con estos valores los paso al controlador
 	return OK;

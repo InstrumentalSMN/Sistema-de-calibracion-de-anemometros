@@ -53,7 +53,7 @@ void opAdquirirAdcTunel(real32_t* muestraVoltNB ){//puntero a muestra nivel de b
 	adcConfig( ADC_DISABLE );
 }
 
-void opBufferRS485Off(amenometerSerialParam_t * data){
+void opBufferRS485_Off(amenometerSerialParam_t * data){
 
 	// Dehabilito todas las interrupciones de UART_USB
 		uint16_t miUart = data->Uart;
@@ -103,8 +103,8 @@ void opPreprocesoDeltaOHM(amenometerSerialParam_t * data){
     //Obtengo el largo del vector donde se guardan mis datos de interes en este caso 3. Intensidad, Direccion y Presion
     //uint32_t lenghtDeltaOhm = sizeof(dataWind)/sizeof(dataWind[0]);
     while ((token =  (char *)strtok_r(rest, delimitador, &rest)) !=NULL ){
-    	//token es un string asi que puedo comparar contra NAN y no covertir
-    	if((memcmp(NAN,token,strlen(NAN))) == 0){
+    	//token es un string asi que puedo comparar contra NANN y no covertir
+    	if((memcmp(NANN,token,strlen(NANN))) == 0){
     		data->DataAnemometer[i] = NoDato;
     		i++;
     	}else{

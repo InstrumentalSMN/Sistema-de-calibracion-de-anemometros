@@ -19,7 +19,7 @@
 #define MaxADCValueTunel	1024
 
 #define NoDato  -99999 // No hay dato tambien se usa en procesamiento.c!!!
-#define NAN "ND" // tambien se usa en procesamiento.c!!!
+#define NANN "ND" // tambien se usa en procesamiento.c!!!
 
 
 typedef enum{HDS500,WMT700,VENTUS}sensor_t;
@@ -50,7 +50,9 @@ extern void _opLED(  uint16_t LEDNumber,  BOOL_8 State, uint16_t * n);
 extern void opAdquirirDNB(real32_t* muestraVoltNB);
 extern void opAdquirirAdcTunel(real32_t* muestraVoltNB);
 extern void opBufferRS485_On(amenometerSerialParam_t * data);
-extern void opBufferRS485Off(amenometerSerialParam_t * data);
+extern void opBufferRS485_Off(amenometerSerialParam_t * data);
+extern void opBufferRS485Reset(amenometerSerialParam_t * data);
+
 
 
 // Se puede pasar un typedef enum que seleccione un vector de puntero a funciones

@@ -180,7 +180,7 @@ int main(void){
    /* Usar PWM */
    valor = pwmWrite( PWM3, dutyCycle1 );
    pwmVal = pwmRead( PWM3 );
-   pwmWrite( PWM3, 63 );
+//   pwmWrite( PWM3, 63 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
@@ -191,7 +191,7 @@ int main(void){
 //    	  pwmWrite( PWM3, dutyCycle1);
       }
 
-//      pwmWrite( PWM3, 255);
+      pwmWrite( PWM3, 255);
 
 
 

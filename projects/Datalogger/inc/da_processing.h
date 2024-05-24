@@ -15,7 +15,6 @@
 #include "../inc/da_acquisition.h"
 
 
-
 /*Buffer para las estadisticas del DeltaOHM*/
  real32_t AcumIntensidadPat[100];
  real32_t AcumDireccionPat[100];
@@ -37,7 +36,7 @@ extern uint32_t next;
 
 extern void opAcumular(uint16_t * NumMuestra,real32_t * MuestraVolt,real32_t * MuestraAdcTunel, amenometerSerialParam_t * ibc,amenometerSerialParam_t * pat);
 //extern void opProceso( uint32_t * size);
-extern void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion);
+extern void opProceso(  uint16_t * NumMuestra, int32_t * NumMedicion,int32_t * pwmValue);
 
 
 

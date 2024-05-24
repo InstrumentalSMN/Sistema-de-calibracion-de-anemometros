@@ -15,10 +15,17 @@
 #include "common.h"
 #include "../inc/da_processing.h"
 #include "../inc/da_acquisition.h"
+#include "../inc/controlTunnel.h"
 #include "socket.h"
 #include "w5100.h"
 #include "../inc/my_spi.h"
 
+typedef enum {
+    START_MESUARE,
+    PAUSE_MESUARE,
+    RESET_MESUARE,
+    ERROR_MESUARE,
+} statusDasboard_t;
 
 typedef struct{
 	char command[25];

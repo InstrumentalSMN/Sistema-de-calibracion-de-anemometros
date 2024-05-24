@@ -11,6 +11,7 @@
 #include "sapi.h"
 #include "sapi_uart.h"
 #include "w5100.h"
+#include <math.h>
 
 /*==================[macros]=================================================*/
 
@@ -38,7 +39,8 @@
 ////#ifndef TRUE
 //#define TRUE   (!FALSE)
 ////#endif
-
+// Constantes
+#define NUDO2MS 0.514444
 /*==================[typedef]================================================*/
 
 /*Agrego algún tipo de dato particular para el string de los sensores*/
