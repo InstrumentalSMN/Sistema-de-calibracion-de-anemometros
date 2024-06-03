@@ -173,7 +173,7 @@
       </vertices>
     </regions>
     <regions xmi:id="_9lglUBFcEe-eJ941s3RNqg" name="ControllerTunnelWind">
-      <vertices xsi:type="sgraph:State" xmi:id="_9lglURFcEe-eJ941s3RNqg" specification="entry/configPID(prtPid)&#xD;&#xA;&#xD;&#xA;&#x9;" name="INICIO" incomingTransitions="_9lhzcRFcEe-eJ941s3RNqg _9lmE5BFcEe-eJ941s3RNqg">
+      <vertices xsi:type="sgraph:State" xmi:id="_9lglURFcEe-eJ941s3RNqg" specification="entry/configPID(prtPid);&#xD;&#xA;NumMuestra = 0&#xD;&#xA;&#xD;&#xA;&#x9;" name="INICIO" incomingTransitions="_9lhzcRFcEe-eJ941s3RNqg _9lmE5BFcEe-eJ941s3RNqg">
         <outgoingTransitions xmi:id="_9lglUxFcEe-eJ941s3RNqg" specification="[configCommand.startMesuare == StatusTrue ]" target="_9lhzchFcEe-eJ941s3RNqg"/>
       </vertices>
       <vertices xsi:type="sgraph:Entry" xmi:id="_9lhzcBFcEe-eJ941s3RNqg">

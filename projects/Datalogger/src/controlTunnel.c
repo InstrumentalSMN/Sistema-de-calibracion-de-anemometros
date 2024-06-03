@@ -43,6 +43,7 @@ void configPID(pidController_t * pid){
 	pid->integral = 0;
 	pwmConfig( 0, PWM_ENABLE );
 	pwmConfig( PWM3, PWM_ENABLE_OUTPUT );
+	pwmWrite( PWM3, 0);
 }
 void pidControlTunnel( pidController_t * pid, real32_t * VelPat, real32_t * VelRef ,int32_t * pwmValue){
 	char auxBuffer[7];
