@@ -134,12 +134,6 @@ uint32_t Buttons_GetStatus_(void) {
 	/* Generic Initialization */
 	// Inicializo la placa EDU-CIAA, ver que hace esta funcion en sapi.h
 	boardConfig();
-//	pwmConfig( PWM3, PWM_ENABLE_OUTPUT );
-//	pwmWrite( PWM3, 255);
-//	gpioWrite( GPIO3, OFF );
-//	gpioWrite( GPIO5, ON );
-//	gpioWrite( GPIO7, ON );
-
 //	init SPI0
 	MySpi_Wiz_Init(SPI0);
 //	spiCallbackSet(SPI0,SPP_RECEIVE, opReceptionMessage, NULL );

@@ -50,7 +50,7 @@
         <outgoingTransitions xmi:id="_5aNWl9weEe2MN_HdDFe69w" specification="siKeepAlive[isConnectWebServer == StatusFalse]" target="_5aK6UdweEe2MN_HdDFe69w"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_5aN9p9weEe2MN_HdDFe69w" specification="entry/ ptrSizeBuff=sizeBuff.pointer;&#xD;&#xA;txKeep = KeepAlive(ptrSizeBuff)&#xD;&#xA;exit/raise siProccesMsjServer&#xD;&#xA;" name="TX_MESSAGE" incomingTransitions="_5aMIcdweEe2MN_HdDFe69w _5aPLytweEe2MN_HdDFe69w">
-        <outgoingTransitions xmi:id="_5aPLytweEe2MN_HdDFe69w" specification="after 500 ms [txKeep == StatusTrue]" target="_5aN9p9weEe2MN_HdDFe69w"/>
+        <outgoingTransitions xmi:id="_5aPLytweEe2MN_HdDFe69w" specification="after 700 ms [txKeep == StatusTrue]" target="_5aN9p9weEe2MN_HdDFe69w"/>
         <outgoingTransitions xmi:id="_5aQZ6tweEe2MN_HdDFe69w" specification="[txKeep == StatusFalse]" target="_5aK6UdweEe2MN_HdDFe69w"/>
       </vertices>
       <vertices xsi:type="sgraph:Entry" xmi:id="_5aSPE9weEe2MN_HdDFe69w">
