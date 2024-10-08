@@ -46,12 +46,8 @@ void opEnableRxWebSocket(){
 
 void opReceptionMessage( void *data ){ //Esta se llama  en el callbackSet
 	printf("\r\n Llego un mensaje del server");
-	printf("\r\n Llego un mensaje del server");
 
 }
-
-
-
 
 
 void opConfigSocket(){

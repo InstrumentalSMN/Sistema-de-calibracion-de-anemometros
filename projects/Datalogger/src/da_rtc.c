@@ -58,7 +58,7 @@ uint8_t ret5;
 
 
 bool_t opConfigNtpSocketViaTCP(){
-
+//	Configuro los datos de red del cliente y el protocolo y el puerto por el que saldra
 	DesconectarSocket(SOCK_NTP);
 	//Reset registers
 	uint8_t registroModo = getMR();
@@ -91,7 +91,7 @@ bool_t opConfigNtpSocketViaTCP(){
 }
 
 bool_t opConfigNtpViaTCP(){
-
+//	Configuro los datos del servidor al cual quiero conectarme
 	setSn_DIPR(SOCK_NTP, NTP_destIP);
 	setSn_DPORT(SOCK_NTP,_NTP_destport);
 	setSn_CR(SOCK_NTP,Sn_CR_CONNECT);
