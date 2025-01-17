@@ -137,7 +137,7 @@ bool_t opConnectToWebSocket(){
 
 bool_t KeepAlive(uint16_t * sizeBuffServer){
 
-	char aux[] = "{\"message\":\"\"}";;
+	char aux[] = "{\"message\":\"\"}";
 	char message[140];
 	encodeMessage125(aux,message);
 
